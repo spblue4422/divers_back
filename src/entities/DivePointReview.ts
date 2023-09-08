@@ -1,9 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import DivePoint from './DivePoint';
+import User from './User';
 
 @Entity('dive_point_review')
 class DivePointReview {
   @PrimaryGeneratedColumn()
   id: bigint;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => DivePoint)
+  @JoinColumn({ name: 'pointId' })
+  diveShop: DivePoint;
+
+  @Column()
+  pointId: number;
 
   @Column()
   text: string;

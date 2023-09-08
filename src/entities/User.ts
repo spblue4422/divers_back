@@ -1,9 +1,16 @@
-import { Column, Entity, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import Country from 'src/common/entities/country';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('user')
 class User {
   @PrimaryGeneratedColumn()
-  id: bigint;
+  id: number;
 
   @Column()
   nickname: string;
@@ -14,7 +21,11 @@ class User {
   @Column()
   lastname: string;
 
-  @JoinColumn()
+  @ManyToOne(() => Country)
+  @JoinColumn({ name: 'countryCode' })
+  country: Country;
+
+  @Column()
   countryCode: string;
 
   @Column()
@@ -27,10 +38,13 @@ class User {
   profileImageUrl: string;
 
   @Column()
-  rank: string;
+  diveRank: string;
 
   // @Column()
   // preference
+
+  @Column({ default: false })
+  isBlocked: boolean;
 }
 
 export default User;

@@ -1,9 +1,16 @@
-import { Column, Entity, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import Country from 'src/common/entities/country';
 
 @Entity('dive_point')
 class DivePoint {
   @PrimaryGeneratedColumn()
-  id: bigint;
+  id: number;
 
   @Column()
   name: string;
@@ -11,7 +18,11 @@ class DivePoint {
   @Column()
   description: string;
 
-  @JoinColumn()
+  @ManyToOne(() => Country)
+  @JoinColumn({ name: 'countryCode' })
+  country: Country;
+
+  @Column()
   countryCode: string;
 
   @Column()

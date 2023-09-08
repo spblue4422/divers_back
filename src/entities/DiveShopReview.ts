@@ -1,9 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import User from './User';
+import DiveShop from './DiveShop';
 
 @Entity('dive_shop_review')
 class DiveShopReview {
   @PrimaryGeneratedColumn()
   id: bigint;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => DiveShop)
+  @JoinColumn({ name: 'shopId' })
+  diveShop: DiveShop;
+
+  @Column()
+  shopId: number;
 
   @Column()
   text: string;
