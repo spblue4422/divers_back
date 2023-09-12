@@ -5,16 +5,26 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import Country from 'src/common/entities/country';
+import Country from './Country';
+import { BasicDate } from 'src/entities/BasicDate';
 
 @Entity('dive_point')
-class DivePoint {
+class DivePoint extends BasicDate {
+  /**
+   dive_point_id
+  */
   @PrimaryGeneratedColumn()
   id: number;
 
+  /**
+   포인트 이름
+  */
   @Column()
   name: string;
 
+  /**
+   포인트 설명
+  */
   @Column()
   description: string;
 
@@ -22,12 +32,21 @@ class DivePoint {
   @JoinColumn({ name: 'countryCode' })
   country: Country;
 
+  /**
+   국가 코드
+  */
   @Column()
   countryCode: string;
 
+  /**
+   위치
+  */
   @Column()
   location: string;
 
+  /**
+   추천 수
+  */
   @Column({ default: 0 })
   recommendation: number;
 

@@ -6,10 +6,15 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import User from './User';
+import { BasicDate } from 'src/entities/BasicDate';
+import DivePoint from './DivePoint';
+import DiveShop from './DiveShop';
 
 @Entity('dive_log')
-class DiveLog {
-  //스키마의 분리 필요 - 한 번에 볼 수 있는 정보 한정적 => 필수 정보만 두고 더 보기로 가져오면 어떨까
+export class DiveLog extends BasicDate {
+  /**
+   dive_log_id
+  */
   @PrimaryGeneratedColumn()
   id: bigint;
 
@@ -17,11 +22,71 @@ class DiveLog {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  /**
+   user_id
+  */
   @Column()
   userId: number;
 
-  @Column()
-  location: string;
-}
+  @ManyToOne(() => DiveShop)
+  @JoinColumn({ name: 'shopId' })
+  diveShop: DiveShop;
 
-export default DiveLog;
+  /**
+   dive_shop_id
+  */
+  @Column({ nullable: true })
+  shopId: number;
+
+  /**
+   다이브샵 상호명
+  */
+  @Column({ nullable: true })
+  shopName: string;
+
+  @ManyToOne(() => DivePoint)
+  @JoinColumn({ name: 'pointId' })
+  divePoint: DivePoint;
+
+  /**
+   dive_point_id
+  */
+  @Column({ nullable: true })
+  pointId: number;
+
+  /**
+   다이브 포이트 이름
+  */
+  @Column()
+  pointName: string;
+
+  /**
+   포인트 위치
+  */
+  @Column({ nullable: true })
+  location: string;
+
+  /**
+   버디
+  */
+  @Column({ nullable: true })
+  buddy: string;
+
+  /**
+   다이빙 날짜
+  */
+  @Column()
+  diveDate: Date;
+
+  /**
+   로그 공개 여부
+  */
+  @Column({ default: false })
+  isPublic: boolean;
+
+  /**
+   로그 블락 여부
+  */
+  @Column({ default: false })
+  isBlocked: boolean;
+}

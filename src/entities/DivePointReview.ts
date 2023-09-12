@@ -7,44 +7,86 @@ import {
 } from 'typeorm';
 import DivePoint from './DivePoint';
 import User from './User';
+import { BasicDate } from 'src/entities/BasicDate';
+import DiveShop from './DiveShop';
 
-@Entity('dive_point_review')
-class DivePointReview {
+@Entity('review_dive_point')
+class DivePointReview extends BasicDate {
+  /**
+   review_dive_point_id
+  */
   @PrimaryGeneratedColumn()
-  id: bigint;
+  id: number;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  /**
+   user_id
+  */
   @Column()
   userId: number;
 
+  @ManyToOne(() => DiveShop)
+  @JoinColumn({ name: 'shopId' })
+  diveShop: DiveShop;
+
+  /**
+   dive_shop_id
+  */
+  @Column({ nullable: true })
+  shopId: number;
+
+  /**
+   다이브 샵 이름
+  */
+  @Column({ default: '' })
+  shopName: string;
+
   @ManyToOne(() => DivePoint)
   @JoinColumn({ name: 'pointId' })
-  diveShop: DivePoint;
+  divePoint: DivePoint;
 
+  /**
+   dive_point_id
+  */
   @Column()
   pointId: number;
 
+  /**
+   리뷰 내용
+  */
   @Column()
   text: string;
 
+  /**
+   별점
+  */
   @Column()
   star: number;
 
+  /**
+   좋아요
+  */
   @Column({
     default: 0,
   })
   likes: number;
 
+  /**
+   싫어요 - 이거보다 그냥 신고를 두는게 나으려나?
+  */
   @Column({
     default: 0,
   })
   dislikes: number;
 
-  @Column()
-  shopName: string;
+  /**
+   블락 여부
+  */
+  @Column({ default: false })
+  isBlocked: boolean;
 }
 
 export default DivePointReview;

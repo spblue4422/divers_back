@@ -6,9 +6,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import User from './User';
+import { Auth } from './Auth';
 
 @Entity('auth_user')
-class AuthUser {
+class AuthUser extends Auth {
+  /**
+   auth_user_id
+  */
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,6 +20,9 @@ class AuthUser {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  /**
+   user_id
+  */
   @Column()
   userId: number;
 }
