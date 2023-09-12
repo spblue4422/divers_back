@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DivingRank } from 'src/common/enums';
 
 @Entity('user')
 class User extends BasicDate {
@@ -44,14 +45,14 @@ class User extends BasicDate {
   /**
    나이
   */
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   age: number;
 
   /**
    성별
   */
-  @Column({ nullable: false })
-  gender: 'Male' | 'Female';
+  @Column({ nullable: true })
+  gender: string;
 
   /**
    프로필 이미지 url
@@ -60,19 +61,21 @@ class User extends BasicDate {
   profileImageUrl: string;
 
   /**
-   다이빙 자격증 랭크
+   다이빙 자격증 단계
   */
   @Column()
-  diveRank: string;
+  diveRank: DivingRank;
 
   // @Column()
   // preference
 
   /**
-   블락 여부
+   밴 여부
   */
   @Column({ default: false })
-  isBlocked: boolean;
+  isBanned: boolean;
+
+  //블락이 언제풀리는지
 }
 
 export default User;

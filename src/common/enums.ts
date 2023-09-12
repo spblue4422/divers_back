@@ -35,3 +35,11 @@ export enum DivingEquipment {
   'Dive Comp',
   'SMB',
 }
+
+export enum DivingRank {
+  'None',
+  'OpenWater',
+  'Advanced',
+  'Rescue',
+  'Instructor',
+}
