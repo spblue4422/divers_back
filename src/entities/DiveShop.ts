@@ -39,10 +39,16 @@ class DiveShop extends BasicDate {
   description: string;
 
   /**
+   위치
+  */
+  @Column()
+  location: string;
+
+  /**
    주소
   */
   @Column()
-  address: string;
+  detailAddress: string;
 
   /**
    추천 수

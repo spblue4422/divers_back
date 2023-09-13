@@ -46,7 +46,7 @@ class User extends BasicDate {
    나이
   */
   @Column({ nullable: true })
-  age: number;
+  birth: string;
 
   /**
    성별

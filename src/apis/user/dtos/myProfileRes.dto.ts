@@ -9,8 +9,8 @@ export class MyProfileResDto extends UserProfileResDto {
   @ApiProperty({ description: '성' })
   lastname: string;
 
-  @ApiProperty({ description: '나이' })
-  age: number;
+  @ApiProperty({ description: '생년월일' })
+  birth: string;
 
   @ApiProperty({ description: '성별' })
   gender: string;
@@ -26,7 +26,7 @@ export class MyProfileResDto extends UserProfileResDto {
     resDto.diveRank = data.diveRank;
     resDto.firstname = data.firstname;
     resDto.lastname = data.lastname;
-    resDto.age = data.age;
+    resDto.birth = data.birth;
     resDto.gender = data.gender;
     resDto.createdAt = new Date(data.createdAt.toString());
 

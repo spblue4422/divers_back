@@ -43,3 +43,29 @@ export enum DivingRank {
   'Rescue',
   'Instructor',
 }
+
+export enum SearchShop {
+  'name',
+  'country',
+  'location',
+}
+
+export enum SearchPoint {
+  'name',
+  'country',
+  'location',
+}
+
+export enum SearchUser {
+  'nickname',
+  'diveRank',
+}
+
+export enum SearchLog {
+  'logNo',
+  'buddy',
+  'shop',
+  'point',
+  'diveDate',
+  'divingType',
+}
