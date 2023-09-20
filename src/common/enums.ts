@@ -36,13 +36,12 @@ export enum DivingEquipment {
   'SMB',
 }
 
-export enum DivingRank {
-  'None',
-  'OpenWater',
-  'Advanced',
-  'Rescue',
-  'Instructor',
-}
+export type DivingRank =
+  | 'None'
+  | 'OpenWater'
+  | 'Advanced'
+  | 'Rescue'
+  | 'Instructor';
 
 export enum SearchShop {
   'name',

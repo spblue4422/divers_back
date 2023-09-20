@@ -13,7 +13,7 @@ export class DiveShopService {
       .then(([data, count]) => ({ dataList: data, totalCount: count }));
   }
 
-  async getOneDiveShop(shopId: number) {
+  async getDiveShop(shopId: number) {
     return this.diveShopRepository.findOneByOrFail({
       id: shopId,
       deletedAt: null,

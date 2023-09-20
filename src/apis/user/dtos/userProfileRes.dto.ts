@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 import { DivingRank } from 'src/common/enums';
 import User from 'src/entities/User';
 
@@ -11,6 +12,7 @@ export class UserProfileResDto {
   // }
 
   @ApiProperty({ description: '닉네임' })
+  @IsString()
   nickname: string;
 
   @ApiProperty({ description: '국가 코드' })
