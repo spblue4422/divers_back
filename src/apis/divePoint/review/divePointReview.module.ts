@@ -1,4 +1,13 @@
 import { Module } from '@nestjs/common';
+import { DivePointReviewController } from './divePointReview.controller';
+import { DivePointReviewService } from './divePointReview.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DivePointReviewRepository } from './divePointReview.repository';
 
-@Module({})
+@Module({
+  imports: [TypeOrmModule.forFeature([DivePointReviewRepository])],
+  controllers: [DivePointReviewController],
+  providers: [DivePointReviewService],
+  exports: [DivePointReviewService],
+})
 export class DivePointReviewModule {}
