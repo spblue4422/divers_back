@@ -4,7 +4,7 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
-import { DivingRank } from '../enums';
+import { DivingRank } from '../assets/enums';
 
 function CommonRegister(
   vdOptions?: Omit<ValidationDecoratorOptions, 'target' | 'propertyName'>,

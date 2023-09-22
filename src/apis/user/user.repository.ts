@@ -4,7 +4,19 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepostiory extends Repository<User> {
-  async getOne(userId: number) {
-    this.findOne({ where: { id: userId } });
+  async getProfile(userId: number) {
+    return this.findOne({
+      where: {
+        id: userId,
+        isBanned: false,
+        // deletedAt: null,
+      },
+      withDeleted: true,
+    });
+  }
+
+  async checkNicknameDup(nickname: string) {
+    // return this.find({ where: { nickname } });
+    return this.exist({ where: { nickname } });
   }
 }

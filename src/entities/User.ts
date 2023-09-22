@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DivingRank } from 'src/common/enums';
+import { DivingRank } from 'src/common/assets/enums';
 
 @Entity('user')
 class User extends BasicDate {
@@ -43,7 +43,7 @@ class User extends BasicDate {
   countryCode: string;
 
   /**
-   나이
+   생년월일
   */
   @Column({ nullable: true })
   birth: string;
@@ -65,6 +65,18 @@ class User extends BasicDate {
   */
   @Column()
   diveRank: DivingRank;
+
+  /**
+   이메일
+  */
+  @Column({ nullable: true })
+  email: string;
+
+  /**
+   전화번호
+  */
+  @Column({ nullable: true })
+  phone: string;
 
   // @Column()
   // preference

@@ -5,7 +5,7 @@ import {
   DivingEquipment,
   DivingType,
   Weather,
-} from 'src/common/enums';
+} from 'src/common/assets/enums';
 import { BasicDate } from './BasicDate';
 
 @Entity('dive_log_detail')

@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { SignInReqDto } from './dto/signInReq.dto';
 import { SignUpReqDto } from './dto/signUpReq.dto';
 import { FindLoginIdReqDto } from './dto/findLoginIdReq.dto';
@@ -17,8 +25,8 @@ export class AuthController {
   @Delete('/withdraw')
   async withdraw() {}
 
-  @Get('/doubleCheck/id/:loginId')
-  async doubleCheckLoginId(@Param() loginId: string) {}
+  @Get('/dupCheck/id/:loginId')
+  async dupCheckLoginId(@Param() loginId: string) {}
 
   @Post('/find/id/:loginId')
   async findLoginId(@Body() findIdBody: FindLoginIdReqDto) {}

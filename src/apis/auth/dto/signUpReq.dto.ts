@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SignInReqDto } from './signInReq.dto';
 import { IsString } from 'class-validator';
-import { JoinType } from 'src/common/enums';
+import { JoinType } from 'src/common/assets/enums';
 
 export class SignUpReqDto extends SignInReqDto {
   @ApiProperty({ description: '이름' })
@@ -19,11 +19,17 @@ export class SignUpReqDto extends SignInReqDto {
   @ApiProperty({ description: '생년월일' })
   birth: string;
 
-  @ApiProperty({ description: '국가 코드' })
-  countryCode?: string;
-
   @ApiProperty({ description: '성별' })
-  gender?: string;
+  gender: string;
+
+  @ApiProperty({ description: '국적' })
+  countryCode: string;
+
+  @ApiProperty({ description: '이메일' })
+  email?: string;
+
+  @ApiProperty({ description: '전화번호' })
+  phone?: string;
 
   @ApiProperty({ description: '로그인 타입' })
   joinType: JoinType;
