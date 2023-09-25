@@ -89,4 +89,10 @@ export class DiveLog extends BasicDate {
   */
   @Column({ default: false })
   isBlocked: boolean;
+
+  /**
+   로그 블락 사유
+  */
+  @Column({ nullable: true })
+  blockReason: string;
 }

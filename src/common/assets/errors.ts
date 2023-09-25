@@ -22,12 +22,12 @@ export const Errors = {
     errorCode: 1000,
     msg: '존재하지 않는 사용자입니다.',
   },
-  NO_SHOP: {
+  NO_DVIESHOP: {
     statusCode: 404,
     errorCode: 1001,
     msg: '존재하지 않는 샵입니다.',
   },
-  NO_POINT: {
+  NO_DIVEPOINT: {
     statusCode: 404,
     errorCode: 1002,
     msg: '존재하지 않는 포인트입니다.',
@@ -37,12 +37,12 @@ export const Errors = {
     errorCode: 1003,
     msg: '존재하지 않는 로그입니다.',
   },
-  NO_SHOP_REVIEW: {
+  NO_DIVESHOP_REVIEW: {
     statusCode: 404,
     errorCode: 1004,
     msg: '존재하지 않는 샵 리뷰입니다.',
   },
-  NO_POINT_REVIEW: {
+  NO_DIVEPOINT_REVIEW: {
     statusCode: 404,
     errorCode: 1005,
     msg: '존재하지 않는 포인트 리뷰입니다.',
@@ -66,5 +66,10 @@ export const Errors = {
     statusCode: 400,
     errorCode: 1103,
     msg: '이미 인증된 이메일입니다.',
+  },
+  NO_ACCESS_PRIVATE_LOG: {
+    statusCode: 403,
+    errorCode: 1200,
+    msg: '공개되어 있지 않은 로그입니다.',
   },
 };

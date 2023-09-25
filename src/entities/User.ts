@@ -80,14 +80,6 @@ class User extends BasicDate {
 
   // @Column()
   // preference
-
-  /**
-   밴 여부
-  */
-  @Column({ default: false })
-  isBanned: boolean;
-
-  //블락이 언제풀리는지
 }
 
 export default User;

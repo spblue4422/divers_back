@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PaginationFormDto {
+export class PaginationReqDto {
   @ApiProperty({ description: '페이지 번호' })
   page: number;
 

@@ -22,6 +22,7 @@ export class AuthController {
   @Post('/signUp')
   async signUp(@Body() signUpBody: SignUpReqDto) {}
 
+  //어디까지 날려야할까?
   @Delete('/withdraw')
   async withdraw() {}
 

@@ -31,4 +31,22 @@ export abstract class Auth extends BasicDate {
   */
   @Column()
   joinType: string;
+
+  /**
+   블락 여부
+  */
+  @Column({ default: false })
+  isBlocked: boolean;
+
+  /**
+    블락 사유
+   */
+  @Column({ default: false })
+  blockReason: boolean;
+
+  /**
+    블락 사유
+   */
+  @Column({ default: null })
+  blockFreeDate: Date;
 }

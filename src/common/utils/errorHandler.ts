@@ -7,7 +7,7 @@ import {
 import { ErrorMsg, ErrorType, Errors } from '../assets/errors';
 import { HttpAdapterHost } from '@nestjs/core';
 
-export const throwError = async (code?: ErrorMsg) => {
+export const throwErr = async (code?: ErrorMsg) => {
   if (!code) throw Error('INTERNEL_SERVER_ERROR');
   throw Error(code);
 };
