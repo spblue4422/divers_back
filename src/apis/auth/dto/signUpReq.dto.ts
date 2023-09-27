@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SignInReqDto } from './signInReq.dto';
 import { IsString } from 'class-validator';
-import { JoinType } from 'src/common/assets/enums';
+import { JoinType } from 'src/common/enums';
 
 export class SignUpReqDto extends SignInReqDto {
   @ApiProperty({ description: '이름' })

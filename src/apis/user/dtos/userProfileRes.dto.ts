@@ -1,16 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { DivingRank } from 'src/common/assets/enums';
+import { DivingRank } from 'src/common/enums';
 import User from 'src/entities/User';
 
 export class UserProfileResDto {
-  // constructor(data: User) {
-  //   this.nickname = data.nickname;
-  //   this.countryCode = data.countryCode;
-  //   this.profileImageUrl = data.profileImageUrl;
-  //   this.diveRank = data.diveRank;
-  // }
-
   @ApiProperty({ description: '닉네임' })
   @IsString()
   nickname: string;

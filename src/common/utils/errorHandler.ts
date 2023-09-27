@@ -4,7 +4,7 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
-import { ErrorMsg, ErrorType, Errors } from '../assets/errors';
+import { ErrorMsg, ErrorType, Errors } from '../errors';
 import { HttpAdapterHost } from '@nestjs/core';
 
 export const throwErr = async (code?: ErrorMsg) => {

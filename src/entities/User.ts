@@ -7,7 +7,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DivingRank } from 'src/common/assets/enums';
 
 @Entity('user')
 class User extends BasicDate {
@@ -64,7 +63,7 @@ class User extends BasicDate {
    다이빙 자격증 단계
   */
   @Column()
-  diveRank: DivingRank;
+  diveRank: number;
 
   /**
    이메일

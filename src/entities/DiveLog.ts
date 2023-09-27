@@ -9,6 +9,7 @@ import User from './User';
 import { BasicDate } from 'src/entities/BasicDate';
 import DivePoint from './DivePoint';
 import DiveShop from './DiveShop';
+import { Tour } from './Tour';
 
 @Entity('dive_log')
 export class DiveLog extends BasicDate {
@@ -27,6 +28,13 @@ export class DiveLog extends BasicDate {
   */
   @Column()
   userId: number;
+
+  @ManyToOne(() => Tour)
+  @JoinColumn({ name: 'tourId' })
+  tour: Tour;
+
+  @Column({ nullable: true })
+  tourId: number;
 
   @ManyToOne(() => DiveShop)
   @JoinColumn({ name: 'shopId' })

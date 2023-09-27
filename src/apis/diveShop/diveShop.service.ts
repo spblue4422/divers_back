@@ -1,23 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { DiveShopRepository } from './diveShop.repository';
-import { ListAndCountResDto } from 'src/common/dtos/listtAndCountRes.dto';
-import DiveShop from 'src/entities/DiveShop';
+import { ListResDto } from 'src/common/dtos/listRes.dto';
+import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
+import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
+import { DiveShopResDto } from './dtos/diveShopRes.dto';
+import { throwErr } from 'src/common/utils/errorHandler';
 
 @Injectable()
 export class DiveShopService {
   constructor(private readonly diveShopRepository: DiveShopRepository) {}
 
-  async getDiveShopList(): Promise<ListAndCountResDto<DiveShop>> {
-    return this.diveShopRepository
-      .findAndCountBy({ deletedAt: null })
-      .then(([data, count]) => ({ dataList: data, totalCount: count }));
+  async getDiveShopList(
+    pagination: PaginationReqDto,
+  ): Promise<ListResDto<DiveShopInListResDto>> {
+    const { page, pagingCount } = pagination;
+
+    return this.diveShopRepository.findDiveShopListAndCount(page, pagingCount);
   }
 
-  async getDiveShop(shopId: number) {
-    return this.diveShopRepository.findOneByOrFail({
-      id: shopId,
-      deletedAt: null,
-    });
+  async getDiveShop(shopId: number): Promise<DiveShopResDto> {
+    return this.diveShopRepository
+      .findOneOrFail({ where: { id: shopId } })
+      .catch(() => throwErr('NO_DVIESHOP'));
   }
 
   // async getMyDiveShop(shopId: number) {}

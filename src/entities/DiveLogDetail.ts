@@ -1,11 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
 import { DiveLog } from './DiveLog';
-import {
-  DegreeExpression,
-  DivingEquipment,
-  DivingType,
-  Weather,
-} from 'src/common/assets/enums';
 import { BasicDate } from './BasicDate';
 
 @Entity('dive_log_detail')
@@ -23,19 +17,19 @@ export class DiveLogDetail extends BasicDate {
    날씨
   */
   @Column()
-  weather: Weather;
+  weather: number;
 
   /**
    파도
   */
   @Column()
-  wave: DegreeExpression;
+  wave: number;
 
   /**
    조류
   */
   @Column()
-  current: DegreeExpression;
+  current: number;
 
   /**
    입수 시각
@@ -89,7 +83,7 @@ export class DiveLogDetail extends BasicDate {
    시야
   */
   @Column()
-  visibility: DegreeExpression;
+  visibility: number;
 
   /**
    웨이트
@@ -101,13 +95,13 @@ export class DiveLogDetail extends BasicDate {
    착용 장비
   */
   @Column()
-  equipment: DivingEquipment[];
+  equipment: number[];
 
   /**
    다이빙 타입
   */
   @Column()
-  type: DivingType[];
+  type: number[];
 
   /**
    추가 메모

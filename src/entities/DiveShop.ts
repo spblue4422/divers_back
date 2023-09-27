@@ -42,7 +42,7 @@ class DiveShop extends BasicDate {
    위치
   */
   @Column()
-  location: string;
+  city: string;
 
   /**
    주소
@@ -57,7 +57,7 @@ class DiveShop extends BasicDate {
   recommendation: number;
 
   /**
-   평균 평점이 피룡할까
+   평균 평점이 필요할까
   */
   @Column({ default: 0 })
   averageStar: number;

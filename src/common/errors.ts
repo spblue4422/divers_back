@@ -67,9 +67,14 @@ export const Errors = {
     errorCode: 1103,
     msg: '이미 인증된 이메일입니다.',
   },
-  NO_ACCESS_PRIVATE_LOG: {
+  NO_ACCESS_PRIVATE_DIVELOG: {
     statusCode: 403,
     errorCode: 1200,
     msg: '공개되어 있지 않은 로그입니다.',
+  },
+  BLOCKED_DIVELOG: {
+    statusCode: 403,
+    errorCode: 1250,
+    msg: '블락된 로그입니다.',
   },
 };
