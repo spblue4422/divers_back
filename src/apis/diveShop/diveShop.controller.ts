@@ -12,7 +12,10 @@ export class DiveShopController {
   constructor(private readonly diveShopService: DiveShopService) {}
 
   @Get('/list')
-  @ApiOkResponse()
+  @ApiOkResponse({
+    type: ListResDto<DiveShopInListResDto>,
+    description: '다이브샵 목록 조회',
+  })
   async getDiveShopList(
     @Query() pagination: PaginationReqDto,
   ): Promise<ListResDto<DiveShopInListResDto>> {
@@ -20,12 +23,19 @@ export class DiveShopController {
   }
 
   @Get('/:shopId')
-  @ApiOkResponse()
+  @ApiOkResponse({
+    type: DiveShopResDto,
+    description: '다이브샵 상세정보 조회',
+  })
   async getDiveShop(@Param('shopId') shopId: number): Promise<DiveShopResDto> {
     return this.diveShopService.getDiveShop(shopId);
   }
 
-  @Patch('/modify/:shopId')
+  @Patch('/:shopId/recommend')
+  @ApiOkResponse({ description: '다이브샵 추천' })
+  async recommendDiveShop(@Param('shopId') shopId: number) {}
+
+  @Patch('/:shopId/modify')
   @ApiOkResponse()
   async modifyDiveShop(
     @Param('shopId') shopId: number,
