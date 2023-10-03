@@ -6,6 +6,7 @@ import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
 import { DiveShopResDto } from './dtos/diveShopRes.dto';
 import { ModifyDiveShopReqDto } from './dtos/modifyDiveShopReq.dto';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 
 @Controller('diveShop')
 export class DiveShopController {
@@ -32,15 +33,19 @@ export class DiveShopController {
   }
 
   @Patch('/:shopId/recommend')
-  @ApiOkResponse({ description: '다이브샵 추천' })
-  async recommendDiveShop(@Param('shopId') shopId: number) {}
+  @ApiOkResponse({ type: MsgResDto, description: '다이브샵 추천' })
+  async recommendDiveShop(@Param('shopId') shopId: number): Promise<MsgResDto> {
+    return this.diveShopService.recommedShop(shopId, shopId);
+  }
 
   @Patch('/:shopId/modify')
-  @ApiOkResponse()
-  async modifyDiveShop(
+  @ApiOkResponse({ description: '다이브샵 정보 수정' })
+  async modifyDiveShopProfile(
     @Param('shopId') shopId: number,
     @Body() modifyDiveShopBody: ModifyDiveShopReqDto,
-  ) {}
+  ): Promise<MsgResDto> {
+    return this.diveShopService.modifyDiveShop(shopId, modifyDiveShopBody);
+  }
 
   //어드민용 생성, 삭제 있어야 할듯
 }

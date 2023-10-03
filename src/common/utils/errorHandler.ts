@@ -18,7 +18,7 @@ const handleError = (err): ErrorType => {
       ? Errors[err.message]
       : Errors.UNREGISTERED_CODE;
 
-  if (errorCode === -999) return Errors.INTERNEL_SERVER_ERROR;
+  if (errorCode === -999) return Errors.UNREGISTERED_CODE;
 
   return {
     statusCode,

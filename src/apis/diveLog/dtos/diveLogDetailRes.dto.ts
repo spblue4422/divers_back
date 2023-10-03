@@ -7,54 +7,54 @@ import {
 } from 'src/common/enums';
 
 export class DiveLogDetailResDto {
-  @ApiProperty()
+  @ApiProperty({ description: '로그 id' })
   logId: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '날씨' })
   weather: Weather;
 
-  @ApiProperty()
+  @ApiProperty({ description: '파도' })
   wave: DegreeExpression;
 
-  @ApiProperty()
+  @ApiProperty({ description: '조류' })
   current: DegreeExpression;
 
-  @ApiProperty()
+  @ApiProperty({ description: '입수 시각' })
   diveInAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: '출수 시각' })
   diveOutAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: '다이빙 시간' })
   diveTime: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '입수 잔압' })
   pressureIn: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '출수 잔압' })
   pressureOut: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '평균 수심' })
   avgDepth: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '최대 수심' })
   maxDepth: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '평균 수온' })
   waterTemperature: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '시야' })
   visibility: DegreeExpression;
 
-  @ApiProperty()
+  @ApiProperty({ description: '웨이트' })
   weight: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '착용 장비' })
   equipment: DivingEquipment[];
 
-  @ApiProperty()
+  @ApiProperty({ description: '다이빙 타입' })
   type: DivingType[];
 
-  @ApiProperty()
+  @ApiProperty({ description: '추가 메모' })
   text: string;
 }

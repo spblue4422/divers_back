@@ -18,7 +18,7 @@ export class Recommendation {
    추천 대상 - 다이빙샵, 다이빙포인트, 샵 리뷰, 포인트 리뷰
   */
   @Column()
-  target: string;
+  target: number;
 
   @ManyToOne(() => User)
   @JoinColumn()

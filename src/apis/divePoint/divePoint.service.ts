@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { DivePointRepostiory } from './divePoint.repository';
-import { throwErr } from 'src/common/utils/errorHandler';
 import { DivePointResDto } from './dtos/divePointRes.dto';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+import { RecommendationService } from '../recommendation/recommednation.service';
 
 @Injectable()
 export class DivePointService {
-  constructor(private readonly divePointRepository: DivePointRepostiory) {}
+  constructor(
+    private readonly divePointRepository: DivePointRepostiory,
+    private readonly recommendationService: RecommendationService,
+  ) {}
 
   async getDivePointList(page: number, count: number) {
     return this.divePointRepository.findAndCount({
@@ -16,12 +20,24 @@ export class DivePointService {
   }
 
   async getOneDivePoint(pointId: number): Promise<DivePointResDto> {
-    const divePoint = await this.divePointRepository.findOne({
-      where: { id: pointId },
-    });
+    return await this.divePointRepository.findByIdOrFail(pointId);
+  }
 
-    if (!divePoint) throwErr('NO_DIVEPOINT');
+  async recommendDivePoint(pointId: number): Promise<MsgResDto> {
+    const { recommendation } =
+      await this.divePointRepository.findByIdOrFail(pointId);
 
-    return DivePointResDto.makeRes(divePoint);
+    await this.recommendationService.recommendTarget(
+      pointId,
+      pointId,
+      'DIVEPOINT',
+    );
+
+    await this.divePointRepository.update(
+      { id: pointId },
+      { recommendation: recommendation + 1 },
+    );
+
+    return MsgResDto.success();
   }
 }

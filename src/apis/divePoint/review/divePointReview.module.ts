@@ -3,9 +3,15 @@ import { DivePointReviewController } from './divePointReview.controller';
 import { DivePointReviewService } from './divePointReview.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DivePointReviewRepository } from './divePointReview.repository';
+import { UserModule } from 'src/apis/user/user.module';
+import { DivePointModule } from '../divePoint.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DivePointReviewRepository])],
+  imports: [
+    UserModule,
+    DivePointModule,
+    TypeOrmModule.forFeature([DivePointReviewRepository]),
+  ],
   controllers: [DivePointReviewController],
   providers: [DivePointReviewService],
   exports: [DivePointReviewService],

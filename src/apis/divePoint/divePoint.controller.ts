@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { DivePointService } from './divePoint.service';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 
 @Controller('point')
 export class DivePointController {
@@ -8,16 +9,18 @@ export class DivePointController {
 
   @Get('/list')
   async getDivePointList(@Query() paginationForm: PaginationReqDto) {
-    const { page, count } = paginationForm;
+    const { page, pagingCount } = paginationForm;
 
-    return this.divePointService.getDivePointList(page, count);
+    return this.divePointService.getDivePointList(page, pagingCount);
   }
 
   @Get('/:pointId')
   async getDivePoint(@Param() pointId: number) {
-    return this.divePointService
+    return this.divePointService.getOneDivePoint(pointId);
   }
 
   @Patch('/recomment/:pointId')
-  async recommentPoint(@Param() pointId: number) {}
+  async recommentPoint(@Param() pointId: number): Promise<MsgResDto> {
+    return this.divePointService.recommendDivePoint(pointId);
+  }
 }

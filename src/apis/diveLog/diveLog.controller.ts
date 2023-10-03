@@ -13,6 +13,8 @@ import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { DiveLogResDto } from './dtos/diveLogRes.dto';
 import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
+import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 
 @Controller('diveLog')
 export class DiveLogController {
@@ -34,14 +36,22 @@ export class DiveLogController {
   }
 
   @Post('/create')
-  async createDiveLog(@Body() createDiveLogBody) {}
+  async createDiveLog(
+    @Body() createDiveLogBody: CreateDiveLogReqDto,
+  ): Promise<MsgResDto> {
+    return this.diveLogService.createDiveLog(createDiveLogBody);
+  }
 
-  @Patch('/modify')
-  async modfiyDiveLog(@Body() modifyDiveLogBody) {}
+  @Patch('/:logId/modify')
+  async modfiyDiveLog(@Param() logId: bigint, @Body() modifyDiveLogBody) {
+    return this.diveLogService.modifyDiveLog(logId, modifyDiveLogBody);
+  }
 
-  @Delete('/remove/:logId')
-  async removeDiveLog(@Param() logId: number) {}
+  @Delete('/:logId/remove')
+  async removeDiveLog(@Param() logId: bigint) {
+    return this.diveLogService.removeDiveLog(logId);
+  }
 
-  @Patch('/change/isPublic')
+  @Patch('/:logId/changePublic')
   async changeIsPublic() {}
 }

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RecommendationRepository } from './recommendation.repository';
+import { convertKeyToValue } from 'src/common/utils/enumConverter';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 
 @Injectable()
 export class RecommendationService {
@@ -7,51 +9,24 @@ export class RecommendationService {
     private readonly recommendationRepository: RecommendationRepository,
   ) {}
 
-  async recommendShop(userId: number, shopId: number) {
+  async recommendTarget(userId: number, targetId: number, targetKey: string) {
+    const targetVal = await convertKeyToValue('RT', targetKey);
+
     const recommendation =
       await this.recommendationRepository.findOneWithTarget(
         userId,
-        'DIVESHOP',
-        shopId,
+        targetVal,
+        targetId,
       );
 
-    if (!recommendation) return this.recommendationRepository.insert();
-    else return this.recommendationRepository.delete();
-  }
-
-  async recommendPoint(userId: number, pointId: number) {
-    const recommendation =
-      await this.recommendationRepository.findOneWithTarget(
+    if (!recommendation)
+      await this.recommendationRepository.insert({
         userId,
-        'DIVEPOINT',
-        pointId,
-      );
+        target: targetVal,
+        targetId,
+      });
+    else await this.recommendationRepository.delete({ id: recommendation.id });
 
-    if (!recommendation) return this.recommendationRepository.insert();
-    else return this.recommendationRepository.delete();
-  }
-
-  async recommendShopReview(userId: number, reviewId: number) {
-    const recommendation =
-      await this.recommendationRepository.findOneWithTarget(
-        userId,
-        'DIVESHOPREVIEW',
-        reviewId,
-      );
-
-    if (!recommendation) return this.recommendationRepository.insert();
-    else return this.recommendationRepository.delete();
-  }
-
-  async recommendPointReview(userId: number, reviewId: number) {
-    const recommendation =
-      await this.recommendationRepository.findOneWithTarget(
-        userId,
-        'DIVEPOINTREVIEW',
-        reviewId,
-      );
-
-    if (!recommendation) return this.recommendationRepository.insert();
-    else return this.recommendationRepository.delete();
+    return MsgResDto.success();
   }
 }

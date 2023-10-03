@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SignInReqDto } from './signInReq.dto';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { JoinType } from 'src/common/enums';
 
 export class SignUpReqDto extends SignInReqDto {
@@ -29,6 +29,8 @@ export class SignUpReqDto extends SignInReqDto {
   email?: string;
 
   @ApiProperty({ description: '전화번호' })
+  @IsOptional()
+  @IsString()
   phone?: string;
 
   @ApiProperty({ description: '로그인 타입' })

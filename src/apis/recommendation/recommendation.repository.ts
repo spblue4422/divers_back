@@ -4,7 +4,7 @@ import { Recommendation } from 'src/entities/Recommendation';
 
 @Injectable()
 export class RecommendationRepository extends Repository<Recommendation> {
-  async findOneWithTarget(userId: number, target: string, targetId: number) {
+  async findOneWithTarget(userId: number, target: number, targetId: number) {
     return this.findOne({ where: { userId, target, targetId } });
   }
 }

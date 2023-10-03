@@ -1,13 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { DiveLogRepository } from './diveLog.repository';
+import {
+  DiveLogDetailRepository,
+  DiveLogRepository,
+} from './diveLog.repository';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { throwErr } from 'src/common/utils/errorHandler';
 import { DiveLogResDto } from './dtos/diveLogRes.dto';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
 import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
+import { convertKeyToValue } from 'src/common/utils/enumConverter';
 @Injectable()
 export class DiveLogService {
-  constructor(private readonly diveLogRepository: DiveLogRepository) {}
+  constructor(
+    private readonly diveLogRepository: DiveLogRepository,
+    private readonly diveLogDetailRepository: DiveLogDetailRepository,
+  ) {}
 
   async getDiveLogList(
     pagination: PaginationReqDto,
@@ -70,5 +79,49 @@ export class DiveLogService {
       if (diveLog.isBlocked) throwErr('BLOCKED_DIVELOG');
       else return DiveLogResDto.makeRes(diveLog, false);
     } else throwErr('NO_ACCESS_PRIVATE_DIVELOG');
+  }
+
+  async createDiveLog(createDiveLogBody: CreateDiveLogReqDto) {
+    const { weather, wave, current, visibility, equipment, type } =
+      createDiveLogBody;
+
+    //이거 좀 줄일 수 있지않을까?
+    const weatherVal = await convertKeyToValue('W', weather.toString());
+    const waveVal = await convertKeyToValue('DE', wave.toString());
+    const currentVal = await convertKeyToValue('DE', current.toString());
+    const visibilityVal = await convertKeyToValue('DE', visibility.toString());
+    const equipmentValList = equipment.map((e) =>
+      convertKeyToValue('E', e.toString()),
+    );
+    const typeValList = type.map((t) => convertKeyToValue('DT', t.toString()));
+
+    //이거 잘 될지 모르겠음. 안되면 body에서 로그랑 디테일 분리하자
+    const { identifiers } = await this.diveLogRepository.insert({
+      ...createDiveLogBody,
+    });
+    await this.diveLogDetailRepository.insert({
+      logId: identifiers[0].id,
+      weather: weatherVal,
+      wave: waveVal,
+      current: currentVal,
+      visibility: visibilityVal,
+      equipment: equipmentValList,
+      type: typeValList,
+      ...createDiveLogBody,
+    });
+
+    return MsgResDto.success();
+  }
+
+  async modifyDiveLog(logId: bigint, modifyDiveLogBody) {
+    return MsgResDto.success();
+  }
+
+  async removeDiveLog(logId: bigint) {
+    await this.diveLogRepository
+      .softRemove({ id: logId })
+      .catch(() => throwErr('NO_DIVELOG'));
+
+    return MsgResDto.success();
   }
 }

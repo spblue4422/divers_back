@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { DiveLog } from 'src/entities/DiveLog';
 import { DiveLogDetail } from 'src/entities/DiveLogDetail';
 import { FindOptionsOrder, FindOptionsWhere, Repository } from 'typeorm';
-import { DiveLogResDto } from './dtos/diveLogRes.dto';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
 

@@ -17,6 +17,11 @@ export const Errors = {
     errorCode: 0,
     msg: '서버 에러',
   },
+  NO_ENUM_TYPE: {
+    statusCode: 500,
+    errorCode: -100,
+    msg: '존재하지 않는 enum입니다',
+  },
   NO_USER: {
     statusCode: 404,
     errorCode: 1000,
