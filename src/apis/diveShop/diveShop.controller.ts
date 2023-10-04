@@ -28,7 +28,9 @@ export class DiveShopController {
     type: DiveShopResDto,
     description: '다이브샵 상세정보 조회',
   })
-  async getDiveShop(@Param('shopId') shopId: number): Promise<DiveShopResDto> {
+  async getDiveShopById(
+    @Param('shopId') shopId: number,
+  ): Promise<DiveShopResDto> {
     return this.diveShopService.getDiveShop(shopId);
   }
 

@@ -13,7 +13,7 @@ export const DiversTypeOrmModule = TypeOrmModule.forRootAsync({
       username: configService.get('DATABASE_USER'),
       password: configService.get('DATABASE_PASSWORD'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       timezone: 'Asia/Seoul',
     };
   },

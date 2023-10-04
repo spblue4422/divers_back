@@ -4,9 +4,14 @@ import { DiveShopService } from './diveShop.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '../user/user.module';
 import { DiveShopRepository } from './diveShop.repository';
+import { RecommendationModule } from '../recommendation/recommendation.module';
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forFeature([DiveShopRepository])],
+  imports: [
+    UserModule,
+    RecommendationModule,
+    TypeOrmModule.forFeature([DiveShopRepository]),
+  ],
   controllers: [DiveShopController],
   providers: [DiveShopService],
   exports: [DiveShopService],

@@ -11,7 +11,7 @@ export class DiveShopReviewService {
     private readonly diveShopReviewRepository: DiveShopReviewRepository,
   ) {}
 
-  async getShopReviewList(
+  async getShopReviewListById(
     shopId: number,
     pagination: PaginationReqDto,
   ): Promise<ListResDto<DiveShopReviewInListResDto>> {
@@ -22,11 +22,14 @@ export class DiveShopReviewService {
     });
   }
 
-  async createReview(createReviewBody: CreateDiveShopReviewReqDto) {}
+  async createReview(
+    shopId: number,
+    createReviewBody: CreateDiveShopReviewReqDto,
+  ) {}
 
-  async modifyReview(reviewId: number, modifyReviewBody) {}
+  async modifyReview(shopId: number, reviewId: number, modifyReviewBody) {}
 
-  async deleteReview(reviewId: number) {}
+  async deleteReview(shopId: number, reviewId: number) {}
 
   async recommendReview(reviewId: number) {}
 }

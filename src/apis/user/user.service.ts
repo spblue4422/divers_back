@@ -11,20 +11,19 @@ export class UserService {
   constructor(private readonly userRepository: UserRepostiory) {}
 
   async getUserProfileById(userId: number): Promise<UserProfileResDto> {
-    const userProfile = await this.userRepository.getProfile(userId);
+    const userProfile = await this.userRepository.findOneByUserId(userId);
 
     return UserProfileResDto.makeRes(userProfile);
   }
 
   async getMyProfile(userId: number): Promise<MyProfileResDto> {
-    const userProfile = await this.userRepository.getProfile(userId);
+    const userProfile = await this.userRepository.findOneByUserId(userId);
 
     return MyProfileResDto.makeRes(userProfile);
   }
 
   async modifyUser(userId: number, modifyUserBody: modifyUserProfileReqDto) {
-    const userData = await this.userRepository.findOneBy({ id: userId });
-    if (!userData) throwErr('NO_USER');
+    const user = await this.userRepository.findOneByUserId(userId);
 
     //혹시 모르니 로직 넣어둘까.
     const { nickname } = modifyUserBody;
@@ -33,7 +32,7 @@ export class UserService {
 
     await this.userRepository.save({
       nickname,
-      ...userData,
+      ...user,
     });
 
     return MsgResDto.success();

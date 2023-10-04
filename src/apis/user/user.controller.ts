@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserProfileResDto } from './dtos/userProfileRes.dto';
 import { modifyUserProfileReqDto } from './dtos/modifyUserProfileReq.dto';
@@ -14,7 +14,7 @@ export class UserController {
     type: UserProfileResDto,
     description: '유저 프로필 확인',
   })
-  @Get('/profile/:userId')
+  @Get('/:userId/profile')
   async getUserProfile(
     @Param('userId') userId: number,
   ): Promise<UserProfileResDto> {
@@ -25,7 +25,7 @@ export class UserController {
     type: MyProfileResDto,
     description: '자신 프로필 확인',
   })
-  @Get('/profile/my')
+  @Get('/my/profile')
   async getMyProfile(
     @Param('userId') userId: number,
   ): Promise<MyProfileResDto> {
@@ -34,9 +34,9 @@ export class UserController {
 
   @ApiOkResponse({
     type: MsgResDto,
-    description: '유저 프로필 변경',
+    description: '유저 프로필 수정',
   })
-  @Patch('/modify/:userId')
+  @Patch('/:userId/modify')
   async modifyUserProfile(
     @Param('userId') userId: number,
     @Body() modifyUserBody: modifyUserProfileReqDto,
@@ -44,19 +44,27 @@ export class UserController {
     return await this.userService.modifyUser(userId, modifyUserBody);
   }
 
+  @ApiOkResponse({
+    type: MsgResDto,
+    description: '프로필 이미지 변경',
+  })
+  @Patch('/:userId/change/profileImage')
+  async changeProfileImage(@Body() changeProfImgBody) {}
+
+  @Patch('/:userId/certificate/email')
+  async certificateEamil(@Body() cfEmailBody) {}
+
+  @Patch('/:userId/certificate/phone')
+  async certificatePhone(@Body() cfPhoneBody) {}
+
+  @ApiOkResponse({
+    type: MsgResDto,
+    description: '닉네임 중복 체크',
+  })
   @Get('/dupCheck/nickname/:nickname')
   async dupCheckNickname(@Param('nickname') nickname: string) {
     return await this.userService.dupCheckNickname(nickname);
   }
-
-  @Patch('/change/profileImage')
-  async changeProfileImage(@Body() changeProfImgBody) {}
-
-  @Patch('/certificate/email')
-  async certificateEamil() {}
-
-  @Patch('/certificate/phone')
-  async certificatePhone() {}
 
   //큰일남. 사용할 수 있는 api가 없네 엄. 사진 받아서 수작업으로 검증해야하나?
   @Patch('/certificate/rank')

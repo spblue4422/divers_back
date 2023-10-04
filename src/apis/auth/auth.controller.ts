@@ -10,6 +10,7 @@ import {
 import { SignInReqDto } from './dto/signInReq.dto';
 import { SignUpReqDto } from './dto/signUpReq.dto';
 import { FindLoginIdReqDto } from './dto/findLoginIdReq.dto';
+import { ResetPasswordReqDto } from './dto/resetPasswordReq.dto';
 
 @Controller('auth')
 export class AuthController {

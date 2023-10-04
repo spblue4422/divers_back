@@ -1,22 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { throwErr } from 'src/common/utils/errorHandler';
 import User from 'src/entities/User';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepostiory extends Repository<User> {
-  async getProfile(userId: number) {
-    return this.findOne({
+  async findOneByUserId(userId: number) {
+    return this.findOneOrFail({
       where: {
         id: userId,
-        isBanned: false,
-        // deletedAt: null,
       },
-      withDeleted: true,
-    });
+    }).catch(() => throwErr('NO_USER'));
   }
 
   async checkNicknameDup(nickname: string) {
-    // return this.find({ where: { nickname } });
     return this.exist({ where: { nickname } });
   }
 }
