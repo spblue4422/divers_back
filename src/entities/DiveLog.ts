@@ -17,7 +17,7 @@ export class DiveLog extends BasicDate {
    dive_log_id
   */
   @PrimaryGeneratedColumn()
-  id: bigint;
+  id: number;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })

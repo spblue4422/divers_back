@@ -13,7 +13,7 @@ import User from './User';
 export class Tour extends BasicDate {
   //로그를 묶어볼 수 있는 시스템이 있으면 좋지 않을까? - 앨범처럼
   @PrimaryGeneratedColumn()
-  id: bigint;
+  id: number;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })

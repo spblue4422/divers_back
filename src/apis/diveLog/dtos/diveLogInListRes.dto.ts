@@ -3,7 +3,7 @@ import { DiveLog } from 'src/entities/DiveLog';
 
 export class DiveLogInListResDto {
   @ApiProperty()
-  id: bigint;
+  id: number;
 
   @ApiProperty()
   userNickname: string;

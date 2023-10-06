@@ -11,7 +11,7 @@ export class DiveLogDetail extends BasicDate {
    dive_log_id
   */
   @PrimaryColumn()
-  logId: bigint;
+  logId: number;
 
   /**
    날씨
@@ -95,13 +95,13 @@ export class DiveLogDetail extends BasicDate {
    착용 장비
   */
   @Column()
-  equipment: number[];
+  equipment: string;
 
   /**
    다이빙 타입
   */
   @Column()
-  type: number[];
+  type: string;
 
   /**
    추가 메모

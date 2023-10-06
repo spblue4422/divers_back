@@ -62,7 +62,7 @@ export class DiveLogService {
   }
 
   async getOneDiveLog(
-    logId: bigint,
+    logId: number,
     requestUserId: number,
   ): Promise<DiveLogResDto> {
     const diveLog = await this.diveLogRepository
@@ -90,34 +90,36 @@ export class DiveLogService {
     const waveVal = await convertKeyToValue('DE', wave.toString());
     const currentVal = await convertKeyToValue('DE', current.toString());
     const visibilityVal = await convertKeyToValue('DE', visibility.toString());
-    const equipmentValList = equipment.map((e) =>
-      convertKeyToValue('E', e.toString()),
-    );
-    const typeValList = type.map((t) => convertKeyToValue('DT', t.toString()));
+    const equipmentValStr = equipment
+      .map((e) => convertKeyToValue('E', e.toString()))
+      .toString();
+    const typeValStr = type
+      .map((t) => convertKeyToValue('DT', t.toString()))
+      .toString();
 
     //이거 잘 될지 모르겠음. 안되면 body에서 로그랑 디테일 분리하자
     const { identifiers } = await this.diveLogRepository.insert({
       ...createDiveLogBody,
     });
     await this.diveLogDetailRepository.insert({
+      ...createDiveLogBody,
       logId: identifiers[0].id,
       weather: weatherVal,
       wave: waveVal,
       current: currentVal,
       visibility: visibilityVal,
-      equipment: equipmentValList,
-      type: typeValList,
-      ...createDiveLogBody,
+      equipment: equipmentValStr,
+      type: typeValStr,
     });
 
     return MsgResDto.success();
   }
 
-  async modifyDiveLog(logId: bigint, modifyDiveLogBody) {
+  async modifyDiveLog(logId: number, modifyDiveLogBody) {
     return MsgResDto.success();
   }
 
-  async removeDiveLog(logId: bigint) {
+  async removeDiveLog(logId: number) {
     await this.diveLogRepository
       .softRemove({ id: logId })
       .catch(() => throwErr('NO_DIVELOG'));

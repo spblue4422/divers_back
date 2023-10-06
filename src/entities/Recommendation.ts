@@ -12,7 +12,7 @@ import User from './User';
 @Entity('recommendation')
 export class Recommendation {
   @PrimaryGeneratedColumn()
-  id: bigint;
+  id: number;
 
   /**
    추천 대상 - 다이빙샵, 다이빙포인트, 샵 리뷰, 포인트 리뷰

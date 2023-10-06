@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionFilter } from './common/utils/errorHandler';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,7 +22,6 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionFilter({ httpAdapter }));
 
-  // await app.listen(app.get('ConfigService').get('PORT'));
-  await app.listen(3000);
+  await app.listen(app.get(ConfigService).get('PORT'));
 }
 bootstrap();

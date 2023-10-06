@@ -29,7 +29,7 @@ export class DiveLogController {
 
   @Get('/:logId')
   async getDiveLogById(
-    @Param() logId: bigint,
+    @Param() logId: number,
     userId: number,
   ): Promise<DiveLogResDto> {
     return this.diveLogService.getOneDiveLog(logId, userId);
@@ -43,12 +43,12 @@ export class DiveLogController {
   }
 
   @Patch('/:logId/modify')
-  async modfiyDiveLog(@Param() logId: bigint, @Body() modifyDiveLogBody) {
+  async modfiyDiveLog(@Param() logId: number, @Body() modifyDiveLogBody) {
     return this.diveLogService.modifyDiveLog(logId, modifyDiveLogBody);
   }
 
   @Delete('/:logId/remove')
-  async removeDiveLog(@Param() logId: bigint) {
+  async removeDiveLog(@Param() logId: number) {
     return this.diveLogService.removeDiveLog(logId);
   }
 
