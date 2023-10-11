@@ -4,7 +4,7 @@ import { BasicDate } from './BasicDate';
 
 @Entity('dive_log_detail')
 export class DiveLogDetail extends BasicDate {
-  @OneToOne(() => DiveLog)
+  @OneToOne(() => DiveLog, { onDelete: 'CASCADE' })
   diveLog: DiveLog;
 
   /**

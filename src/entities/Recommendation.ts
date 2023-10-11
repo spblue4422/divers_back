@@ -20,7 +20,7 @@ export class Recommendation {
   @Column()
   target: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 

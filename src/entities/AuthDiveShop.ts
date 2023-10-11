@@ -16,7 +16,7 @@ class AuthDiveShop extends Auth {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => DiveShop)
+  @ManyToOne(() => DiveShop, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'shopId' })
   diveShop: DiveShop;
 

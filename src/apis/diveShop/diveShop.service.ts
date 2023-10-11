@@ -7,6 +7,7 @@ import { DiveShopResDto } from './dtos/diveShopRes.dto';
 import { RecommendationService } from '../recommendation/recommednation.service';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ModifyDiveShopReqDto } from './dtos/modifyDiveShopReq.dto';
+import { throwErr } from 'src/common/utils/errorHandler';
 
 @Injectable()
 export class DiveShopService {
@@ -25,6 +26,10 @@ export class DiveShopService {
 
   async getDiveShop(shopId: number): Promise<DiveShopResDto> {
     return this.diveShopRepository.findByIdOrFail(shopId);
+  }
+
+  async getMyDiveShop(myshop: number): Promise<DiveShopResDto> {
+    return this.diveShopRepository.findByIdOrFail(myshop);
   }
 
   // 트랜잭션 필요
@@ -59,5 +64,12 @@ export class DiveShopService {
 
     return MsgResDto.success();
   }
-  // async getMyDiveShop(shopId: number) {}
+
+  async removeDiveShop(shopId: number): Promise<MsgResDto> {
+    await this.diveShopRepository
+      .softRemove({ id: shopId })
+      .catch(() => throwErr('NO_DVIESHOP'));
+
+    return MsgResDto.success();
+  }
 }

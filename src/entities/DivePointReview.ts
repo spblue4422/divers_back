@@ -18,7 +18,7 @@ class DivePointReview extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
@@ -44,7 +44,7 @@ class DivePointReview extends BasicDate {
   @Column({ default: '' })
   shopName: string;
 
-  @ManyToOne(() => DivePoint)
+  @ManyToOne(() => DivePoint, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'pointId' })
   divePoint: DivePoint;
 

@@ -22,4 +22,6 @@ export class DiveShopReviewRepository extends Repository<DiveShopReview> {
       totalCount: count,
     }));
   }
+
+  async findBy
 }

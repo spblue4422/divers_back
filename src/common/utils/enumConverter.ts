@@ -1,44 +1,25 @@
-import {
-  DegreeExpression,
-  DivingEquipment,
-  DivingRank,
-  DivingType,
-  RecommendationTarget,
-  Weather,
-} from '../enums';
 import { throwErr } from './errorHandler';
 
-export const convertKeyToValue = async (
-  enumName: string,
-  key: string,
-): Promise<number> => {
-  switch (enumName) {
-    case 'RT':
-      return Object.keys(RecommendationTarget).indexOf(key);
+const enumList = [
+  'Weather',
+  'DegreeExpression',
+  'DivingEquipment',
+  'DivingType',
+  'DivingRank',
+];
 
-    case 'DR':
-      return Object.keys(DivingRank).indexOf(key);
+export function convertKeyToValue<T>(enumObj: T, key: string): number {
+  if (!(enumObj.toString() in enumList)) throwErr('NO_ENUM_TYPE');
+  return Object.keys(enumObj).indexOf(key);
+}
 
-    case 'W':
-      return Object.keys(Weather).indexOf(key);
+// export const convertDivingLogKeyToValue = async (
+//   weatehr: Weather,
+//   wave: DegreeExpression,
+//   current: DegreeExpression,
+//   visibility: DegreeExpression,
+//   equipment: DivingEquipment[],
+//   type: DivingType[],
+// ) => {
 
-    case 'DE':
-      return Object.keys(DegreeExpression).indexOf(key);
-
-    case 'E':
-      return Object.keys(DivingEquipment).indexOf(key);
-
-    case 'DT':
-      return Object.keys(DivingType).indexOf(key);
-
-    case 'DR':
-      return Object.keys(DivingRank).indexOf(key);
-
-    default:
-      throwErr('NO_ENUM_TYPE');
-  }
-};
-
-// export const convertValueToKey = (enumName: string, value: number) => {
-
-// }
+// };

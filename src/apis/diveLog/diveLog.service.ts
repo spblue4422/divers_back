@@ -11,6 +11,12 @@ import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
 import { convertKeyToValue } from 'src/common/utils/enumConverter';
+import {
+  DegreeExpression,
+  DivingEquipment,
+  DivingType,
+  Weather,
+} from 'src/common/enums';
 @Injectable()
 export class DiveLogService {
   constructor(
@@ -86,15 +92,21 @@ export class DiveLogService {
       createDiveLogBody;
 
     //이거 좀 줄일 수 있지않을까?
-    const weatherVal = await convertKeyToValue('W', weather.toString());
-    const waveVal = await convertKeyToValue('DE', wave.toString());
-    const currentVal = await convertKeyToValue('DE', current.toString());
-    const visibilityVal = await convertKeyToValue('DE', visibility.toString());
+    const weatherVal = await convertKeyToValue(Weather, weather.toString());
+    const waveVal = await convertKeyToValue(DegreeExpression, wave.toString());
+    const currentVal = await convertKeyToValue(
+      DegreeExpression,
+      current.toString(),
+    );
+    const visibilityVal = await convertKeyToValue(
+      DegreeExpression,
+      visibility.toString(),
+    );
     const equipmentValStr = equipment
-      .map((e) => convertKeyToValue('E', e.toString()))
+      .map((e) => convertKeyToValue(DivingEquipment, e.toString()))
       .toString();
     const typeValStr = type
-      .map((t) => convertKeyToValue('DT', t.toString()))
+      .map((t) => convertKeyToValue(DivingType, t.toString()))
       .toString();
 
     //이거 잘 될지 모르겠음. 안되면 body에서 로그랑 디테일 분리하자
@@ -120,6 +132,7 @@ export class DiveLogService {
   }
 
   async removeDiveLog(logId: number) {
+    //디테일 자동으로 soft remove 가능할까?
     await this.diveLogRepository
       .softRemove({ id: logId })
       .catch(() => throwErr('NO_DIVELOG'));

@@ -44,17 +44,22 @@ export class UserController {
     return await this.userService.modifyUser(userId, modifyUserBody);
   }
 
+  @Patch('/:userId/change/profileImage')
   @ApiOkResponse({
     type: MsgResDto,
     description: '프로필 이미지 변경',
   })
-  @Patch('/:userId/change/profileImage')
   async changeProfileImage(@Body() changeProfImgBody) {}
 
   @Patch('/:userId/certificate/email')
+  @ApiOkResponse({
+    type: MsgResDto,
+    description: '이메일 인증',
+  })
   async certificateEamil(@Body() cfEmailBody) {}
 
   @Patch('/:userId/certificate/phone')
+  @ApiOkResponse({})
   async certificatePhone(@Body() cfPhoneBody) {}
 
   @ApiOkResponse({

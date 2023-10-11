@@ -4,6 +4,7 @@ import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { DiveShopReviewInListResDto } from './dtos/diveShopReviewInListRes.dto';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
 import { CreateDiveShopReviewReqDto } from './dtos/createDiveShopReviewReq.dto';
+import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 
 @Injectable()
 export class DiveShopReviewService {
@@ -25,9 +26,19 @@ export class DiveShopReviewService {
   async createReview(
     shopId: number,
     createReviewBody: CreateDiveShopReviewReqDto,
-  ) {}
+  ): Promise<MsgResDto> {
+    await this.diveShopReviewRepository.insert({
+      ...createReviewBody,
+      shopId,
+    });
 
-  async modifyReview(shopId: number, reviewId: number, modifyReviewBody) {}
+    return MsgResDto.success();
+  }
+
+  async modifyReview(shopId: number, reviewId: number, modifyReviewBody) {
+    // await this.diveShopReviewRepository.f
+    return MsgResDto.success();
+  }
 
   async deleteReview(shopId: number, reviewId: number) {}
 
