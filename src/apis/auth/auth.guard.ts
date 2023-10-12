@@ -10,10 +10,11 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.getTokenFromHeader(request);
+    const token = this.getAccessTokenFromHeader(request);
 
     if (!token) {
-      throwErr();
+      throwErr('NO_ACCESSTOKEN');
+      //여기서 error를 던지지 말고 refresh 절차를 밟아야 하나?
     }
 
     try {
@@ -25,9 +26,13 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
-  private getTokenFromHeader(request: Request) {
+  private getAccessTokenFromHeader(request: Request) {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
 
     return type === 'Bearer' ? token : undefined;
+  }
+
+  private getRefreshTokenFromHeader(request: Request) {
+    return request.headers.refreshToken?.toString() ?? undefined;
   }
 }

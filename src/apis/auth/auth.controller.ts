@@ -25,8 +25,9 @@ export class AuthController {
     type: SignInResDto,
     description: '로그인',
   })
-  async signIn(@Body() signInBody: SignInReqDto) {
+  async signIn(@Body() signInBody: SignInReqDto): Promise<SignInResDto> {
     const { loginId, password } = signInBody;
+
     return this.authService.signIn(loginId, password);
   }
 
@@ -42,7 +43,9 @@ export class AuthController {
     type: MsgResDto,
     description: '회원가입',
   })
-  async signUp(@Body() signUpBody: SignUpReqDto) {}
+  async signUp(@Body() signUpBody: SignUpReqDto): Promise<MsgResDto> {
+    return this.authService.signUp(signUpBody);
+  }
 
   //어디까지 날려야할까?
   @Delete('/withdraw')
@@ -57,8 +60,11 @@ export class AuthController {
     type: MsgResDto,
     description: '아이디 중복 체크',
   })
-  async dupCheckLoginId(@Param() loginId: string) {}
+  async dupCheckLoginId(@Param() loginId: string) {
+    return this.authService.dupCheckLoginId(loginId);
+  }
 
+  //이거 쓰려나?
   @Post('/refresh')
   @ApiOkResponse({
     description: '액세스 토큰 재발급',

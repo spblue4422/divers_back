@@ -82,4 +82,39 @@ export const Errors = {
     errorCode: 1250,
     msg: '블락된 로그입니다.',
   },
+  UNAUTHORIZED_USER: {
+    statusCode: 402,
+    errorCode: 1300,
+    msg: '인증되지 않은 이용자입니다.',
+  },
+  NO_ACCESSTOKEN: {
+    statusCode: 402,
+    errorCode: 1301,
+    msg: '액세스 토큰이 존재하지 않습니다.',
+  },
+  NO_REFRESHTOKEN: {
+    statusCode: 402,
+    erroCode: 1302,
+    msg: '리프레쉬 토큰이 존재하지 않습니다.',
+  },
+  WRONG_ID_PW: {
+    statusCode: 402,
+    errorCode: 1303,
+    msg: '잘못된 ID/PW입니다.',
+  },
+  EXPIRED_TOKEN: {
+    statusCode: 402,
+    errorCode: 1304,
+    msg: '만료된 토큰입니다.',
+  },
+  INVALID_TOKEN: {
+    statusCode: 402,
+    errorCode: 1305,
+    msg: '유효하지 않은 토큰입니다.',
+  },
+  BANNED_USER: {
+    statusCode: 402,
+    errorCode: 1306,
+    msg: '밴 당한 계정입니다.',
+  },
 };

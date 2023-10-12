@@ -77,6 +77,11 @@ class User extends BasicDate {
   @Column({ nullable: true })
   phone: string;
 
+  @Column({ default: false })
+  isBanned: boolean;
+
+  @Column({ nullable: true })
+  banReason: string;
   // @Column()
   // preference
 }

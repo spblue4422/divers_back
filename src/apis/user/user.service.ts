@@ -5,6 +5,8 @@ import { MyProfileResDto } from './dtos/myProfileRes.dto';
 import { modifyUserProfileReqDto } from './dtos/modifyUserProfileReq.dto';
 import { throwErr } from 'src/common/utils/errorHandler';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+import { CreateUserProfileReqDto } from './dtos/createUserProfileReq.dto';
+import { InsertResult } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -20,6 +22,19 @@ export class UserService {
     const userProfile = await this.userRepository.findOneByUserId(userId);
 
     return MyProfileResDto.makeRes(userProfile);
+  }
+
+  async createUser(
+    createUserBody: CreateUserProfileReqDto,
+  ): Promise<InsertResult> {
+    const { nickname } = createUserBody;
+
+    if (await this.userRepository.checkNicknameDup(nickname))
+      throwErr('DUPLICATE_NICKNAME');
+
+    return this.userRepository.insert({
+      ...createUserBody,
+    });
   }
 
   async modifyUser(userId: number, modifyUserBody: modifyUserProfileReqDto) {

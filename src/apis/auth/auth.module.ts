@@ -4,9 +4,11 @@ import { DiveShopModule } from '../diveShop/diveShop.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigService,
     UserModule,
     DiveShopModule,
     JwtModule.register({
