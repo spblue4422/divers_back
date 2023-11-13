@@ -17,6 +17,9 @@ import {
   DivingType,
   Weather,
 } from 'src/common/enums';
+import { ModifyDiveLogReqDto } from './dtos/modifyDiveLogReq.dto';
+// import { ConvertKeyDto } from './dtos/convertKey.dto';
+// import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
 @Injectable()
 export class DiveLogService {
   constructor(
@@ -67,7 +70,7 @@ export class DiveLogService {
     }
   }
 
-  async getOneDiveLog(
+  async getDiveLog(
     logId: number,
     requestUserId: number,
   ): Promise<DiveLogResDto> {
@@ -87,11 +90,21 @@ export class DiveLogService {
     } else throwErr('NO_ACCESS_PRIVATE_DIVELOG');
   }
 
-  async createDiveLog(createDiveLogBody: CreateDiveLogReqDto) {
-    const { weather, wave, current, visibility, equipment, type } =
-      createDiveLogBody;
+  async getDiveLogDetail(logId: number) {
+    const diveLogDetail = await this.diveLogDetailRepository
+      .findOneOrFail({
+        where: {
+          logId,
+        },
+      })
+      .catch(() => throwErr('NO_DIVELOG'));
 
-    //이거 좀 줄일 수 있지않을까?
+    // return DiveLogDetailResDto.
+  }
+
+  async convertKeyToValueForLog(keyObj: CreateDiveLogReqDto) {
+    const { weather, wave, current, visibility, equipment, type } = keyObj;
+
     const weatherVal = await convertKeyToValue(Weather, weather.toString());
     const waveVal = await convertKeyToValue(DegreeExpression, wave.toString());
     const currentVal = await convertKeyToValue(
@@ -108,6 +121,27 @@ export class DiveLogService {
     const typeValStr = type
       .map((t) => convertKeyToValue(DivingType, t.toString()))
       .toString();
+
+    return {
+      weatherVal,
+      waveVal,
+      currentVal,
+      visibilityVal,
+      equipmentValStr,
+      typeValStr,
+    };
+  }
+
+  async createDiveLog(createDiveLogBody: CreateDiveLogReqDto) {
+    //이거 좀 줄일 수 있지않을까?
+    const {
+      weatherVal,
+      waveVal,
+      currentVal,
+      visibilityVal,
+      equipmentValStr,
+      typeValStr,
+    } = await this.convertKeyToValueForLog(createDiveLogBody);
 
     //이거 잘 될지 모르겠음. 안되면 body에서 로그랑 디테일 분리하자
     const { identifiers } = await this.diveLogRepository.insert({
@@ -127,7 +161,32 @@ export class DiveLogService {
     return MsgResDto.success();
   }
 
-  async modifyDiveLog(logId: number, modifyDiveLogBody) {
+  // 부분 수정(log와 logDetail 따로)이 있어도 괜찮을듯?
+  async modifyDiveLog(logId: number, modifyDiveLogBody: ModifyDiveLogReqDto) {
+    const {
+      weatherVal,
+      waveVal,
+      currentVal,
+      visibilityVal,
+      equipmentValStr,
+      typeValStr,
+    } = await this.convertKeyToValueForLog(modifyDiveLogBody);
+
+    await this.diveLogRepository.save({
+      id: logId,
+      ...modifyDiveLogBody,
+    });
+    await this.diveLogDetailRepository.save({
+      ...modifyDiveLogBody,
+      logId,
+      weather: weatherVal,
+      wave: waveVal,
+      current: currentVal,
+      visibility: visibilityVal,
+      equipment: equipmentValStr,
+      type: typeValStr,
+    });
+
     return MsgResDto.success();
   }
 

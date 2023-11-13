@@ -69,7 +69,9 @@ export class AuthController {
   @ApiOkResponse({
     description: '액세스 토큰 재발급',
   })
-  async refreshAccessToken(@Body() refreshAccessBody) {}
+  async refreshAccessToken(@Body() refreshAccessBody) {
+    return this.authService.accessRefresh(refreshAccessBody);
+  }
 
   @Post('/find/id/:loginId')
   @ApiOkResponse({

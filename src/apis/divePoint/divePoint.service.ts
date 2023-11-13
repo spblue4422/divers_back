@@ -19,7 +19,7 @@ export class DivePointService {
     });
   }
 
-  async getOneDivePoint(pointId: number): Promise<DivePointResDto> {
+  async getDivePoint(pointId: number): Promise<DivePointResDto> {
     return await this.divePointRepository.findByIdOrFail(pointId);
   }
 

@@ -16,7 +16,7 @@ export class DivePointController {
 
   @Get('/:pointId')
   async getDivePointById(@Param() pointId: number) {
-    return this.divePointService.getOneDivePoint(pointId);
+    return this.divePointService.getDivePoint(pointId);
   }
 
   @Patch('/recomment/:pointId')

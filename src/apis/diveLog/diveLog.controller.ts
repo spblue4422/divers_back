@@ -15,6 +15,7 @@ import { DiveLogResDto } from './dtos/diveLogRes.dto';
 import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
 import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
 
 @Controller('diveLog')
 export class DiveLogController {
@@ -32,8 +33,11 @@ export class DiveLogController {
     @Param() logId: number,
     userId: number,
   ): Promise<DiveLogResDto> {
-    return this.diveLogService.getOneDiveLog(logId, userId);
+    return this.diveLogService.getDiveLog(logId, userId);
   }
+
+  @Get('/:logId/detail')
+  async getDiveLogDetialById(@Param() logid: number, userId: number) {}
 
   @Post('/create')
   async createDiveLog(

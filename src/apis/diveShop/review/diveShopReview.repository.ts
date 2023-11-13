@@ -23,5 +23,5 @@ export class DiveShopReviewRepository extends Repository<DiveShopReview> {
     }));
   }
 
-  async findBy
+  // async findBy
 }

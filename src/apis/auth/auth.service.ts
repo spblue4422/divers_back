@@ -70,6 +70,10 @@ export class AuthService {
   }
 
   async dupCheckLoginId(loginId: string): Promise<MsgResDto> {
+    const uAuthExist = await this.uAuthRepository.exist({ where: { loginId } });
+
+    if (uAuthExist) throwErr('DUPLICATE_LOGIN_ID');
+
     return MsgResDto.success();
   }
 
@@ -80,5 +84,16 @@ export class AuthService {
       .catch(() => throwErr('INVALID_TOKEN'));
 
     console.log(decoded);
+
+    //decoded에서 loginId와 userId 뽑아내서 다시 쓰기
+
+    const newRefreshToken = await this.jwtService.signAsync(
+      {},
+      { secret: this.secret, expiresIn: this.refresh_expired },
+    );
+
+    await this.uAuthRepository.save({
+      refreshToken: newRefreshToken,
+    });
   }
 }

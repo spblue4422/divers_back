@@ -5,6 +5,7 @@ import {
   Weather,
   DivingType,
 } from 'src/common/enums';
+import { DiveLogDetail } from 'src/entities/DiveLogDetail';
 
 export class DiveLogDetailResDto {
   @ApiProperty({ description: '로그 id' })
@@ -57,4 +58,35 @@ export class DiveLogDetailResDto {
 
   @ApiProperty({ description: '추가 메모' })
   text: string;
+
+  @ApiProperty({ description: '작성 일자' })
+  createdAt: Date;
+
+  static makeRes(data: DiveLogDetail) {
+    const resDto = new DiveLogDetailResDto();
+
+    resDto.weather = Weather[data.weather] as unknown as Weather;
+    resDto.wave = DegreeExpression[data.wave] as unknown as DegreeExpression;
+    resDto.current = DegreeExpression[
+      data.current
+    ] as unknown as DegreeExpression;
+    resDto.diveInAt = data.diveInAt;
+    resDto.diveOutAt = data.diveOutAt;
+    resDto.diveTime = data.diveTime;
+    resDto.pressureIn = data.pressureIn;
+    resDto.pressureOut = data.pressureOut;
+    resDto.avgDepth = data.avgDepth;
+    resDto.maxDepth = data.maxDepth;
+    resDto.waterTemperature = data.waterTemperature;
+    resDto.visibility = DegreeExpression[
+      data.visibility
+    ] as unknown as DegreeExpression;
+    resDto.weight = data.weight;
+    // resDto.equipment = data.equipment.map;
+
+    resDto.text = data.text;
+    resDto.createdAt = new Date(data.createdAt.toString());
+
+    return resDto;
+  }
 }
