@@ -5,8 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import Auth from './Auth';
 
 @Entity('dive_shop')
 class DiveShop extends BasicDate {
@@ -15,6 +17,13 @@ class DiveShop extends BasicDate {
   */
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToOne(() => Auth, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'authId' })
+  auth: Auth;
+
+  @Column()
+  authId: number;
 
   /**
    다이브 샵 이름
@@ -61,6 +70,9 @@ class DiveShop extends BasicDate {
   */
   @Column({ default: 0 })
   averageStar: number;
+
+  @Column({ nullable: true, default: null })
+  certifiedAt: Date;
 }
 
 export default DiveShop;

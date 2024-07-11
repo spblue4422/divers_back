@@ -25,16 +25,20 @@ export class UserService {
   }
 
   async createUser(
+    authId: number,
     createUserBody: CreateUserProfileReqDto,
-  ): Promise<InsertResult> {
+  ): Promise<MsgResDto> {
     const { nickname } = createUserBody;
 
     if (await this.userRepository.checkNicknameDup(nickname))
       throwErr('DUPLICATE_NICKNAME');
 
-    return this.userRepository.insert({
+    await this.userRepository.insert({
+      authId,
       ...createUserBody,
     });
+
+    return MsgResDto.success();
   }
 
   async modifyUser(userId: number, modifyUserBody: modifyUserProfileReqDto) {

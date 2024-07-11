@@ -5,13 +5,22 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import Auth from './Auth';
 
 @Entity('user')
 class User extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToOne(() => Auth, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'authId' })
+  auth: Auth;
+
+  @Column()
+  authId: number;
 
   /**
    닉네임
@@ -77,11 +86,6 @@ class User extends BasicDate {
   @Column({ nullable: true })
   phone: string;
 
-  @Column({ default: false })
-  isBanned: boolean;
-
-  @Column({ nullable: true })
-  banReason: string;
   // @Column()
   // preference
 }

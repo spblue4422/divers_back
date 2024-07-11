@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { throwErr } from 'src/common/utils/errorHandler';
-import AuthDiveShop from 'src/entities/AuthDiveShop';
-import AuthUser from 'src/entities/AuthUser';
-import { Repository } from 'typeorm';
+import Auth from 'src/entities/Auth';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
-export class AuthUserRepository extends Repository<AuthUser> {
-  async findOneByLoginIdOrFail(loginId: string): Promise<AuthUser> {
+export class AuthRepository extends Repository<Auth> {
+  constructor(private dataSource: DataSource) {
+    super(Auth, dataSource.createEntityManager());
+  }
+  async findOneByLoginIdOrFail(loginId: string): Promise<Auth> {
     return this.findOneOrFail({
       where: { loginId },
       // relations: { user: true },
@@ -14,6 +16,3 @@ export class AuthUserRepository extends Repository<AuthUser> {
     }).catch(() => throwErr('WRONG_ID_PW'));
   }
 }
-
-@Injectable()
-export class AuthShopRepository extends Repository<AuthDiveShop> {}

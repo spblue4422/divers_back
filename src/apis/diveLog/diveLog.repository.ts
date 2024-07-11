@@ -1,12 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { DiveLog } from 'src/entities/DiveLog';
 import { DiveLogDetail } from 'src/entities/DiveLogDetail';
-import { FindOptionsOrder, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsOrder,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
 
 @Injectable()
 export class DiveLogRepository extends Repository<DiveLog> {
+  constructor(private dataSource: DataSource) {
+    super(DiveLog, dataSource.createEntityManager());
+  }
+
   async getDiveLogListWithCount(
     page: number,
     pagingCount: number,
@@ -28,4 +37,8 @@ export class DiveLogRepository extends Repository<DiveLog> {
 }
 
 @Injectable()
-export class DiveLogDetailRepository extends Repository<DiveLogDetail> {}
+export class DiveLogDetailRepository extends Repository<DiveLogDetail> {
+  constructor(private dataSource: DataSource) {
+    super(DiveLogDetail, dataSource.createEntityManager());
+  }
+}

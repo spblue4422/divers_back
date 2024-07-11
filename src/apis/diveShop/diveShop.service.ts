@@ -8,6 +8,7 @@ import { RecommendationService } from '../recommendation/recommednation.service'
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ModifyDiveShopReqDto } from './dtos/modifyDiveShopReq.dto';
 import { throwErr } from 'src/common/utils/errorHandler';
+import { CreateDiveShopReqDto } from './dtos/createDiveShopReqDto';
 
 @Injectable()
 export class DiveShopService {
@@ -47,6 +48,15 @@ export class DiveShopService {
       { id: shopId },
       { recommendation: recommendation + 1 },
     );
+
+    return MsgResDto.success();
+  }
+
+  async createDiveshop(
+    authId: number,
+    createDiveShopBody: CreateDiveShopReqDto,
+  ): Promise<MsgResDto> {
+    await this.diveShopRepository.insert({ authId, ...createDiveShopBody });
 
     return MsgResDto.success();
   }

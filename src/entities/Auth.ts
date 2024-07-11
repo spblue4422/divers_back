@@ -1,7 +1,10 @@
-import { Column } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BasicDate } from './BasicDate';
 
-export abstract class Auth extends BasicDate {
+@Entity('auth')
+class Auth extends BasicDate {
+  @PrimaryGeneratedColumn()
+  id: number;
   /**
    로그인 아이디
   */
@@ -27,26 +30,34 @@ export abstract class Auth extends BasicDate {
   refreshToken: string;
 
   /**
-   회원가입 타입
+   회원가입 타입 - 필요한가??
   */
-  @Column()
-  joinType: string;
+  //@Column()
+  //joinType: string;
 
   /**
-   블락 여부
-  */
-  @Column({ default: false })
-  isBlocked: boolean;
-
-  /**
-    블락 사유
+   user / shop 구분
    */
   @Column({ default: false })
-  blockReason: boolean;
+  isShop: boolean;
 
   /**
-    블락 사유
+   밴 여부
+  */
+  @Column({ default: false })
+  isBanned: boolean;
+
+  /**
+    밴 사유
    */
-  @Column({ default: null })
-  blockFreeDate: Date;
+  @Column({ nullable: true })
+  banReason: string;
+
+  /**
+    밴 풀리는 날짜
+   */
+  @Column({ nullable: true })
+  banFreeDate: Date;
 }
+
+export default Auth;

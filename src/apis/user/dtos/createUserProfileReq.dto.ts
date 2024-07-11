@@ -3,6 +3,9 @@ import { IsOptional, IsString } from 'class-validator';
 import { JoinType } from 'src/common/enums';
 
 export class CreateUserProfileReqDto {
+  @ApiProperty({ description: 'authId' })
+  authId: number;
+
   @ApiProperty({ description: '이름' })
   @IsString()
   firstname: string;
