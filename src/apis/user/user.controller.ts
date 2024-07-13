@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserProfileResDto } from './dtos/userProfileRes.dto';
-import { modifyUserProfileReqDto } from './dtos/modifyUserProfileReq.dto';
+import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { MyProfileResDto } from './dtos/myProfileRes.dto';
@@ -37,11 +37,11 @@ export class UserController {
     description: '유저 프로필 수정',
   })
   @Patch('/:userId/modify')
-  async modifyUserProfile(
+  async changeMyProfile(
     @Param('userId') userId: number,
-    @Body() modifyUserBody: modifyUserProfileReqDto,
+    @Body() changeUserProfileBody: ChangeUserProfileReqDto,
   ): Promise<MsgResDto> {
-    return await this.userService.modifyUser(userId, modifyUserBody);
+    return await this.userService.changeUser(userId, changeUserProfileBody);
   }
 
   @Patch('/:userId/change/profileImage')
@@ -49,7 +49,7 @@ export class UserController {
     type: MsgResDto,
     description: '프로필 이미지 변경',
   })
-  async changeProfileImage(@Body() changeProfImgBody) {}
+  async changeMyProfileImage(@Body() changeProfImgBody) {}
 
   @Patch('/:userId/certificate/email')
   @ApiOkResponse({
@@ -72,6 +72,7 @@ export class UserController {
   }
 
   //큰일남. 사용할 수 있는 api가 없네 엄. 사진 받아서 수작업으로 검증해야하나?
+  // 차후 개발 feature로 빼지뭐 ㅋㅋ
   @Patch('/certificate/rank')
   async certificateDiveRank() {}
 }

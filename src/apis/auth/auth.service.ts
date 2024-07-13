@@ -5,12 +5,13 @@ import * as bcrypt from 'bcrypt';
 import { throwErr } from 'src/common/utils/errorHandler';
 import { SignInResDto } from './dtos/signInRes.dto';
 import { ConfigService } from '@nestjs/config';
-import { SignUpReqDto } from './dtos/signUpReq.dto';
+import { UserSignUpReqDto } from './dtos/userSignUpReq.dto';
 import { UserService } from '../user/user.service';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { InsertResult } from 'typeorm';
 import { SignInReqDto } from './dtos/signInReq.dto';
 import { DiveShopService } from '../diveShop/diveShop.service';
+import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
 
 @Injectable()
 export class AuthService {
@@ -55,15 +56,11 @@ export class AuthService {
     } else throwErr('WRONG_ID_PW'); // 틀린 비밀번호
   }
 
-  async userSignUp(signUpBody: SignUpReqDto): Promise<MsgResDto> {
+  async userSignUp(signUpBody: UserSignUpReqDto): Promise<MsgResDto> {
     const { loginId, password, createUserBody } = signUpBody;
 
     // auth 만들기
-    const result: InsertResult = await this.createAuth(
-      loginId,
-      password,
-      false,
-    );
+    const result: InsertResult = await this.createAuth(loginId, password, 0);
 
     // 만든 auth에 해당하는 user 만들어주기
     await this.userService.createUser(result.identifiers[0].id, createUserBody);
@@ -72,17 +69,16 @@ export class AuthService {
   }
 
   // shop signup의 경우 바로 회원가입이 아니라 인증 절차를 거쳐야함. 인증 신청 목록을 볼 수 있게끔 해야한다.
-  async shopSignUp(signUpBody: SignUpReqDto): Promise<MsgResDto> {
-    const { loginId, password } = signUpBody;
+  async shopSignUp(signUpBody: ShopSignUpReqDto): Promise<MsgResDto> {
+    const { loginId, password, createShopBody } = signUpBody;
 
-    const result: InsertResult = await this.createAuth(loginId, password, true);
+    const result: InsertResult = await this.createAuth(loginId, password, 1);
 
+    // createDiveShop에 인증 신청하는 로직까지 한번에 들어가있음.
     await this.diveShopService.createDiveshop(
       result.identifiers[0].id,
-      signUpBody,
+      createShopBody,
     );
-
-    // 여기에 신청으로 넣어주는 로직이 있어야함.
 
     return MsgResDto.success();
   }
@@ -115,7 +111,7 @@ export class AuthService {
     });
   }
 
-  async createAuth(loginId: string, password: string, isShop: boolean) {
+  async createAuth(loginId: string, password: string, role: number) {
     const salt = await bcrypt.genSalt();
     const encrypted = await bcrypt.hash(password, salt);
 
@@ -124,7 +120,9 @@ export class AuthService {
       loginId,
       salt,
       password: encrypted,
-      isShop,
+      // 0 - user, 1 - shop, 888 - admin
+      // 나중에 enum 로직 넣든지 하자
+      role,
     });
   }
 }

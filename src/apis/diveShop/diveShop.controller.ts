@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { DiveShopService } from './diveShop.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
@@ -57,10 +49,11 @@ export class DiveShopController {
     return this.diveShopService.modifyDiveShop(shopId, modifyDiveShopBody);
   }
 
-  @Post('/:shopId/cert')
+  @Get('/:shopId/certificate')
   @ApiOkResponse({ description: '다이브샵 인증 신청' })
-  async applyCertDiveShop() {
-    // 주요 로직 - 신청서 생성, 만약 반려당한 신청서가 3장 이상이면 신청 불가
+  async applyCertDiveShop(@Param('shopId') shopId: number): Promise<MsgResDto> {
+    // 주요 로직 - 인증 신청 생성, 만약 이미 심사중인 신청이 존재하거나 반려당한 신청이 3개 이상이면 신청 불가
+    return this.diveShopService.applyCertDiveShop(shopId);
   }
 
   //어드민용 생성, 삭제 있어야 할듯

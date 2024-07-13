@@ -8,13 +8,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { SignInReqDto } from './dtos/signInReq.dto';
-import { SignUpReqDto } from './dtos/signUpReq.dto';
+import { UserSignUpReqDto } from './dtos/userSignUpReq.dto';
 import { FindLoginIdReqDto } from './dtos/findLoginIdReq.dto';
 import { ResetPasswordReqDto } from './dtos/resetPasswordReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { AuthService } from './auth.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { SignInResDto } from './dtos/signInRes.dto';
+import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,9 +27,7 @@ export class AuthController {
     description: '로그인',
   })
   async signIn(@Body() signInBody: SignInReqDto): Promise<SignInResDto> {
-    const { loginId, password } = signInBody;
-
-    return this.authService.signIn(loginId, password);
+    return this.authService.signIn(signInBody);
   }
 
   @Get('/signOut')
@@ -43,13 +42,13 @@ export class AuthController {
     type: MsgResDto,
     description: '유저 회원가입',
   })
-  async userSignUp(@Body() signUpBody: SignUpReqDto): Promise<MsgResDto> {
+  async userSignUp(@Body() signUpBody: UserSignUpReqDto): Promise<MsgResDto> {
     return this.authService.userSignUp(signUpBody);
   }
 
   @Post('/shop/signUp')
   @ApiOkResponse({ type: MsgResDto, description: '샵 회원가입' })
-  async shopSignUp() {}
+  async shopSignUp(@Body() signUpBody: ShopSignUpReqDto) {}
 
   //어디까지 날려야할까?
   @Delete('/withdraw')

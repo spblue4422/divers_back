@@ -98,7 +98,7 @@ export class DiveLogService {
         },
       })
       .catch(() => throwErr('NO_DIVELOG'));
-
+    // 들고 올 때, value -> enum 다 해줘야 함.
     // return DiveLogDetailResDto.
   }
 

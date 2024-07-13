@@ -72,6 +72,16 @@ export const Errors = {
     errorCode: 1103,
     msg: '이미 인증된 이메일입니다.',
   },
+  ALREADY_APPLIED_DIVESHOP: {
+    statusCode: 400,
+    errorCode: 1150,
+    msg: '이미 심사중인 인증 신청이 존재합니다.',
+  },
+  REJECTED_THREE_TIMES_DIVESHOP: {
+    statausCode: 400,
+    errorCode: 1151,
+    msg: '인증이 3번 이상 반려당한 샵입니다.',
+  },
   NO_ACCESS_PRIVATE_DIVELOG: {
     statusCode: 403,
     errorCode: 1200,

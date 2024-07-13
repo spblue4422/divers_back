@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { UserRepostiory } from './user.repository';
 import { UserProfileResDto } from './dtos/userProfileRes.dto';
 import { MyProfileResDto } from './dtos/myProfileRes.dto';
-import { modifyUserProfileReqDto } from './dtos/modifyUserProfileReq.dto';
+import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
 import { throwErr } from 'src/common/utils/errorHandler';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { CreateUserProfileReqDto } from './dtos/createUserProfileReq.dto';
-import { InsertResult } from 'typeorm';
+import { CreateUserReqDto } from './dtos/createUserReq.dto';
 
 @Injectable()
 export class UserService {
@@ -26,7 +25,7 @@ export class UserService {
 
   async createUser(
     authId: number,
-    createUserBody: CreateUserProfileReqDto,
+    createUserBody: CreateUserReqDto,
   ): Promise<MsgResDto> {
     const { nickname } = createUserBody;
 
@@ -41,11 +40,12 @@ export class UserService {
     return MsgResDto.success();
   }
 
-  async modifyUser(userId: number, modifyUserBody: modifyUserProfileReqDto) {
+  // 조금 이따가 수정
+  async changeUser(userId: number, changeProfileBody: ChangeUserProfileReqDto) {
     const user = await this.userRepository.findOneByUserId(userId);
 
     //혹시 모르니 로직 넣어둘까.
-    const { nickname } = modifyUserBody;
+    const { nickname } = changeProfileBody;
     if (await this.userRepository.checkNicknameDup(nickname))
       throwErr('DUPLICATE_NICKNAME');
 

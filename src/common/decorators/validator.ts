@@ -12,6 +12,7 @@ import {
   Weather,
 } from '../enums';
 
+// 나중에 registerDecorator에 대해 한번 정리해보자
 function CommonRegister(
   vdOptions?: Omit<ValidationDecoratorOptions, 'target' | 'propertyName'>,
 ) {
@@ -110,6 +111,6 @@ export function IsDivingTypeArray(
   });
 }
 
-export function IsLgoinId(validationOptions?: ValidationOptions) {}
+export function IsLoginId(validationOptions?: ValidationOptions) {}
 
 export function IsPassword(validationOptions?: ValidationOptions) {}

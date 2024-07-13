@@ -4,7 +4,7 @@ import { DiveShopModule } from '../diveShop/diveShop.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { AuthShopRepository, AuthUserRepository } from './auth.repository';
+import { AuthRepository } from './auth.repository';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { AuthShopRepository, AuthUserRepository } from './auth.repository';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtService, AuthUserRepository, AuthShopRepository],
+  providers: [AuthService, JwtService, AuthRepository],
   exports: [AuthService],
 })
 export class AuthModule {}

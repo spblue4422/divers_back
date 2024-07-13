@@ -36,10 +36,10 @@ class Auth extends BasicDate {
   //joinType: string;
 
   /**
-   user / shop 구분
+   user - 0 / shop - 1 / admin - 888 구분
    */
-  @Column({ default: false })
-  isShop: boolean;
+  @Column()
+  role: number;
 
   /**
    밴 여부
@@ -50,13 +50,13 @@ class Auth extends BasicDate {
   /**
     밴 사유
    */
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: null })
   banReason: string;
 
   /**
     밴 풀리는 날짜
    */
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: null`` })
   banFreeDate: Date;
 }
 
