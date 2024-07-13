@@ -6,9 +6,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import DivePoint from './DivePoint';
+import DiveShop from './DiveShop';
 import User from './User';
 import { BasicDate } from 'src/entities/BasicDate';
-import DiveShop from './DiveShop';
 
 @Entity('review_dive_point')
 class DivePointReview extends BasicDate {

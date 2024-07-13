@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import DivePointReview from 'src/entities/DivePointReview';
+import { DivePointReview } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()

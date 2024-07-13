@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
-import DiveShopCertApply from 'src/entities/DiveShopCertApply';
 import {
   DataSource,
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
+import { DiveShopCertApply } from 'src/entities';
 import { CertApplicationInListResDto } from './dtos/certApplicationInListRes.dto';
 
 @Injectable()

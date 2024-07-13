@@ -1,5 +1,3 @@
-import { BasicDate } from 'src/entities/BasicDate';
-import Country from './Country';
 import {
   Column,
   Entity,
@@ -9,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import Auth from './Auth';
+import Country from './Country';
+import { BasicDate } from 'src/entities/BasicDate';
 
 @Entity('dive_shop')
 class DiveShop extends BasicDate {

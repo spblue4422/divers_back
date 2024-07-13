@@ -5,7 +5,7 @@ import { UserModule } from 'src/apis/user/user.module';
 import { DiveShopModule } from '../diveShop.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DiveShopReviewRepository } from './diveShopReview.repository';
-import DiveShopReview from 'src/entities/DiveShopReview';
+import { DiveShopReview } from 'src/entities';
 
 @Module({
   imports: [

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DiveLog } from 'src/entities/DiveLog';
-import { DiveLogDetail } from 'src/entities/DiveLogDetail';
+import { DiveLog, DiveLogDetail } from 'src/entities';
 import {
   DataSource,
   FindOptionsOrder,

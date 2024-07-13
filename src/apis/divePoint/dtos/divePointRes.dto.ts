@@ -1,4 +1,4 @@
-import DivePoint from 'src/entities/DivePoint';
+import { DivePoint } from 'src/entities';
 
 export class DivePointResDto {
   id: number;

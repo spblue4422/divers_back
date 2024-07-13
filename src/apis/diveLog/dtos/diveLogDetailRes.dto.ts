@@ -5,7 +5,7 @@ import {
   Weather,
   DivingType,
 } from 'src/common/enums';
-import { DiveLogDetail } from 'src/entities/DiveLogDetail';
+import { DiveLogDetail } from 'src/entities';
 
 export class DiveLogDetailResDto {
   @ApiProperty({ description: '로그 id' })

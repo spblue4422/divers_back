@@ -6,8 +6,7 @@ import { UserModule } from '../user/user.module';
 import { DiveShopRepository } from './diveShop.repository';
 import { RecommendationModule } from '../recommendation/recommendation.module';
 import { DiveShopCertApplyRepository } from './diveShopCertApply.repository';
-import DiveShop from 'src/entities/DiveShop';
-import DiveShopCertApply from 'src/entities/DiveShopCertApply';
+import { DiveShop, DiveShopCertApply } from 'src/entities';
 
 @Module({
   imports: [

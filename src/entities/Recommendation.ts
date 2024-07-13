@@ -1,16 +1,16 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import User from './User';
+import { BasicDate } from './BasicDate';
 
 // 그냥 delete하는게 낳을듯
 @Entity('recommendation')
-export class Recommendation {
+class Recommendation extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -29,7 +29,6 @@ export class Recommendation {
 
   @Column()
   targetId: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
 }
+
+export default Recommendation;

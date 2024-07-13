@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { throwErr } from 'src/common/utils/errorHandler';
-import Auth from 'src/entities/Auth';
+import { Auth } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()

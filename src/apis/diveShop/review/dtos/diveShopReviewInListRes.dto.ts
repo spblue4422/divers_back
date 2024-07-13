@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import DiveShopReview from 'src/entities/DiveShopReview';
+import { DiveShopReview } from 'src/entities';
 
 export class DiveShopReviewInListResDto {
   @ApiProperty({})

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Tour } from 'src/entities/Tour';
+import { Tour } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()

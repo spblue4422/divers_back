@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DiveShopInListResDto } from './diveShopInListRes.dto';
-import DiveShop from 'src/entities/DiveShop';
+import { DiveShop } from 'src/entities';
 
 export class DiveShopResDto extends DiveShopInListResDto {
   @ApiProperty({})

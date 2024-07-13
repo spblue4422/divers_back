@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
-import DiveShopReview from 'src/entities/DiveShopReview';
+import { DiveShopReview } from 'src/entities';
 import {
   DataSource,
   FindOptionsOrder,

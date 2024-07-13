@@ -1,9 +1,9 @@
 import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
-import { DiveLog } from './DiveLog';
+import DiveLog from './DiveLog';
 import { BasicDate } from './BasicDate';
 
 @Entity('dive_log_detail')
-export class DiveLogDetail extends BasicDate {
+class DiveLogDetail extends BasicDate {
   @OneToOne(() => DiveLog, { onDelete: 'CASCADE' })
   diveLog: DiveLog;
 
@@ -109,3 +109,5 @@ export class DiveLogDetail extends BasicDate {
   @Column()
   text: string;
 }
+
+export default DiveLogDetail;

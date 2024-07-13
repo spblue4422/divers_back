@@ -5,14 +5,14 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import User from './User';
-import { BasicDate } from 'src/entities/BasicDate';
 import DivePoint from './DivePoint';
 import DiveShop from './DiveShop';
-import { Tour } from './Tour';
+import Tour from './Tour';
+import User from './User';
+import { BasicDate } from 'src/entities/BasicDate';
 
 @Entity('dive_log')
-export class DiveLog extends BasicDate {
+class DiveLog extends BasicDate {
   /**
    dive_log_id
   */
@@ -104,3 +104,5 @@ export class DiveLog extends BasicDate {
   @Column({ nullable: true })
   blockReason: string;
 }
+
+export default DiveLog;

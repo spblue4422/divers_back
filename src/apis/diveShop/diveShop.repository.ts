@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
-import DiveShop from 'src/entities/DiveShop';
 import {
   DataSource,
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
+import { DiveShop } from 'src/entities';
 import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
 import { throwErr } from 'src/common/utils/errorHandler';
 import { DiveShopResDto } from './dtos/diveShopRes.dto';

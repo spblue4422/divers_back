@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DivePointRepostiory } from './divePoint.repository';
 import { UserModule } from '../user/user.module';
 import { RecommendationModule } from '../recommendation/recommendation.module';
-import DivePoint from 'src/entities/DivePoint';
+import { DivePoint } from 'src/entities';
 
 @Module({
   imports: [

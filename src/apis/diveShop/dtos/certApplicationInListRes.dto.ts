@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import DiveShopCertApply from 'src/entities/DiveShopCertApply';
+import { DiveShopCertApply } from 'src/entities';
 
 export class CertApplicationInListResDto {
   @ApiProperty({})

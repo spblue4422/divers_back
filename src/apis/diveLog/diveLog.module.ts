@@ -7,8 +7,7 @@ import {
   DiveLogRepository,
 } from './diveLog.repository';
 import { UserModule } from '../user/user.module';
-import { DiveLog } from 'src/entities/DiveLog';
-import { DiveLogDetail } from 'src/entities/DiveLogDetail';
+import { DiveLog, DiveLogDetail } from 'src/entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DiveLog, DiveLogDetail]), UserModule],
