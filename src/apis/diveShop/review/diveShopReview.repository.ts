@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
 import DiveShopReview from 'src/entities/DiveShopReview';
-import { FindOptionsOrder, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsOrder,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { DiveShopReviewInListResDto } from './dtos/diveShopReviewInListRes.dto';
 
 @Injectable()
 export class DiveShopReviewRepository extends Repository<DiveShopReview> {
+  constructor(private dataSource: DataSource) {
+    super(DiveShopReview, dataSource.createEntityManager());
+  }
+
   async findListWithCount(
     page: number,
     pagingCount: number,

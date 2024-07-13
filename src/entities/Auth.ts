@@ -56,7 +56,7 @@ class Auth extends BasicDate {
   /**
     밴 풀리는 날짜
    */
-  @Column({ nullable: true, default: null`` })
+  @Column({ nullable: true, default: null })
   banFreeDate: Date;
 }
 

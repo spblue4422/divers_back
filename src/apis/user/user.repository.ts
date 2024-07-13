@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { throwErr } from 'src/common/utils/errorHandler';
 import User from 'src/entities/User';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepostiory extends Repository<User> {
+  constructor(private dataSource: DataSource) {
+    super(User, dataSource.createEntityManager());
+  }
+
   async findOneByUserId(userId: number) {
     return this.findOneOrFail({
       where: {

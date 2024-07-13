@@ -6,15 +6,17 @@ import { UserModule } from '../user/user.module';
 import { DiveShopRepository } from './diveShop.repository';
 import { RecommendationModule } from '../recommendation/recommendation.module';
 import { DiveShopCertApplyRepository } from './diveShopCertApply.repository';
+import DiveShop from 'src/entities/DiveShop';
+import DiveShopCertApply from 'src/entities/DiveShopCertApply';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([DiveShop, DiveShopCertApply]),
     UserModule,
     RecommendationModule,
-    TypeOrmModule.forFeature([DiveShopRepository, DiveShopCertApplyRepository]),
   ],
   controllers: [DiveShopController],
-  providers: [DiveShopService],
+  providers: [DiveShopService, DiveShopRepository, DiveShopCertApplyRepository],
   exports: [DiveShopService],
 })
 export class DiveShopModule {}

@@ -7,9 +7,11 @@ import {
   DiveLogRepository,
 } from './diveLog.repository';
 import { UserModule } from '../user/user.module';
+import { DiveLog } from 'src/entities/DiveLog';
+import { DiveLogDetail } from 'src/entities/DiveLogDetail';
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forFeature([DiveLogRepository])],
+  imports: [TypeOrmModule.forFeature([DiveLog, DiveLogDetail]), UserModule],
   controllers: [DiveLogController],
   providers: [DiveLogService, DiveLogRepository, DiveLogDetailRepository],
   exports: [DiveLogService],

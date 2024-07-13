@@ -5,15 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DivePointRepostiory } from './divePoint.repository';
 import { UserModule } from '../user/user.module';
 import { RecommendationModule } from '../recommendation/recommendation.module';
+import DivePoint from 'src/entities/DivePoint';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([DivePoint]),
     UserModule,
     RecommendationModule,
-    TypeOrmModule.forFeature([DivePointRepostiory]),
   ],
   controllers: [DivePointController],
-  providers: [DivePointService],
+  providers: [DivePointService, DivePointRepostiory],
   exports: [DivePointService],
 })
 export class DivePointModule {}

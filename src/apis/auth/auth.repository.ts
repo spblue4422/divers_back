@@ -8,6 +8,7 @@ export class AuthRepository extends Repository<Auth> {
   constructor(private dataSource: DataSource) {
     super(Auth, dataSource.createEntityManager());
   }
+
   async findOneByLoginIdOrFail(loginId: string): Promise<Auth> {
     return this.findOneOrFail({
       where: { loginId },

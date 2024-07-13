@@ -5,15 +5,16 @@ import { UserModule } from 'src/apis/user/user.module';
 import { DiveShopModule } from '../diveShop.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DiveShopReviewRepository } from './diveShopReview.repository';
+import DiveShopReview from 'src/entities/DiveShopReview';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([DiveShopReview]),
     UserModule,
     DiveShopModule,
-    TypeOrmModule.forFeature([DiveShopReviewRepository]),
   ],
   controllers: [DiveShopReviewController],
-  providers: [DiveShopReviewService],
+  providers: [DiveShopReviewService, DiveShopReviewRepository],
   exports: [DiveShopReviewService],
 })
 export class DiveShopReviewModule {}
