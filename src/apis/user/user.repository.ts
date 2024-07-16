@@ -18,6 +18,6 @@ export class UserRepostiory extends Repository<User> {
   }
 
   async checkNicknameDup(nickname: string) {
-    return this.exist({ where: { nickname } });
+    return this.exists({ where: { nickname } });
   }
 }
