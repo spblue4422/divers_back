@@ -1,10 +1,11 @@
-import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import DiveLog from './DiveLog';
 import { BasicDate } from './BasicDate';
 
 @Entity('dive_log_detail')
 class DiveLogDetail extends BasicDate {
   @OneToOne(() => DiveLog, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'logId' })
   diveLog: DiveLog;
 
   /**
