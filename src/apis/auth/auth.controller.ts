@@ -48,7 +48,9 @@ export class AuthController {
 
   @Post('/shop/signUp')
   @ApiOkResponse({ type: MsgResDto, description: '샵 회원가입' })
-  async shopSignUp(@Body() signUpBody: ShopSignUpReqDto) {}
+  async shopSignUp(@Body() signUpBody: ShopSignUpReqDto) {
+    return this.authService.shopSignUp(signUpBody);
+  }
 
   //어디까지 날려야할까?
   @Delete('/withdraw')
@@ -67,7 +69,7 @@ export class AuthController {
     return this.authService.dupCheckLoginId(loginId);
   }
 
-  //이거 쓰려나?
+  //이거 쓰려나? 나중에 다시 확인하기
   @Post('/refresh')
   @ApiOkResponse({
     description: '액세스 토큰 재발급',
