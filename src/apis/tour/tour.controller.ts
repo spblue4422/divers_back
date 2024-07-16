@@ -1,9 +1,22 @@
-import { Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { TourService } from './tour.service';
+import { DiveLogService } from '../diveLog/diveLog.service';
 
 @Controller('tour')
 export class TourController {
-  constructor(private readonly tourService: TourService) {}
+  constructor(
+    private readonly tourService: TourService,
+    private readonly diveLogService: DiveLogService,
+  ) {}
+
+  // 전반적으로 여기 api를 건드릴 때는 isPublic을 고려해가면서 짜야할 것 같음.
+  @Get('/list')
+  async getTourList() {
+    return this.tourService.getTourList(1);
+  }
+
+  @Get('/:tourId')
+  async getTourById() {}
 
   @Post('/create')
   async createTour() {}

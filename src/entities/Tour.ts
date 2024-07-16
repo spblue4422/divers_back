@@ -38,6 +38,9 @@ class Tour extends BasicDate {
 
   @Column()
   endDate: Date;
+
+  @Column({ default: false })
+  isPublic: boolean;
 }
 
 export default Tour;
