@@ -8,6 +8,13 @@ export class CreateDiveShopReqDto {
 
   @ApiProperty({})
   @IsString()
+  representative: string;
+
+  @ApiProperty({})
+  phone: string;
+
+  @ApiProperty({})
+  @IsString()
   countryCode: string;
 
   @ApiProperty({})

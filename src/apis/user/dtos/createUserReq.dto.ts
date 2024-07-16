@@ -27,13 +27,7 @@ export class CreateUserReqDto {
   @ApiProperty({ description: '국적' })
   countryCode: string;
 
-  @ApiProperty({ description: '이메일' })
-  email?: string;
-
-  @ApiProperty({ description: '전화번호' })
-  @IsOptional()
-  @IsString()
-  phone?: string;
+  // 전화번호와 이메일은 나중에 따로 인증하는 로직으로
 
   @ApiProperty({ description: '로그인 타입' })
   joinType: JoinType;

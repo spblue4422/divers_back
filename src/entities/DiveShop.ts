@@ -31,6 +31,18 @@ class DiveShop extends BasicDate {
   @Column()
   name: string;
 
+  /**
+   대표자 이름
+  */
+  @Column()
+  representative: string;
+
+  /**
+   대표자 연락처
+  */
+  @Column()
+  phone: string;
+
   @ManyToOne(() => Country)
   @JoinColumn({ name: 'countryCode' })
   country: Country;
@@ -58,6 +70,11 @@ class DiveShop extends BasicDate {
   */
   @Column()
   detailAddress: string;
+
+  /**
+   연락처는 description에 적어도 될듯
+   나중에 서비스를 더 확장한다면 카카오톡 id나 다른 연락처 column을 따로 만들기
+  */
 
   /**
    추천 수
