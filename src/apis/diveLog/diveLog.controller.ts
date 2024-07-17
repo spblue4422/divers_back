@@ -45,17 +45,21 @@ export class DiveLogController {
     @Body() createDiveLogBody: CreateDiveLogReqDto,
     userId: number,
   ): Promise<MsgResDto> {
-    return this.diveLogService.createDiveLog(createDiveLogBody, userId);
+    return this.diveLogService.createDiveLog(userId, createDiveLogBody);
   }
 
   @Patch('/:logId/modify')
-  async modfiyDiveLog(@Param() logId: number, @Body() modifyDiveLogBody) {
-    return this.diveLogService.modifyDiveLog(logId, modifyDiveLogBody);
+  async modfiyDiveLog(
+    @Param() logId: number,
+    @Body() modifyDiveLogBody,
+    userId: number,
+  ) {
+    return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
   }
 
   @Delete('/:logId/remove')
-  async removeDiveLog(@Param() logId: number) {
-    return this.diveLogService.removeDiveLog(logId);
+  async removeDiveLog(@Param() logId: number, userId: number) {
+    return this.diveLogService.removeDiveLog(logId, userId);
   }
 
   @Patch('/:logId/changePublic')
