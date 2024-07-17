@@ -87,7 +87,7 @@ export class DiveShopService {
   async removeDiveShop(shopId: number): Promise<MsgResDto> {
     await this.diveShopRepository
       .softRemove({ id: shopId })
-      .catch(() => throwErr('NO_DVIESHOP'));
+      .catch(() => throwErr('NO_DIVESHOP'));
 
     return MsgResDto.success();
   }

@@ -27,7 +27,7 @@ export const Errors = {
     errorCode: 1000,
     msg: '존재하지 않는 사용자입니다.',
   },
-  NO_DVIESHOP: {
+  NO_DIVESHOP: {
     statusCode: 404,
     errorCode: 1001,
     msg: '존재하지 않는 샵입니다.',
