@@ -52,6 +52,11 @@ export const Errors = {
     errorCode: 1005,
     msg: '존재하지 않는 포인트 리뷰입니다.',
   },
+  NO_CERT_APPLY: {
+    statusCode: 404,
+    errorCode: 1006,
+    msg: '존재하지 않는 인증 신청입니다.',
+  },
   DUPLICATE_LOGIN_ID: {
     statusCode: 400,
     errorCode: 1100,

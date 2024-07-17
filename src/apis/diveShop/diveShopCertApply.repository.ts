@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import { DiveShopCertApply } from 'src/entities';
 import { CertApplicationInListResDto } from './dtos/certApplicationInListRes.dto';
+import { CertApplicationResDto } from './dtos/certApplicationRes.dto';
+import { throwErr } from 'src/common/utils/errorHandler';
 
 @Injectable()
 export class DiveShopCertApplyRepository extends Repository<DiveShopCertApply> {
@@ -32,5 +34,14 @@ export class DiveShopCertApplyRepository extends Repository<DiveShopCertApply> {
       dataList: data.map((d) => CertApplicationInListResDto.makeRes(d)),
       totalCount: count,
     }));
+  }
+
+  async findByIdOrFail(
+    certId: number,
+    shopId: number,
+  ): Promise<CertApplicationResDto> {
+    return this.findOneOrFail({ where: { id: certId, shopId } })
+      .then((d) => CertApplicationResDto.makeRes(d))
+      .catch(() => throwErr('NO_CERT_APPLY'));
   }
 }

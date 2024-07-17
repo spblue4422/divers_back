@@ -35,7 +35,7 @@ class DiveShopCertApply {
    거부 사유
    */
   @Column({ nullable: true, default: null })
-  rejectedReason: string;
+  rejectReason: string;
   // 또 뭐가 필요할까요...?
 
   // 심사를 담당한 사람 - 어드민 계정

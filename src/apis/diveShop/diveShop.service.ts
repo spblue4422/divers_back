@@ -11,6 +11,7 @@ import { throwErr } from 'src/common/utils/errorHandler';
 import { CreateDiveShopReqDto } from './dtos/createDiveShopReqDto';
 import { DiveShopCertApplyRepository } from './diveShopCertApply.repository';
 import { InsertResult } from 'typeorm';
+import { CertApplicationResDto } from './dtos/certApplicationRes.dto';
 
 @Injectable()
 export class DiveShopService {
@@ -109,5 +110,12 @@ export class DiveShopService {
     });
 
     return MsgResDto.success();
+  }
+
+  async getCertApplication(
+    certId: number,
+    shopId: number,
+  ): Promise<CertApplicationResDto> {
+    return this.diveShopCertApplyRepository.findByIdOrFail(certId, shopId);
   }
 }
