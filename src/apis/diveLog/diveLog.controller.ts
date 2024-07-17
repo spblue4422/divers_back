@@ -22,6 +22,7 @@ export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}
 
   @Get('/list')
+  //이 api에 의미가 있나? 그냥 내 로그 리스트 뽑는 걸로 바꾸는게 낫지않을까
   async getDiveLogList(
     @Query() pagination: PaginationReqDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
@@ -42,8 +43,9 @@ export class DiveLogController {
   @Post('/create')
   async createDiveLog(
     @Body() createDiveLogBody: CreateDiveLogReqDto,
+    userId: number,
   ): Promise<MsgResDto> {
-    return this.diveLogService.createDiveLog(createDiveLogBody);
+    return this.diveLogService.createDiveLog(createDiveLogBody, userId);
   }
 
   @Patch('/:logId/modify')

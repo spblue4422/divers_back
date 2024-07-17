@@ -23,14 +23,17 @@ export class DivePointService {
     return await this.divePointRepository.findByIdOrFail(pointId);
   }
 
-  async recommendDivePoint(pointId: number): Promise<MsgResDto> {
+  async recommendDivePoint(
+    pointId: number,
+    userId: number,
+  ): Promise<MsgResDto> {
     const { recommendation } =
       await this.divePointRepository.findByIdOrFail(pointId);
 
     await this.recommendationService.recommendTarget(
-      pointId,
-      pointId,
+      userId,
       'DIVEPOINT',
+      pointId,
     );
 
     await this.divePointRepository.update(

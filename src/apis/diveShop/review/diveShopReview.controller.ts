@@ -44,8 +44,13 @@ export class DiveShopReviewController {
   async createReview(
     @Param('shopId') shopId: number,
     @Body() createReviewBody: CreateDiveShopReviewReqDto,
+    userId: number,
   ): Promise<MsgResDto> {
-    return this.diveShopReviewServcie.createReview(shopId, createReviewBody);
+    return this.diveShopReviewServcie.createReview(
+      shopId,
+      userId,
+      createReviewBody,
+    );
   }
 
   @ApiOkResponse({

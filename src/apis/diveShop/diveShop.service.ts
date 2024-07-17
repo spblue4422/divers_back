@@ -38,14 +38,14 @@ export class DiveShopService {
   }
 
   // 트랜잭션 필요
-  async recommedShop(userId: number, shopId: number) {
+  async recommedShop(shopId: number, userId: number) {
     const { recommendation } =
       await this.diveShopRepository.findByIdOrFail(shopId);
 
     await this.recommendationService.recommendTarget(
       userId,
-      shopId,
       'DIVESHOP',
+      shopId,
     );
 
     await this.diveShopRepository.update(

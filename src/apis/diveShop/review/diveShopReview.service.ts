@@ -25,11 +25,13 @@ export class DiveShopReviewService {
 
   async createReview(
     shopId: number,
+    userId: number,
     createReviewBody: CreateDiveShopReviewReqDto,
   ): Promise<MsgResDto> {
     await this.diveShopReviewRepository.insert({
-      ...createReviewBody,
       shopId,
+      userId,
+      ...createReviewBody,
     });
 
     return MsgResDto.success();

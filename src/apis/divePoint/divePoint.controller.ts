@@ -20,7 +20,7 @@ export class DivePointController {
   }
 
   @Patch('/recomment/:pointId')
-  async recommentPoint(@Param() pointId: number): Promise<MsgResDto> {
-    return this.divePointService.recommendDivePoint(pointId);
+  async recommentPoint(@Param() pointId: number, userId: number): Promise<MsgResDto> {
+    return this.divePointService.recommendDivePoint(pointId, userId);
   }
 }

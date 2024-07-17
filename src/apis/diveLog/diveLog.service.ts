@@ -132,7 +132,7 @@ export class DiveLogService {
     };
   }
 
-  async createDiveLog(createDiveLogBody: CreateDiveLogReqDto) {
+  async createDiveLog(userId: number, createDiveLogBody: CreateDiveLogReqDto) {
     //이거 좀 줄일 수 있지않을까?
     const {
       weatherVal,
@@ -145,11 +145,12 @@ export class DiveLogService {
 
     //이거 잘 될지 모르겠음. 안되면 body에서 로그랑 디테일 분리하자
     const { identifiers } = await this.diveLogRepository.insert({
+      userId,
       ...createDiveLogBody,
     });
     await this.diveLogDetailRepository.insert({
-      ...createDiveLogBody,
       logId: identifiers[0].id,
+      ...createDiveLogBody,
       weather: weatherVal,
       wave: waveVal,
       current: currentVal,
@@ -162,7 +163,11 @@ export class DiveLogService {
   }
 
   // 부분 수정(log와 logDetail 따로)이 있어도 괜찮을듯?
-  async modifyDiveLog(logId: number, modifyDiveLogBody: ModifyDiveLogReqDto) {
+  async modifyDiveLog(
+    logId: number,
+    userId: number,
+    modifyDiveLogBody: ModifyDiveLogReqDto,
+  ) {
     const {
       weatherVal,
       waveVal,
@@ -172,13 +177,19 @@ export class DiveLogService {
       typeValStr,
     } = await this.convertKeyToValueForLog(modifyDiveLogBody);
 
+    if (
+      !(await this.diveLogRepository.exists({ where: { id: logId, userId } }))
+    )
+      throwErr('NO_DIVELOG');
+
     await this.diveLogRepository.save({
       id: logId,
       ...modifyDiveLogBody,
     });
+
     await this.diveLogDetailRepository.save({
-      ...modifyDiveLogBody,
       logId,
+      ...modifyDiveLogBody,
       weather: weatherVal,
       wave: waveVal,
       current: currentVal,
@@ -190,10 +201,10 @@ export class DiveLogService {
     return MsgResDto.success();
   }
 
-  async removeDiveLog(logId: number) {
+  async removeDiveLog(logId: number, userId: number) {
     //디테일 자동으로 soft remove 가능할까?
     await this.diveLogRepository
-      .softRemove({ id: logId })
+      .softRemove({ id: logId, userId })
       .catch(() => throwErr('NO_DIVELOG'));
 
     return MsgResDto.success();

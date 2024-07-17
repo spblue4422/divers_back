@@ -36,10 +36,14 @@ export class DiveShopController {
 
   @Patch('/:shopId/recommend')
   @ApiOkResponse({ type: MsgResDto, description: '다이브샵 추천' })
-  async recommendDiveShop(@Param('shopId') shopId: number): Promise<MsgResDto> {
-    return this.diveShopService.recommedShop(shopId, shopId);
+  async recommendDiveShop(
+    @Param('shopId') shopId: number,
+    userId: number,
+  ): Promise<MsgResDto> {
+    return this.diveShopService.recommedShop(shopId, userId);
   }
 
+  // 다이브샵 정보도 생각해보면 사장 맘대로 수정하면 안되지 않을까? 세부적인 로직은 좀 더 고민해봐야할듯
   @Patch('/:shopId/modify')
   @ApiOkResponse({ description: '다이브샵 정보 수정' })
   async modifyDiveShopProfile(

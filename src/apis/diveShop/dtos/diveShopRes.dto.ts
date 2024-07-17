@@ -3,6 +3,12 @@ import { DiveShopInListResDto } from './diveShopInListRes.dto';
 import { DiveShop } from 'src/entities';
 
 export class DiveShopResDto extends DiveShopInListResDto {
+  @ApiProperty()
+  representative: string;
+
+  @ApiProperty()
+  phone: string;
+
   @ApiProperty({})
   description: string;
 
@@ -20,6 +26,8 @@ export class DiveShopResDto extends DiveShopInListResDto {
     resDto.countryCode = data.countryCode;
     resDto.city = data.city;
     resDto.description = data.description;
+    resDto.representative = data.representative;
+    resDto.phone = data.phone;
     resDto.detailAddress = data.detailAddress;
     resDto.averageStar = data.averageStar;
     resDto.recommendation = data.recommendation;

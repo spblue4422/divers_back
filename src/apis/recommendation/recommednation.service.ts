@@ -9,7 +9,7 @@ export class RecommendationService {
     private readonly recommendationRepository: RecommendationRepository,
   ) {}
 
-  async recommendTarget(userId: number, targetId: number, targetKey: string) {
+  async recommendTarget(userId: number, targetKey: string, targetId: number) {
     const targetVal = await convertKeyToValue('RT', targetKey);
 
     const recommendation =
