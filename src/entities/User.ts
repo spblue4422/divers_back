@@ -65,13 +65,13 @@ class User extends BasicDate {
   /**
    프로필 이미지 url
   */
-  @Column()
+  @Column({ nullable: true })
   profileImageUrl: string;
 
   /**
    다이빙 자격증 단계
   */
-  @Column()
+  @Column({ default: 0 })
   diveRank: number;
 
   /**
