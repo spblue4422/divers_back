@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserProfileResDto } from './dtos/userProfileRes.dto';
 import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { MyProfileResDto } from './dtos/myProfileRes.dto';
+import { CurrentUser } from 'src/common/decorators/currentUser';
+import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
 @Controller('users')
 export class UserController {
@@ -27,21 +29,25 @@ export class UserController {
   })
   @Get('/my/profile')
   async getMyProfile(
-    @Param('userId') userId: number,
+    @CurrentUser() user: JwtPayloadDto,
   ): Promise<MyProfileResDto> {
-    return this.userService.getMyProfile(userId);
+    const { authId } = user;
+
+    return this.userService.getMyProfile(authId);
   }
 
   @ApiOkResponse({
     type: MsgResDto,
     description: '유저 프로필 수정',
   })
-  @Patch('/:userId/modify')
+  @Patch('/change/profile')
   async changeMyProfile(
-    @Param('userId') userId: number,
+    @CurrentUser() user: JwtPayloadDto,
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
   ): Promise<MsgResDto> {
-    return await this.userService.changeUser(userId, changeUserProfileBody);
+    const { authId } = user;
+
+    return await this.userService.changeUser(authId, changeUserProfileBody);
   }
 
   @Patch('/:userId/change/profileImage')
@@ -56,7 +62,7 @@ export class UserController {
     type: MsgResDto,
     description: '이메일 인증',
   })
-  async certificateEamil(@Body() cfEmailBody) {}
+  async certificateEmail(@Body() cfEmailBody) {}
 
   @Patch('/:userId/certificate/phone')
   @ApiOkResponse({})
@@ -66,9 +72,9 @@ export class UserController {
     type: MsgResDto,
     description: '닉네임 중복 체크',
   })
-  @Get('/dupCheck/nickname/:nickname')
-  async dupCheckNickname(@Param('nickname') nickname: string) {
-    return await this.userService.dupCheckNickname(nickname);
+  @Get('/checkDuplicate/nickname')
+  async checkNicknameDuplicate(@Query('name') nickname: string) {
+    return await this.userService.checkNicknameDuplicate(nickname);
   }
 
   //큰일남. 사용할 수 있는 api가 없네 엄. 사진 받아서 수작업으로 검증해야하나?

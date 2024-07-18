@@ -122,10 +122,10 @@ export const Errors = {
     errorCode: 1304,
     msg: '만료된 토큰입니다.',
   },
-  INVALID_TOKEN: {
+  INVALID_LOGIN: {
     statusCode: 402,
     errorCode: 1305,
-    msg: '유효하지 않은 토큰입니다.',
+    msg: '유효하지 않은 로그인 정보입니다.',
   },
   BANNED_USER: {
     statusCode: 402,

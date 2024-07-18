@@ -28,7 +28,7 @@ export class AuthService {
   access_expired = this.configService.get<string>('ACCESS_EXPIRED');
   refresh_expired = this.configService.get<string>('REFRESH_EXPIRED');
 
-  async signIn(signInBody: SignInReqDto) {
+  async signIn(signInBody: SignInReqDto): Promise<SignInResDto> {
     const { loginId, password } = signInBody;
     //존재하는 계정인지 확인
     const { id, isBanned, salt } =
@@ -43,14 +43,16 @@ export class AuthService {
     // accesstoken과 refreshtoken 디비에 넣어줘야하나?
     if (bcrypt.compare(password, encrypted)) {
       const accessToken = await this.jwtService.signAsync(
-        { id, loginId },
+        { authId: id, loginId },
         { secret: this.secret, expiresIn: this.access_expired },
       );
 
       const refreshToken = await this.jwtService.signAsync(
-        { id, loginId },
+        { authId: id, loginId },
         { secret: this.secret, expiresIn: this.refresh_expired },
       );
+
+      await this.authRepository.save({ id, refreshToken });
 
       return SignInResDto.signInSuccess(accessToken, refreshToken);
     } else throwErr('WRONG_ID_PW'); // 틀린 비밀번호
@@ -83,10 +85,15 @@ export class AuthService {
     return MsgResDto.success();
   }
 
-  async dupCheckLoginId(loginId: string): Promise<MsgResDto> {
-    const uAuthExist = await this.authRepository.exist({ where: { loginId } });
+  async signOut(authId: number): Promise<MsgResDto> {
+    await this.authRepository.save({ id: authId, refreshToken: null });
 
-    if (uAuthExist) throwErr('DUPLICATE_LOGIN_ID');
+    return MsgResDto.success();
+  }
+
+  async checkLoginIdDuplicate(loginId: string): Promise<MsgResDto> {
+    if (await this.authRepository.exists({ where: { loginId } }))
+      throwErr('DUPLICATE_LOGIN_ID');
 
     return MsgResDto.success();
   }
@@ -95,7 +102,7 @@ export class AuthService {
     // verify 형식이 어떻게 되는지 잘 모르겠네 이거 까봐야 알듯
     const decoded = await this.jwtService
       .verifyAsync(refreshToken, { secret: this.secret })
-      .catch(() => throwErr('INVALID_TOKEN'));
+      .catch(() => throwErr('INVALID_LOGIN'));
 
     console.log(decoded);
 
@@ -116,7 +123,6 @@ export class AuthService {
     const encrypted = await bcrypt.hash(password, salt);
 
     return this.authRepository.insert({
-      // 되나? 잘 모름
       loginId,
       salt,
       password: encrypted,

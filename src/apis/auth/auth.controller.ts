@@ -6,6 +6,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SignInReqDto } from './dtos/signInReq.dto';
 import { UserSignUpReqDto } from './dtos/userSignUpReq.dto';
@@ -16,7 +18,11 @@ import { AuthService } from './auth.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { SignInResDto } from './dtos/signInRes.dto';
 import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
+import { AuthGuard } from './auth.guard';
+import { CurrentUser } from 'src/common/decorators/currentUser';
+import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
+@UseGuards(AuthGuard)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -30,12 +36,17 @@ export class AuthController {
     return this.authService.signIn(signInBody);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/signOut')
   @ApiOkResponse({
     type: MsgResDto,
     description: '로그아웃',
   })
-  async signOut() {}
+  async signOut(@CurrentUser() user: JwtPayloadDto): Promise<MsgResDto> {
+    const { authId } = user;
+
+    return this.authService.signOut(authId);
+  }
 
   @Post('/user/signUp')
   @ApiOkResponse({
@@ -48,7 +59,7 @@ export class AuthController {
 
   @Post('/shop/signUp')
   @ApiOkResponse({ type: MsgResDto, description: '샵 회원가입' })
-  async shopSignUp(@Body() signUpBody: ShopSignUpReqDto) {
+  async shopSignUp(@Body() signUpBody: ShopSignUpReqDto): Promise<MsgResDto> {
     return this.authService.shopSignUp(signUpBody);
   }
 
@@ -60,13 +71,13 @@ export class AuthController {
   })
   async withdraw(@Body() withdrawalbody) {}
 
-  @Get('/dupCheck/id/:loginId')
+  @Get('/checkDuplicate/id')
   @ApiOkResponse({
     type: MsgResDto,
     description: '아이디 중복 체크',
   })
-  async dupCheckLoginId(@Param() loginId: string) {
-    return this.authService.dupCheckLoginId(loginId);
+  async checkLoginIdDuplicate(@Query('id') loginId: string) {
+    return this.authService.checkLoginIdDuplicate(loginId);
   }
 
   //이거 쓰려나? 나중에 다시 확인하기
@@ -82,7 +93,7 @@ export class AuthController {
   @ApiOkResponse({
     description: '아이디 찾기',
   })
-  async findLoginId(@Body() findIdBody: FindLoginIdReqDto) {}
+  async findLoginId(@Body() findLoginIdBody: FindLoginIdReqDto) {}
 
   @Patch('/reset/pw')
   @ApiOkResponse({

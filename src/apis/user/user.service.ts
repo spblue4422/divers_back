@@ -12,15 +12,17 @@ export class UserService {
   constructor(private readonly userRepository: UserRepostiory) {}
 
   async getUserProfileById(userId: number): Promise<UserProfileResDto> {
-    const userProfile = await this.userRepository.findOneByUserId(userId);
-
-    return UserProfileResDto.makeRes(userProfile);
+    return this.userRepository
+      .findOneByOrFail({ id: userId })
+      .then((data) => UserProfileResDto.makeRes(data))
+      .catch(() => throwErr('NO_USER'));
   }
 
-  async getMyProfile(userId: number): Promise<MyProfileResDto> {
-    const userProfile = await this.userRepository.findOneByUserId(userId);
-
-    return MyProfileResDto.makeRes(userProfile);
+  async getMyProfile(authId: number): Promise<MyProfileResDto> {
+    return this.userRepository
+      .findOneByOrFail({ authId })
+      .then((data) => MyProfileResDto.makeRes(data))
+      .catch(() => throwErr('INVALID_LOGIN'));
   }
 
   async createUser(
@@ -29,7 +31,7 @@ export class UserService {
   ): Promise<MsgResDto> {
     const { nickname } = createUserBody;
 
-    if (await this.userRepository.checkNicknameDup(nickname))
+    if (await this.checkNicknameDuplicate(nickname))
       throwErr('DUPLICATE_NICKNAME');
 
     await this.userRepository.insert({
@@ -40,25 +42,25 @@ export class UserService {
     return MsgResDto.success();
   }
 
-  // 조금 이따가 수정
-  async changeUser(userId: number, changeProfileBody: ChangeUserProfileReqDto) {
-    const user = await this.userRepository.findOneByUserId(userId);
+  async changeUser(authId: number, changeProfileBody: ChangeUserProfileReqDto) {
+    const user = await this.userRepository
+      .findOneByOrFail({ authId })
+      .catch(() => throwErr('INVALID_LOGIN'));
 
-    //혹시 모르니 로직 넣어둘까.
+    //혹시 모르니 로직 넣어둘까. => 이거 api를 따로 만들어두면 빼도 되는 부분
     const { nickname } = changeProfileBody;
-    if (await this.userRepository.checkNicknameDup(nickname))
-      throwErr('DUPLICATE_NICKNAME');
+    await this.checkNicknameDuplicate(nickname);
 
     await this.userRepository.save({
+      id: user.id,
       nickname,
-      ...user,
     });
 
     return MsgResDto.success();
   }
 
-  async dupCheckNickname(nickname: string) {
-    if (await this.userRepository.checkNicknameDup(nickname))
+  async checkNicknameDuplicate(nickname: string) {
+    if (await this.userRepository.exists({ where: { nickname } }))
       throwErr('DUPLICATE_NICKNAME');
 
     return MsgResDto.success();

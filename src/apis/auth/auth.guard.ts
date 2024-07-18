@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { Request } from 'express';
+import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 import { throwErr } from 'src/common/utils/errorHandler';
 
 @Injectable()
@@ -9,19 +10,29 @@ export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const token = this.getAccessTokenFromHeader(request);
+    const request = context.switchToHttp().getRequest<Request>();
+    const { accessToken, refreshToken } =
+      this.getAccessTokenFromHeader(request);
 
-    if (!token) {
+    if (!accessToken) {
       throwErr('NO_ACCESSTOKEN');
-      //여기서 error를 던지지 말고 refresh 절차를 밟아야 하나?
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync(accessToken);
+      request['user'] = payload as JwtPayloadDto;
     } catch (error) {
-      throwErr();
+      if (!refreshToken) throwErr('NO_REFRESHTOKEN');
     }
+
+    /*
+    try {
+      const payload = await this.jwtService.verifyAsync(refreshToken);
+      // 여기서 refreshToken을 새로 발급 받기?
+    } catch (error) {
+      throwErr('EXPIRED_TOKEN');
+    }
+    */
 
     return true;
   }
@@ -29,8 +40,9 @@ export class AuthGuard implements CanActivate {
   private getAccessTokenFromHeader(request: Request) {
     // access token은 authorization으로 받고, refresh token은 따로 받는건가?
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    const refreshToken = request.headers.refreshToken?.toString() ?? undefined;
 
-    return type === 'Bearer' ? token : undefined;
+    return { accessToken: type === 'Bearer' ? token : undefined, refreshToken };
   }
 
   private getRefreshTokenFromHeader(request: Request) {
