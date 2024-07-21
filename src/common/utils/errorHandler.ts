@@ -29,8 +29,8 @@ export class AllExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
 
     if (exception instanceof DiversException) {
-      const { statusCode } = exception;
-      const responseBody: ErrorForm = exception;
+      const { statusCode, errorCode, msg } = exception;
+      const responseBody: ErrorForm = { statusCode, errorCode, msg };
 
       httpAdapter.reply(ctx.getResponse(), responseBody, statusCode);
     } else {
