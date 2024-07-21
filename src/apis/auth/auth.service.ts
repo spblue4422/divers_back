@@ -30,6 +30,7 @@ export class AuthService {
 
   async signIn(signInBody: SignInReqDto): Promise<SignInResDto> {
     const { loginId, password } = signInBody;
+    console.log(loginId, password);
     //존재하는 계정인지 확인
     const { id, isBanned, salt } =
       await this.authRepository.findOneByLoginIdOrFail(loginId);
@@ -40,9 +41,11 @@ export class AuthService {
     //비밀번호 암호화 검증
     const encrypted = await bcrypt.hash(password, salt);
 
+    console.log(encrypted);
+
     // accesstoken과 refreshtoken 디비에 넣어줘야하나?
     if (bcrypt.compare(password, encrypted)) {
-      const accessToken = await this.jwtService.signAsync(
+      const accessToken = this.jwtService.sign(
         { authId: id, loginId },
         { secret: this.secret, expiresIn: this.access_expired },
       );

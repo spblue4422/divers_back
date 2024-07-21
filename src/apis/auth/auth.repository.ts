@@ -12,8 +12,6 @@ export class AuthRepository extends Repository<Auth> {
   async findOneByLoginIdOrFail(loginId: string): Promise<Auth> {
     return this.findOneOrFail({
       where: { loginId },
-      // relations: { user: true },
-      relations: ['user'],
     }).catch(() => {
       throw new DiversException('WRONG_ID_PW');
     });

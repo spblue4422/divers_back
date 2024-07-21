@@ -22,7 +22,7 @@ import { AuthGuard } from './auth.guard';
 import { CurrentUser } from 'src/common/decorators/currentUser';
 import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
-@UseGuards(AuthGuard)
+//@UseGuards(AuthGuard)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
