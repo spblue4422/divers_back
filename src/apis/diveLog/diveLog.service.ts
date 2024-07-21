@@ -4,7 +4,6 @@ import {
   DiveLogRepository,
 } from './diveLog.repository';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { throwErr } from 'src/common/utils/errorHandler';
 import { DiveLogResDto } from './dtos/diveLogRes.dto';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
 import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
@@ -18,6 +17,7 @@ import {
   Weather,
 } from 'src/common/enums';
 import { ModifyDiveLogReqDto } from './dtos/modifyDiveLogReq.dto';
+import { DiversException } from 'src/common/exceptions';
 // import { ConvertKeyDto } from './dtos/convertKey.dto';
 // import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
 @Injectable()
@@ -80,14 +80,16 @@ export class DiveLogService {
           id: logId,
         },
       })
-      .catch(() => throwErr('NO_DIVELOG'));
+      .catch(() => {
+        throw new DiversException('NO_DIVELOG');
+      });
 
     if (diveLog.userId == requestUserId)
       return DiveLogResDto.makeRes(diveLog, true);
     else if (diveLog.isPublic) {
-      if (diveLog.isBlocked) throwErr('BLOCKED_DIVELOG');
+      if (diveLog.isBlocked) throw new DiversException('BLOCKED_DIVELOG');
       else return DiveLogResDto.makeRes(diveLog, false);
-    } else throwErr('NO_ACCESS_PRIVATE_DIVELOG');
+    } else throw new DiversException('NO_ACCESS_PRIVATE_DIVELOG');
   }
 
   async getDiveLogDetail(logId: number) {
@@ -97,7 +99,9 @@ export class DiveLogService {
           logId,
         },
       })
-      .catch(() => throwErr('NO_DIVELOG'));
+      .catch(() => {
+        throw new DiversException('NO_DIVELOG');
+      });
     // 들고 올 때, value -> enum 다 해줘야 함.
     // return DiveLogDetailResDto.
   }
@@ -180,7 +184,7 @@ export class DiveLogService {
     if (
       !(await this.diveLogRepository.exists({ where: { id: logId, userId } }))
     )
-      throwErr('NO_DIVELOG');
+      throw new DiversException('NO_DIVELOG');
 
     await this.diveLogRepository.save({
       id: logId,
@@ -203,9 +207,9 @@ export class DiveLogService {
 
   async removeDiveLog(logId: number, userId: number) {
     //디테일 자동으로 soft remove 가능할까?
-    await this.diveLogRepository
-      .softRemove({ id: logId, userId })
-      .catch(() => throwErr('NO_DIVELOG'));
+    await this.diveLogRepository.softRemove({ id: logId, userId }).catch(() => {
+      throw new DiversException('NO_DIVELOG');
+    });
 
     return MsgResDto.success();
   }

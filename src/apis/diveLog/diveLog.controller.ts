@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { DiveLogService } from './diveLog.service';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
@@ -16,7 +17,9 @@ import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
 import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('diveLog')
 export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}
@@ -29,6 +32,7 @@ export class DiveLogController {
     return this.diveLogService.getDiveLogList(pagination);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/:logId')
   async getDiveLogById(
     @Param() logId: number,
@@ -40,6 +44,7 @@ export class DiveLogController {
   @Get('/:logId/detail')
   async getDiveLogDetialById(@Param() logid: number, userId: number) {}
 
+  @UseGuards(AuthGuard)
   @Post('/create')
   async createDiveLog(
     @Body() createDiveLogBody: CreateDiveLogReqDto,
@@ -48,6 +53,7 @@ export class DiveLogController {
     return this.diveLogService.createDiveLog(userId, createDiveLogBody);
   }
 
+  @UseGuards(AuthGuard)
   @Patch('/:logId/modify')
   async modfiyDiveLog(
     @Param() logId: number,
@@ -57,11 +63,13 @@ export class DiveLogController {
     return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
   }
 
+  @UseGuards(AuthGuard)
   @Delete('/:logId/remove')
   async removeDiveLog(@Param() logId: number, userId: number) {
     return this.diveLogService.removeDiveLog(logId, userId);
   }
 
+  @UseGuards(AuthGuard)
   @Patch('/:logId/changePublic')
   async changeIsPublic() {}
 }

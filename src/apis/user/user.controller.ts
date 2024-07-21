@@ -8,7 +8,7 @@ import { MyProfileResDto } from './dtos/myProfileRes.dto';
 import { CurrentUser } from 'src/common/decorators/currentUser';
 import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

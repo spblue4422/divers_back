@@ -1,10 +1,10 @@
-export type ErrorType = {
+export type ErrorForm = {
   statusCode: number;
   errorCode: number;
   msg: string;
 };
 
-export type ErrorMsg = keyof typeof Errors;
+export type ErrorName = keyof typeof Errors;
 
 export const Errors = {
   UNREGISTERED_CODE: {

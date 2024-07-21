@@ -1,4 +1,4 @@
-import { throwErr } from './errorHandler';
+import { DiversException } from '../exceptions';
 
 const enumList = [
   'Weather',
@@ -9,7 +9,8 @@ const enumList = [
 ];
 
 export function convertKeyToValue<T>(enumObj: T, key: string): number {
-  if (!(enumObj.toString() in enumList)) throwErr('NO_ENUM_TYPE');
+  if (!(enumObj.toString() in enumList))
+    throw new DiversException('NO_ENUM_TYPE');
   return Object.keys(enumObj).indexOf(key);
 }
 

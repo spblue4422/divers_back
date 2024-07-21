@@ -10,6 +10,8 @@ import { DiveShopReviewModule } from './apis/diveShop/review/diveShopReview.modu
 import { DivePointReviewModule } from './apis/divePoint/review/divePointReview.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RecommendationModule } from './apis/recommendation/recommendation.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionFilter } from './common/utils/errorHandler';
 
 @Module({
   imports: [
@@ -32,6 +34,12 @@ import { RecommendationModule } from './apis/recommendation/recommendation.modul
     DiveLogModule,
     RecommendationModule,
     DiversTypeOrmModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionFilter,
+    },
   ],
 })
 export class AppModule {}

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { throwErr } from 'src/common/utils/errorHandler';
 import { SignInResDto } from './dtos/signInRes.dto';
 import { ConfigService } from '@nestjs/config';
 import { UserSignUpReqDto } from './dtos/userSignUpReq.dto';
@@ -12,6 +11,7 @@ import { InsertResult } from 'typeorm';
 import { SignInReqDto } from './dtos/signInReq.dto';
 import { DiveShopService } from '../diveShop/diveShop.service';
 import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
+import { DiversException } from 'src/common/exceptions';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +35,7 @@ export class AuthService {
       await this.authRepository.findOneByLoginIdOrFail(loginId);
 
     // 밴 당한 계정인지 확인
-    if (isBanned) throwErr('BANNED_USER');
+    if (isBanned) throw new DiversException('BANNED_USER');
 
     //비밀번호 암호화 검증
     const encrypted = await bcrypt.hash(password, salt);
@@ -55,7 +55,7 @@ export class AuthService {
       await this.authRepository.save({ id, refreshToken });
 
       return SignInResDto.signInSuccess(accessToken, refreshToken);
-    } else throwErr('WRONG_ID_PW'); // 틀린 비밀번호
+    } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
   }
 
   async userSignUp(signUpBody: UserSignUpReqDto): Promise<MsgResDto> {
@@ -93,7 +93,7 @@ export class AuthService {
 
   async checkLoginIdDuplicate(loginId: string): Promise<MsgResDto> {
     if (await this.authRepository.exists({ where: { loginId } }))
-      throwErr('DUPLICATE_LOGIN_ID');
+      throw new DiversException('DUPLICATE_LOGIN_ID');
 
     return MsgResDto.success();
   }
@@ -102,7 +102,9 @@ export class AuthService {
     // verify 형식이 어떻게 되는지 잘 모르겠네 이거 까봐야 알듯
     const decoded = await this.jwtService
       .verifyAsync(refreshToken, { secret: this.secret })
-      .catch(() => throwErr('INVALID_LOGIN'));
+      .catch(() => {
+        throw new DiversException('INVALID_LOGIN');
+      });
 
     console.log(decoded);
 

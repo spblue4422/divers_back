@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { throwErr } from 'src/common/utils/errorHandler';
+import { DiversException } from 'src/common/exceptions';
 import { User } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
 
@@ -20,6 +20,8 @@ export class UserRepostiory extends Repository<User> {
       where: {
         id: userId,
       },
-    }).catch(() => throwErr('NO_USER'));
+    }).catch(() => {
+      throw new DiversException('NO_USER');
+    });
   }
 }

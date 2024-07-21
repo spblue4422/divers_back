@@ -3,9 +3,9 @@ import { UserRepostiory } from './user.repository';
 import { UserProfileResDto } from './dtos/userProfileRes.dto';
 import { MyProfileResDto } from './dtos/myProfileRes.dto';
 import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
-import { throwErr } from 'src/common/utils/errorHandler';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { CreateUserReqDto } from './dtos/createUserReq.dto';
+import { DiversException } from 'src/common/exceptions';
 
 @Injectable()
 export class UserService {
@@ -15,14 +15,18 @@ export class UserService {
     return this.userRepository
       .findOneByOrFail({ id: userId })
       .then((data) => UserProfileResDto.makeRes(data))
-      .catch(() => throwErr('NO_USER'));
+      .catch(() => {
+        throw new DiversException('NO_USER');
+      });
   }
 
   async getMyProfile(authId: number): Promise<MyProfileResDto> {
     return this.userRepository
       .findOneByOrFail({ authId })
       .then((data) => MyProfileResDto.makeRes(data))
-      .catch(() => throwErr('INVALID_LOGIN'));
+      .catch(() => {
+        throw new DiversException('INVALID_LOGIN');
+      });
   }
 
   async createUser(
@@ -32,7 +36,7 @@ export class UserService {
     const { nickname } = createUserBody;
 
     if (await this.checkNicknameDuplicate(nickname))
-      throwErr('DUPLICATE_NICKNAME');
+      throw new DiversException('DUPLICATE_NICKNAME');
 
     await this.userRepository.insert({
       authId,
@@ -45,7 +49,9 @@ export class UserService {
   async changeUser(authId: number, changeProfileBody: ChangeUserProfileReqDto) {
     const user = await this.userRepository
       .findOneByOrFail({ authId })
-      .catch(() => throwErr('INVALID_LOGIN'));
+      .catch(() => {
+        throw new DiversException('INVALID_LOGIN');
+      });
 
     //혹시 모르니 로직 넣어둘까. => 이거 api를 따로 만들어두면 빼도 되는 부분
     const { nickname } = changeProfileBody;
@@ -61,7 +67,7 @@ export class UserService {
 
   async checkNicknameDuplicate(nickname: string) {
     if (await this.userRepository.exists({ where: { nickname } }))
-      throwErr('DUPLICATE_NICKNAME');
+      throw new DiversException('DUPLICATE_NICKNAME');
 
     return MsgResDto.success();
   }

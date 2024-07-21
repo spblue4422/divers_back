@@ -1,9 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
 import { Request } from 'express';
 import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
-import { throwErr } from 'src/common/utils/errorHandler';
+import { DiversException } from 'src/common/exceptions';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -15,14 +14,15 @@ export class AuthGuard implements CanActivate {
       this.getAccessTokenFromHeader(request);
 
     if (!accessToken) {
-      throwErr('NO_ACCESSTOKEN');
+      throw new DiversException('NO_ACCESSTOKEN');
     }
 
     try {
       const payload = await this.jwtService.verifyAsync(accessToken);
       request['user'] = payload as JwtPayloadDto;
     } catch (error) {
-      if (!refreshToken) throwErr('NO_REFRESHTOKEN');
+      // 전역 catch 대신에 여기 잡힐지 모르겠네?
+      if (!refreshToken) throw new DiversException('NO_REFRESHTOKEN');
     }
 
     /*
@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(refreshToken);
       // 여기서 refreshToken을 새로 발급 받기?
     } catch (error) {
-      throwErr('EXPIRED_TOKEN');
+      throw new DiversException('EXPIRED_TOKEN');
     }
     */
 

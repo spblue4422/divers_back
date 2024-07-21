@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { throwErr } from 'src/common/utils/errorHandler';
+import { DiversException } from 'src/common/exceptions';
 import { Auth } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
 
@@ -14,6 +14,8 @@ export class AuthRepository extends Repository<Auth> {
       where: { loginId },
       // relations: { user: true },
       relations: ['user'],
-    }).catch(() => throwErr('WRONG_ID_PW'));
+    }).catch(() => {
+      throw new DiversException('WRONG_ID_PW');
+    });
   }
 }

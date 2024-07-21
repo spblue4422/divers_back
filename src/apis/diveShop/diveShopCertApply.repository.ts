@@ -9,7 +9,7 @@ import {
 import { DiveShopCertApply } from 'src/entities';
 import { CertApplicationInListResDto } from './dtos/certApplicationInListRes.dto';
 import { CertApplicationResDto } from './dtos/certApplicationRes.dto';
-import { throwErr } from 'src/common/utils/errorHandler';
+import { DiversException } from 'src/common/exceptions';
 
 @Injectable()
 export class DiveShopCertApplyRepository extends Repository<DiveShopCertApply> {
@@ -42,6 +42,8 @@ export class DiveShopCertApplyRepository extends Repository<DiveShopCertApply> {
   ): Promise<CertApplicationResDto> {
     return this.findOneOrFail({ where: { id: certId, shopId } })
       .then((d) => CertApplicationResDto.makeRes(d))
-      .catch(() => throwErr('NO_CERT_APPLY'));
+      .catch(() => {
+        throw new DiversException('NO_CERT_APPLY');
+      });
   }
 }
