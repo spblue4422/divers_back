@@ -127,9 +127,14 @@ export const Errors = {
     errorCode: 1305,
     msg: '유효하지 않은 로그인 정보입니다.',
   },
-  BANNED_USER: {
+  INVALID_TOKEN: {
     statusCode: 402,
     errorCode: 1306,
+    msg: '유효하지 않은 토큰입니다.',
+  },
+  BANNED_USER: {
+    statusCode: 402,
+    errorCode: 1307,
     msg: '밴 당한 계정입니다.',
   },
 };

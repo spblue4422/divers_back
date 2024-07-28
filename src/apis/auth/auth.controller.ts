@@ -3,7 +3,7 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
+  Headers,
   Patch,
   Post,
   Query,
@@ -20,7 +20,7 @@ import { SignInResDto } from './dtos/signInRes.dto';
 import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
 import { AuthGuard } from './auth.guard';
 import { CurrentUser } from 'src/common/decorators/currentUser';
-import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
 //@UseGuards(AuthGuard)
 @Controller('auth')
@@ -42,7 +42,7 @@ export class AuthController {
     type: MsgResDto,
     description: '로그아웃',
   })
-  async signOut(@CurrentUser() user: JwtPayloadDto): Promise<MsgResDto> {
+  async signOut(@CurrentUser() user: JwtAccessPayloadDto): Promise<MsgResDto> {
     const { authId } = user;
 
     return this.authService.signOut(authId);
@@ -80,13 +80,15 @@ export class AuthController {
     return this.authService.checkLoginIdDuplicate(loginId);
   }
 
-  //이거 쓰려나? 나중에 다시 확인하기
-  @Post('/refresh')
+  // 로직 - accesstoken 확인 - 에러 응답 - 재발급 api 호출 - 리프레쉬 토큰 확인 후 - 액세스, 리프레쉬 토큰 재발급
+  @Get('/refresh')
   @ApiOkResponse({
     description: '액세스 토큰 재발급',
   })
-  async refreshAccessToken(@Body() refreshAccessBody) {
-    return this.authService.accessRefresh(refreshAccessBody);
+  async refreshAccessToken(
+    @Headers('refresh-token') refreshToken,
+  ): Promise<SignInResDto> {
+    return this.authService.accessRefresh(refreshToken);
   }
 
   @Post('/find/id/:loginId')

@@ -12,6 +12,7 @@ import { SignInReqDto } from './dtos/signInReq.dto';
 import { DiveShopService } from '../diveShop/diveShop.service';
 import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
 import { DiversException } from 'src/common/exceptions';
+import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,15 +25,14 @@ export class AuthService {
   ) {}
 
   //configService에서 주입
-  secret = this.configService.get<string>('SECRETKEY');
-  access_expired = this.configService.get<string>('ACCESS_EXPIRED');
-  refresh_expired = this.configService.get<string>('REFRESH_EXPIRED');
+  private secret = this.configService.get<string>('SECRETKEY');
+  private access_expired = this.configService.get<string>('ACCESS_EXPIRED');
+  private refresh_expired = this.configService.get<string>('REFRESH_EXPIRED');
 
   async signIn(signInBody: SignInReqDto): Promise<SignInResDto> {
     const { loginId, password } = signInBody;
-    console.log(loginId, password);
     //존재하는 계정인지 확인
-    const { id, isBanned, salt } =
+    const { id, isBanned, salt, role } =
       await this.authRepository.findOneByLoginIdOrFail(loginId);
 
     // 밴 당한 계정인지 확인
@@ -41,17 +41,14 @@ export class AuthService {
     //비밀번호 암호화 검증
     const encrypted = await bcrypt.hash(password, salt);
 
-    console.log(encrypted);
-
-    // accesstoken과 refreshtoken 디비에 넣어줘야하나?
     if (bcrypt.compare(password, encrypted)) {
-      const accessToken = this.jwtService.sign(
-        { authId: id, loginId },
+      const accessToken = await this.jwtService.signAsync(
+        { authId: id, loginId, role },
         { secret: this.secret, expiresIn: this.access_expired },
       );
 
       const refreshToken = await this.jwtService.signAsync(
-        { authId: id, loginId },
+        { authId: id },
         { secret: this.secret, expiresIn: this.refresh_expired },
       );
 
@@ -102,25 +99,34 @@ export class AuthService {
   }
 
   async accessRefresh(refreshToken: string) {
-    // verify 형식이 어떻게 되는지 잘 모르겠네 이거 까봐야 알듯
-    const decoded = await this.jwtService
-      .verifyAsync(refreshToken, { secret: this.secret })
+    if (!refreshToken) throw new DiversException('NO_REFRESHTOKEN');
+
+    const { authId } = await this.jwtService
+      .verifyAsync(refreshToken)
       .catch(() => {
-        throw new DiversException('INVALID_LOGIN');
+        throw new DiversException('INVALID_TOKEN');
       });
 
-    console.log(decoded);
+    const { loginId, role } = await this.authRepository
+      .findOneByOrFail({ id: authId, refreshToken })
+      .catch(() => {
+        throw new DiversException('INVALID_TOKEN');
+      });
 
-    //decoded에서 loginId와 userId 뽑아내서 다시 쓰기
+    const newAccessToken = await this.signToken({
+      authId,
+      loginId,
+      role,
+    });
 
-    const newRefreshToken = await this.jwtService.signAsync(
-      {},
-      { secret: this.secret, expiresIn: this.refresh_expired },
-    );
+    const newRefreshToken = await this.signToken({ authId });
 
     await this.authRepository.save({
+      id: authId,
       refreshToken: newRefreshToken,
     });
+
+    return SignInResDto.signInSuccess(newAccessToken, newRefreshToken);
   }
 
   async createAuth(loginId: string, password: string, role: number) {
@@ -135,5 +141,18 @@ export class AuthService {
       // 나중에 enum 로직 넣든지 하자
       role,
     });
+  }
+
+  async signToken(data: object): Promise<string> {
+    if (data instanceof JwtAccessPayloadDto)
+      return this.jwtService.signAsync(data, {
+        secret: this.secret,
+        expiresIn: this.access_expired,
+      });
+    else
+      return this.jwtService.signAsync(data, {
+        secret: this.secret,
+        expiresIn: this.refresh_expired,
+      });
   }
 }

@@ -14,7 +14,7 @@ import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { MyProfileResDto } from './dtos/myProfileRes.dto';
 import { CurrentUser } from 'src/common/decorators/currentUser';
-import { JwtPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
@@ -28,7 +28,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get('/my/profile')
   async getMyProfile(
-    @CurrentUser() user: JwtPayloadDto,
+    @CurrentUser() user: JwtAccessPayloadDto,
   ): Promise<MyProfileResDto> {
     const { authId } = user;
 
@@ -41,7 +41,7 @@ export class UserController {
   })
   @Patch('/change/profile')
   async changeMyProfile(
-    @CurrentUser() user: JwtPayloadDto,
+    @CurrentUser() user: JwtAccessPayloadDto,
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
   ): Promise<MsgResDto> {
     const { authId } = user;
