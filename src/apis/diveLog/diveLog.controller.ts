@@ -42,8 +42,8 @@ export class DiveLogController {
     @Query() pagination: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { userShopId } = cur;
-    return this.diveLogService.getMyDiveLogList(userShopId, pagination);
+    const { userId } = cur;
+    return this.diveLogService.getMyDiveLogList(userId, pagination);
   }
 
   @Get('/user/:userId/list')
@@ -70,9 +70,9 @@ export class DiveLogController {
     @Param() logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<DiveLogResDto> {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return this.diveLogService.getDiveLog(logId, userShopId);
+    return this.diveLogService.getDiveLog(logId, userId);
   }
 
   @Get('/:logId/detail')
@@ -85,7 +85,7 @@ export class DiveLogController {
     @Param() logid: number,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userShopId } = cur;
+    const { userId } = cur;
   }
 
   // 롤가드 - 유저만 ?
@@ -96,9 +96,9 @@ export class DiveLogController {
     @Body() createDiveLogBody: CreateDiveLogReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return this.diveLogService.createDiveLog(userShopId, createDiveLogBody);
+    return this.diveLogService.createDiveLog(userId, createDiveLogBody);
   }
 
   // 롤가드 - 유저만 ?
@@ -110,13 +110,9 @@ export class DiveLogController {
     @Body() modifyDiveLogBody,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return this.diveLogService.modifyDiveLog(
-      logId,
-      userShopId,
-      modifyDiveLogBody,
-    );
+    return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
   }
 
   // 롤가드 - 유저만 ?
@@ -127,9 +123,9 @@ export class DiveLogController {
     @Param() logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return this.diveLogService.removeDiveLog(logId, userShopId);
+    return this.diveLogService.removeDiveLog(logId, userId);
   }
 
   @Patch('/:logId/changePublic')

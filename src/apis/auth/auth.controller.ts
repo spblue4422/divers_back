@@ -27,15 +27,6 @@ import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('/signIn')
-  @ApiOkResponse({
-    type: SignInResDto,
-    description: '로그인',
-  })
-  async signIn(@Body() signInBody: SignInReqDto): Promise<SignInResDto> {
-    return this.authService.signIn(signInBody);
-  }
-
   @Post('/user/signIn')
   @ApiOkResponse({
     type: SignInResDto,

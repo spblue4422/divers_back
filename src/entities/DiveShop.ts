@@ -18,12 +18,14 @@ class DiveShop extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
 
+  /*
   @OneToOne(() => Auth, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'authId' })
   auth: Auth;
 
   @Column()
   authId: number;
+  */
 
   /**
    다이브 샵 이름

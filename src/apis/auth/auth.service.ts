@@ -77,7 +77,7 @@ export class AuthService {
 
       // accessToken
       const accessToken = await this.jwtService.signAsync(
-        { authId: id, userShopId: userId, role },
+        { authId: id, userId, role },
         { secret: this.secret, expiresIn: this.access_expired },
       );
 
@@ -138,6 +138,7 @@ export class AuthService {
   }
 
   // shop signup의 경우 바로 회원가입이 아니라 인증 절차를 거쳐야함. 인증 신청 목록을 볼 수 있게끔 해야한다.
+  /*
   async shopSignUp(signUpBody: ShopSignUpReqDto): Promise<MsgResDto> {
     const { loginId, password, createShopBody } = signUpBody;
 
@@ -157,6 +158,7 @@ export class AuthService {
 
     return MsgResDto.success();
   }
+    */
 
   async checkLoginIdDuplicate(loginId: string): Promise<MsgResDto> {
     if (await this.authRepository.exists({ where: { loginId } }))
@@ -182,7 +184,7 @@ export class AuthService {
 
     const newAccessToken = await this.signToken({
       authId,
-      userShopId: userId,
+      userId,
       role,
     });
 

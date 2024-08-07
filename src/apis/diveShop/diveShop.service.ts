@@ -56,6 +56,7 @@ export class DiveShopService {
     return MsgResDto.success();
   }
 
+  /*
   async createDiveshop(
     authId: number,
     createDiveShopBody: CreateDiveShopReqDto,
@@ -69,6 +70,7 @@ export class DiveShopService {
 
     return MsgResDto.success();
   }
+    */
 
   async modifyDiveShop(
     shopId: number,

@@ -31,9 +31,9 @@ export class UserController {
   async getMyProfile(
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MyProfileResDto> {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return this.userService.getMyProfile(userShopId);
+    return this.userService.getMyProfile(userId);
   }
 
   // 롤가드 - 유저만
@@ -47,9 +47,9 @@ export class UserController {
     @Current() cur: JwtAccessPayloadDto,
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
   ): Promise<MsgResDto> {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return await this.userService.changeUser(userShopId, changeUserProfileBody);
+    return await this.userService.changeUser(userId, changeUserProfileBody);
   }
 
   @ApiOkResponse({

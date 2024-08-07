@@ -27,8 +27,8 @@ export class DivePointController {
     @Param() pointId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userShopId } = cur;
+    const { userId } = cur;
 
-    return this.divePointService.recommendDivePoint(pointId, userShopId);
+    return this.divePointService.recommendDivePoint(pointId, userId);
   }
 }
