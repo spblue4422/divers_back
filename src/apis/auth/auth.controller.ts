@@ -57,11 +57,13 @@ export class AuthController {
     return this.authService.userSignUp(signUpBody);
   }
 
+  /*
   @Post('/shop/signUp')
   @ApiOkResponse({ type: MsgResDto, description: '샵 회원가입' })
   async shopSignUp(@Body() signUpBody: ShopSignUpReqDto): Promise<MsgResDto> {
     return this.authService.shopSignUp(signUpBody);
   }
+    */
 
   //어디까지 날려야할까?
   @UseGuards(AuthGuard)

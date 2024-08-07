@@ -152,13 +152,13 @@ export class AuthService {
 
     return MsgResDto.success();
   }
+    */
 
   async signOut(authId: number): Promise<MsgResDto> {
     await this.authRepository.save({ id: authId, refreshToken: null });
 
     return MsgResDto.success();
   }
-    */
 
   async checkLoginIdDuplicate(loginId: string): Promise<MsgResDto> {
     if (await this.authRepository.exists({ where: { loginId } }))
