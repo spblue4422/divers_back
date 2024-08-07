@@ -24,7 +24,7 @@ export class DiveLogResDto extends DiveLogInListResDto {
   @ApiProperty()
   blockReason?: string;
 
-  static makeRes(data: DiveLog, isOwned: boolean) {
+  static makeRes(data: DiveLog) {
     const resDto = new DiveLogResDto();
 
     resDto.id = data.id;
@@ -37,9 +37,9 @@ export class DiveLogResDto extends DiveLogInListResDto {
     resDto.location = data.location;
     resDto.buddy = data.buddy;
     resDto.diveDate = data.diveDate;
-    resDto.isPublic = isOwned ? data.isPublic : null;
-    resDto.isBlocked = isOwned ? data.isBlocked : null;
-    resDto.blockReason = isOwned ? data.blockReason : null;
+    resDto.isPublic = data.isPublic;
+    resDto.isBlocked = data.isBlocked;
+    resDto.blockReason = data.blockReason ?? '';
 
     return resDto;
   }

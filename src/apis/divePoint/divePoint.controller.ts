@@ -26,8 +26,8 @@ export class DivePointController {
     @Param() pointId: number,
     @CurrentUser() user: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { authId } = user;
+    const { userId } = user;
 
-    return this.divePointService.recommendDivePoint(pointId, authId);
+    return this.divePointService.recommendDivePoint(pointId, userId);
   }
 }

@@ -36,6 +36,15 @@ export class AuthController {
     return this.authService.signIn(signInBody);
   }
 
+  @Post('/user/signIn')
+  @ApiOkResponse({
+    type: SignInResDto,
+    description: '유저 로그인',
+  })
+  async userSignIn(@Body() signInBody: SignInReqDto): Promise<SignInResDto> {
+    return this.authService.userSignIn(signInBody);
+  }
+
   @UseGuards(AuthGuard)
   @Get('/signOut')
   @ApiOkResponse({

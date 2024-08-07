@@ -21,6 +21,8 @@ export class MyProfileResDto extends UserProfileResDto {
 
   static async makeRes(data: User) {
     const resDto = new MyProfileResDto();
+
+    resDto.id = data.id;
     resDto.nickname = data.nickname;
     resDto.countryCode = data.countryCode;
     resDto.profileImageUrl = data.profileImageUrl;

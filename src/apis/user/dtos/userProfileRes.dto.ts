@@ -4,6 +4,9 @@ import { DivingRank } from 'src/common/enums';
 import { User } from 'src/entities';
 
 export class UserProfileResDto {
+  @ApiProperty({ description: '유저 id' })
+  id: number;
+
   @ApiProperty({ description: '닉네임' })
   @IsString()
   nickname: string;
@@ -19,6 +22,8 @@ export class UserProfileResDto {
 
   static async makeRes(data: User) {
     const resDto = new UserProfileResDto();
+
+    resDto.id = data.id;
     resDto.nickname = data.nickname;
     resDto.countryCode = data.countryCode;
     resDto.profileImageUrl = data.profileImageUrl;

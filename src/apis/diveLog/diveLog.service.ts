@@ -18,8 +18,7 @@ import {
 } from 'src/common/enums';
 import { ModifyDiveLogReqDto } from './dtos/modifyDiveLogReq.dto';
 import { DiversException } from 'src/common/exceptions';
-// import { ConvertKeyDto } from './dtos/convertKey.dto';
-// import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
+
 @Injectable()
 export class DiveLogService {
   constructor(
@@ -27,53 +26,32 @@ export class DiveLogService {
     private readonly diveLogDetailRepository: DiveLogDetailRepository,
   ) {}
 
-  async getDiveLogList(
-    pagination: PaginationReqDto,
-  ): Promise<ListResDto<DiveLogInListResDto>> {
+  async getMyDiveLogList(userId: number, pagination: PaginationReqDto) {
     const { page, pagingCount } = pagination;
 
-    //updatedAt과 createdAt을 같이 비교하는 방법? - 필요가 있나...? create 됬을 때, update를 같이 넣어주면 될듯
     return this.diveLogRepository.getDiveLogListWithCount(
       page,
       pagingCount,
-      false,
-      { isPublic: true, isBlocked: false },
+      { userId },
       { createdAt: 'DESC' },
     );
   }
 
-  // search에서 사용할 수 있을듯
-  async getDiveLogListByUserId(
-    userId: number,
-    requestUserId: number,
+  async getUserDiveLogList(
+    authId: number,
     pagination: PaginationReqDto,
-  ) {
+  ): Promise<ListResDto<DiveLogInListResDto>> {
     const { page, pagingCount } = pagination;
 
-    // 본인 로그 리스트 확인 -> 자신 userId를 서비스 단에서 토큰에서 뽑는 방법이 있을까?
-    if (userId === requestUserId) {
-      return this.diveLogRepository.getDiveLogListWithCount(
-        page,
-        pagingCount,
-        true,
-        { userId },
-        { createdAt: 'DESC' },
-      );
-    } else {
-      return this.diveLogRepository.getDiveLogListWithCount(
-        page,
-        pagingCount,
-        false,
-        { userId, isPublic: true, isBlocked: false },
-        { createdAt: 'DESC' },
-      );
-    }
+    return this.diveLogRepository.getDiveLogListWithCount(
+      page,
+      pagingCount,
+      { user: { authId }, isPublic: true, isBlocked: false },
+      { createdAt: 'DESC' },
+    );
   }
 
-  async getDiveLog(
-    logId: number,
-    requestUserId: number,
-  ): Promise<DiveLogResDto> {
+  async getDiveLog(logId: number, userId: number): Promise<DiveLogResDto> {
     const diveLog = await this.diveLogRepository
       .findOneOrFail({
         where: {
@@ -84,11 +62,10 @@ export class DiveLogService {
         throw new DiversException('NO_DIVELOG');
       });
 
-    if (diveLog.userId == requestUserId)
-      return DiveLogResDto.makeRes(diveLog, true);
+    if (diveLog.userId == userId) return DiveLogResDto.makeRes(diveLog);
     else if (diveLog.isPublic) {
       if (diveLog.isBlocked) throw new DiversException('BLOCKED_DIVELOG');
-      else return DiveLogResDto.makeRes(diveLog, false);
+      else return DiveLogResDto.makeRes(diveLog);
     } else throw new DiversException('NO_ACCESS_PRIVATE_DIVELOG');
   }
 

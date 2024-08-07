@@ -30,29 +30,31 @@ export class UserController {
   async getMyProfile(
     @CurrentUser() user: JwtAccessPayloadDto,
   ): Promise<MyProfileResDto> {
-    const { authId } = user;
+    const { userId } = user;
 
-    return this.userService.getMyProfile(authId);
+    return this.userService.getMyProfile(userId);
   }
 
   @ApiOkResponse({
     type: MsgResDto,
     description: '유저 프로필 수정',
   })
+  @UseGuards(AuthGuard)
   @Patch('/change/profile')
   async changeMyProfile(
     @CurrentUser() user: JwtAccessPayloadDto,
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
   ): Promise<MsgResDto> {
-    const { authId } = user;
+    const { userId } = user;
 
-    return await this.userService.changeUser(authId, changeUserProfileBody);
+    return await this.userService.changeUser(userId, changeUserProfileBody);
   }
 
   @ApiOkResponse({
     type: UserProfileResDto,
     description: '유저 프로필 확인',
   })
+  @UseGuards(AuthGuard)
   @Get('/:userId/profile')
   async getUserProfile(
     @Param('userId') userId: number,
@@ -60,22 +62,26 @@ export class UserController {
     return this.userService.getUserProfileById(userId);
   }
 
-  @Patch('/:userId/change/profileImage')
   @ApiOkResponse({
     type: MsgResDto,
     description: '프로필 이미지 변경',
   })
+  @UseGuards(AuthGuard)
+  @Patch('/:userId/change/profileImage')
   async changeMyProfileImage(@Body() changeProfImgBody) {}
 
-  @Patch('/:userId/certificate/email')
   @ApiOkResponse({
     type: MsgResDto,
     description: '이메일 인증',
   })
+  @Patch('/:userId/certificate/email')
   async certificateEmail(@Body() cfEmailBody) {}
 
+  @ApiOkResponse({
+    type: MsgResDto,
+    description: '휴대폰 인증',
+  })
   @Patch('/:userId/certificate/phone')
-  @ApiOkResponse({})
   async certificatePhone(@Body() cfPhoneBody) {}
 
   @ApiOkResponse({
@@ -84,10 +90,9 @@ export class UserController {
   })
   @Get('/checkDuplicate/nickname')
   async checkNicknameDuplicate(@Query('name') nickname: string) {
-    return await this.userService.checkNicknameDuplicate(nickname);
+    return this.userService.checkNicknameDuplicate(nickname);
   }
 
-  //큰일남. 사용할 수 있는 api가 없네 엄. 사진 받아서 수작업으로 검증해야하나?
   // 차후 개발 feature로 빼지뭐 ㅋㅋ
   @Patch('/:userId/certificate/rank')
   async certificateDiveRank() {}

@@ -5,6 +5,7 @@ import { BasicDate } from './BasicDate';
 class Auth extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
+
   /**
    로그인 아이디
   */

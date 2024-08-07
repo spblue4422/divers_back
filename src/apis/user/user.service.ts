@@ -20,9 +20,9 @@ export class UserService {
       });
   }
 
-  async getMyProfile(authId: number): Promise<MyProfileResDto> {
+  async getMyProfile(userId: number): Promise<MyProfileResDto> {
     return this.userRepository
-      .findOneByOrFail({ authId })
+      .findOneByOrFail({ id: userId })
       .then((data) => MyProfileResDto.makeRes(data))
       .catch(() => {
         throw new DiversException('INVALID_LOGIN');
@@ -46,19 +46,13 @@ export class UserService {
     return MsgResDto.success();
   }
 
-  async changeUser(authId: number, changeProfileBody: ChangeUserProfileReqDto) {
-    const user = await this.userRepository
-      .findOneByOrFail({ authId })
-      .catch(() => {
-        throw new DiversException('INVALID_LOGIN');
-      });
-
+  async changeUser(userId: number, changeProfileBody: ChangeUserProfileReqDto) {
     //혹시 모르니 로직 넣어둘까. => 이거 api를 따로 만들어두면 빼도 되는 부분
     const { nickname } = changeProfileBody;
     await this.checkNicknameDuplicate(nickname);
 
     await this.userRepository.save({
-      id: user.id,
+      id: userId,
       nickname,
     });
 
@@ -70,5 +64,18 @@ export class UserService {
       throw new DiversException('DUPLICATE_NICKNAME');
 
     return MsgResDto.success();
+  }
+
+  // Used in AuthService
+  // 더 좋은 방법이 있을까?
+  async getUserWithAuth(authId: number) {
+    return this.userRepository
+      .findOneOrFail({
+        where: { authId },
+        relations: { auth: true },
+      })
+      .catch(() => {
+        throw new DiversException('INVALID_LOGIN');
+      });
   }
 }

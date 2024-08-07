@@ -35,12 +35,8 @@ export class AuthGuard implements CanActivate {
   }
 
   private getAccessTokenFromHeader(request: Request) {
-    // access token은 authorization으로 받고, refresh token은 따로 받는건가?
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    //const refreshToken =
-    //  request.headers['refresh-token'].toString() ?? undefined;
 
-    //return { accessToken: type === 'Bearer' ? token : undefined, refreshToken };
     return type === 'Bearer' ? token : undefined;
   }
 }

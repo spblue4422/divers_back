@@ -20,15 +20,13 @@ export class DiveLogInListResDto {
   @ApiProperty()
   isBlocked?: boolean;
 
-  static makeRes(data: DiveLog, isOwned: boolean) {
+  static makeRes(data: DiveLog) {
     const resDto = new DiveLogInListResDto();
 
     resDto.id = data.id;
     resDto.userNickname = data.user.nickname;
     resDto.pointName = data.pointName;
     resDto.diveDate = data.diveDate;
-    resDto.isPublic = isOwned ? data.isPublic : null;
-    resDto.isBlocked = isOwned ? data.isBlocked : null;
 
     return resDto;
   }

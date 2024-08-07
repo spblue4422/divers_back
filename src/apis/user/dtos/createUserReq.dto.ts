@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
-import { JoinType } from 'src/common/enums';
 
 export class CreateUserReqDto {
   @ApiProperty({ description: '닉네임' })

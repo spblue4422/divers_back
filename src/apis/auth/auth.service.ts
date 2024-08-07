@@ -58,6 +58,68 @@ export class AuthService {
     } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
   }
 
+  async userSignIn(signInBody: SignInReqDto): Promise<SignInResDto> {
+    const { loginId, password } = signInBody;
+    //존재하는 계정인지 확인
+    const { id, isBanned, salt, role } =
+      await this.authRepository.findOneByLoginIdOrFail(loginId);
+
+    // 밴 당한 계정인지 확인
+    if (isBanned) throw new DiversException('BANNED_USER');
+
+    //비밀번호 암호화 검증
+    const encrypted = await bcrypt.hash(password, salt);
+
+    if (bcrypt.compare(password, encrypted)) {
+      const { id: userId } = await this.userService.getUserWithAuth(id);
+
+      const accessToken = await this.jwtService.signAsync(
+        { authId: id, userId, role },
+        { secret: this.secret, expiresIn: this.access_expired },
+      );
+
+      const refreshToken = await this.jwtService.signAsync(
+        { authId: id },
+        { secret: this.secret, expiresIn: this.refresh_expired },
+      );
+
+      await this.authRepository.save({ id, refreshToken });
+
+      return SignInResDto.signInSuccess(accessToken, refreshToken);
+    } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
+  }
+
+  // async shopSignIn(signInBody: SignInReqDto): Promise<SignInResDto> {
+  //   const { loginId, password } = signInBody;
+  //   //존재하는 계정인지 확인
+  //   const { id, isBanned, salt, role } =
+  //     await this.authRepository.findOneByLoginIdOrFail(loginId);
+
+  //   // 밴 당한 계정인지 확인
+  //   if (isBanned) throw new DiversException('BANNED_USER');
+
+  //   //비밀번호 암호화 검증
+  //   const encrypted = await bcrypt.hash(password, salt);
+
+  //   if (bcrypt.compare(password, encrypted)) {
+  //     const { id: userId } = await this.diveShopService.getMyDiveShop()
+
+  //     const accessToken = await this.jwtService.signAsync(
+  //       { authId: id, loginId, userId, role },
+  //       { secret: this.secret, expiresIn: this.access_expired },
+  //     );
+
+  //     const refreshToken = await this.jwtService.signAsync(
+  //       { authId: id },
+  //       { secret: this.secret, expiresIn: this.refresh_expired },
+  //     );
+
+  //     await this.authRepository.save({ id, refreshToken });
+
+  //     return SignInResDto.signInSuccess(accessToken, refreshToken);
+  //   } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
+  // }
+
   async userSignUp(signUpBody: UserSignUpReqDto): Promise<MsgResDto> {
     const { loginId, password, createUserBody } = signUpBody;
 
@@ -107,15 +169,15 @@ export class AuthService {
         throw new DiversException('INVALID_TOKEN');
       });
 
-    const { loginId, role } = await this.authRepository
-      .findOneByOrFail({ id: authId, refreshToken })
-      .catch(() => {
-        throw new DiversException('INVALID_TOKEN');
-      });
+    const { id: userId, auth } = await this.userService.getUserWithAuth(authId);
+    const { role, refreshToken: savedRefresh } = auth;
+
+    if (refreshToken != savedRefresh)
+      throw new DiversException('INVALID_TOKEN');
 
     const newAccessToken = await this.signToken({
       authId,
-      loginId,
+      userId,
       role,
     });
 
