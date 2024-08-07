@@ -78,7 +78,7 @@ export enum RecommendationTarget {
 }
 
 export enum Role {
-  USER = 0,
-  SHOP = 1,
+  USER = 100,
+  SHOP = 200,
   ADMIN = 888,
 }

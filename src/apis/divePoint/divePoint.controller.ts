@@ -2,7 +2,7 @@ import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { DivePointService } from './divePoint.service';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { CurrentUser } from 'src/common/decorators/currentUser';
+import { Current } from 'src/common/decorators/current';
 import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
 @Controller('point')
@@ -21,13 +21,14 @@ export class DivePointController {
     return this.divePointService.getDivePoint(pointId);
   }
 
+  // roleguard - 유저만?
   @Patch('/recommend/:pointId')
   async recommendPoint(
     @Param() pointId: number,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return this.divePointService.recommendDivePoint(pointId, userId);
+    return this.divePointService.recommendDivePoint(pointId, userShopId);
   }
 }

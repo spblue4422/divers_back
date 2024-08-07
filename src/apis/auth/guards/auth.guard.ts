@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
         throw new DiversException('INVALID_TOKEN');
       });
 
-    request['user'] = payload as JwtAccessPayloadDto;
+    request['auth-info'] = payload as JwtAccessPayloadDto;
 
     return true;
   }

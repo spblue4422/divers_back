@@ -37,7 +37,7 @@ class Auth extends BasicDate {
   //joinType: string;
 
   /**
-   user - 0 / shop - 1 / admin - 888 구분
+   user - 100 / shop - 200 / admin - 888
    */
   @Column()
   role: number;

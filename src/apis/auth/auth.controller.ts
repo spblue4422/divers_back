@@ -18,8 +18,8 @@ import { AuthService } from './auth.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { SignInResDto } from './dtos/signInRes.dto';
 import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
-import { AuthGuard } from './auth.guard';
-import { CurrentUser } from 'src/common/decorators/currentUser';
+import { AuthGuard } from './guards/auth.guard';
+import { Current } from 'src/common/decorators/current';
 import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
 //@UseGuards(AuthGuard)
@@ -51,8 +51,8 @@ export class AuthController {
     type: MsgResDto,
     description: '로그아웃',
   })
-  async signOut(@CurrentUser() user: JwtAccessPayloadDto): Promise<MsgResDto> {
-    const { authId } = user;
+  async signOut(@Current() cur: JwtAccessPayloadDto): Promise<MsgResDto> {
+    const { authId } = cur;
 
     return this.authService.signOut(authId);
   }
@@ -73,6 +73,7 @@ export class AuthController {
   }
 
   //어디까지 날려야할까?
+  @UseGuards(AuthGuard)
   @Delete('/withdraw')
   @ApiOkResponse({
     type: MsgResDto,

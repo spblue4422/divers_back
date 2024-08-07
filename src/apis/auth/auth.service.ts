@@ -58,31 +58,36 @@ export class AuthService {
     } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
   }
 
+  // 유저 로그인
   async userSignIn(signInBody: SignInReqDto): Promise<SignInResDto> {
     const { loginId, password } = signInBody;
-    //존재하는 계정인지 확인
+
+    // 존재하는 계정인지 확인
     const { id, isBanned, salt, role } =
       await this.authRepository.findOneByLoginIdOrFail(loginId);
 
-    // 밴 당한 계정인지 확인
+    // 밴 여부 확인
     if (isBanned) throw new DiversException('BANNED_USER');
 
-    //비밀번호 암호화 검증
+    // 비밀번호 암호화 검증
     const encrypted = await bcrypt.hash(password, salt);
 
     if (bcrypt.compare(password, encrypted)) {
       const { id: userId } = await this.userService.getUserWithAuth(id);
 
+      // accessToken
       const accessToken = await this.jwtService.signAsync(
-        { authId: id, userId, role },
+        { authId: id, userShopId: userId, role },
         { secret: this.secret, expiresIn: this.access_expired },
       );
 
+      // refreshToken
       const refreshToken = await this.jwtService.signAsync(
         { authId: id },
         { secret: this.secret, expiresIn: this.refresh_expired },
       );
 
+      // save refreshToken in database
       await this.authRepository.save({ id, refreshToken });
 
       return SignInResDto.signInSuccess(accessToken, refreshToken);
@@ -177,7 +182,7 @@ export class AuthService {
 
     const newAccessToken = await this.signToken({
       authId,
-      userId,
+      userShopId: userId,
       role,
     });
 

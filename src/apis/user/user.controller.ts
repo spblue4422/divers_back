@@ -13,14 +13,15 @@ import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { MyProfileResDto } from './dtos/myProfileRes.dto';
-import { CurrentUser } from 'src/common/decorators/currentUser';
+import { Current } from 'src/common/decorators/current';
 import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // 롤가드 - 유저만
   @ApiOkResponse({
     type: MyProfileResDto,
     description: '자신 프로필 확인',
@@ -28,13 +29,14 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get('/my/profile')
   async getMyProfile(
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MyProfileResDto> {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return this.userService.getMyProfile(userId);
+    return this.userService.getMyProfile(userShopId);
   }
 
+  // 롤가드 - 유저만
   @ApiOkResponse({
     type: MsgResDto,
     description: '유저 프로필 수정',
@@ -42,12 +44,12 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Patch('/change/profile')
   async changeMyProfile(
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
   ): Promise<MsgResDto> {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return await this.userService.changeUser(userId, changeUserProfileBody);
+    return await this.userService.changeUser(userShopId, changeUserProfileBody);
   }
 
   @ApiOkResponse({

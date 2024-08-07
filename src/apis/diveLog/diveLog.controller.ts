@@ -17,34 +17,41 @@ import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
 import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { CurrentUser } from 'src/common/decorators/currentUser';
+import { Current } from 'src/common/decorators/current';
 import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from 'src/common/decorators/roles';
+import { Role } from 'src/common/enums';
 
 @UseGuards(AuthGuard)
+@UseGuards(RoleGuard)
 @Controller('diveLog')
 export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}
 
+  // 롤가드 - 일단 유저만
+  @Get('/my/list')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: ListResDto<DiveLogInListResDto>,
     description: '내 다이브 로그 목록 조회',
   })
-  @Get('/my/list')
   async getMyDiveLogList(
     @Query() pagination: PaginationReqDto,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { userId } = user;
-    return this.diveLogService.getMyDiveLogList(userId, pagination);
+    const { userShopId } = cur;
+    return this.diveLogService.getMyDiveLogList(userShopId, pagination);
   }
 
+  @Get('/user/:userId/list')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: ListResDto<DiveLogInListResDto>,
     description: '유저 다이브 로그 목록 조회',
   })
-  @Get('/user/:userId/list')
   async getUserDiveLogList(
     @Param('userId') userId: number,
     @Query() pagination: PaginationReqDto,
@@ -52,66 +59,80 @@ export class DiveLogController {
     return this.diveLogService.getUserDiveLogList(userId, pagination);
   }
 
+  // 롤 일단 유저만
+  @Get('/:logId')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: DiveLogResDto,
     description: '다이브 로그 조회',
   })
-  @Get('/:logId')
   async getDiveLogById(
     @Param() logId: number,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<DiveLogResDto> {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return this.diveLogService.getDiveLog(logId, userId);
+    return this.diveLogService.getDiveLog(logId, userShopId);
   }
 
+  @Get('/:logId/detail')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: DiveLogDetailResDto,
     description: '상세 다이브 로그 조회',
   })
-  @Get('/:logId/detail')
   async getDiveLogDetialById(
     @Param() logid: number,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userId } = user;
+    const { userShopId } = cur;
   }
 
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 생성' })
+  // 롤가드 - 유저만 ?
   @Post('/create')
+  @Roles([Role.USER])
+  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 생성' })
   async createDiveLog(
     @Body() createDiveLogBody: CreateDiveLogReqDto,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return this.diveLogService.createDiveLog(userId, createDiveLogBody);
+    return this.diveLogService.createDiveLog(userShopId, createDiveLogBody);
   }
 
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 수정' })
+  // 롤가드 - 유저만 ?
   @Patch('/:logId/modify')
+  @Roles([Role.USER])
+  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 수정' })
   async modfiyDiveLog(
     @Param() logId: number,
     @Body() modifyDiveLogBody,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
+    return this.diveLogService.modifyDiveLog(
+      logId,
+      userShopId,
+      modifyDiveLogBody,
+    );
   }
 
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 삭제' })
+  // 롤가드 - 유저만 ?
   @Delete('/:logId/remove')
+  @Roles([Role.USER])
+  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 삭제' })
   async removeDiveLog(
     @Param() logId: number,
-    @CurrentUser() user: JwtAccessPayloadDto,
+    @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userId } = user;
+    const { userShopId } = cur;
 
-    return this.diveLogService.removeDiveLog(logId, userId);
+    return this.diveLogService.removeDiveLog(logId, userShopId);
   }
 
   @Patch('/:logId/changePublic')
+  @Roles([Role.USER])
   async changeIsPublic() {}
 }
