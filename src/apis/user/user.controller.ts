@@ -33,7 +33,10 @@ export class UserController {
   ): Promise<MyProfileResDto> {
     const { userId } = cur;
 
-    return this.userService.getMyProfile(userId);
+    return this.userService.getUserProfileById(
+      userId,
+      true,
+    ) as unknown as MyProfileResDto;
   }
 
   // 롤가드 - 유저만
@@ -61,7 +64,7 @@ export class UserController {
   async getUserProfile(
     @Param('userId') userId: number,
   ): Promise<UserProfileResDto> {
-    return this.userService.getUserProfileById(userId);
+    return this.userService.getUserProfileById(userId, false);
   }
 
   @ApiOkResponse({

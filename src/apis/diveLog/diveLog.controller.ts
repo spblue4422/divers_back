@@ -31,7 +31,6 @@ import { Role } from 'src/common/enums';
 export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}
 
-  // 롤가드 - 일단 유저만
   @Get('/my/list')
   @Roles([Role.USER])
   @ApiOkResponse({
@@ -39,11 +38,12 @@ export class DiveLogController {
     description: '내 다이브 로그 목록 조회',
   })
   async getMyDiveLogList(
-    @Query() pagination: PaginationReqDto,
+    @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
     const { userId } = cur;
-    return this.diveLogService.getMyDiveLogList(userId, pagination);
+
+    return this.diveLogService.getUserDiveLogList(userId, true, paginationForm);
   }
 
   @Get('/user/:userId/list')
@@ -54,12 +54,15 @@ export class DiveLogController {
   })
   async getUserDiveLogList(
     @Param('userId') userId: number,
-    @Query() pagination: PaginationReqDto,
+    @Query() paginationForm: PaginationReqDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    return this.diveLogService.getUserDiveLogList(userId, pagination);
+    return this.diveLogService.getUserDiveLogList(
+      userId,
+      false,
+      paginationForm,
+    );
   }
 
-  // 롤 일단 유저만
   @Get('/:logId')
   @Roles([Role.USER])
   @ApiOkResponse({
@@ -75,20 +78,6 @@ export class DiveLogController {
     return this.diveLogService.getDiveLog(logId, userId);
   }
 
-  @Get('/:logId/detail')
-  @Roles([Role.USER])
-  @ApiOkResponse({
-    type: DiveLogDetailResDto,
-    description: '상세 다이브 로그 조회',
-  })
-  async getDiveLogDetialById(
-    @Param() logid: number,
-    @Current() cur: JwtAccessPayloadDto,
-  ) {
-    const { userId } = cur;
-  }
-
-  // 롤가드 - 유저만 ?
   @Post('/create')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 생성' })
@@ -101,7 +90,6 @@ export class DiveLogController {
     return this.diveLogService.createDiveLog(userId, createDiveLogBody);
   }
 
-  // 롤가드 - 유저만 ?
   @Patch('/:logId/modify')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 수정' })
@@ -115,7 +103,6 @@ export class DiveLogController {
     return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
   }
 
-  // 롤가드 - 유저만 ?
   @Delete('/:logId/remove')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 삭제' })

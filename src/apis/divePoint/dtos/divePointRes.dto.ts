@@ -1,21 +1,18 @@
 import { DivePoint } from 'src/entities';
+import { DivePointInListResDto } from './divePointInListRes.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class DivePointResDto {
-  id: number;
-
-  name: string;
-
+export class DivePointResDto extends DivePointInListResDto {
+  @ApiProperty({ description: '설명' })
   description: string;
 
-  countryCode: string;
-
+  @ApiProperty({ description: '위치' })
   location: string;
 
+  @ApiProperty({ description: '추천수' })
   recommendation: number;
 
-  averageStar: number;
-
-  static async makeRes(data: DivePoint) {
+  static makeRes(data: DivePoint) {
     const resDto = new DivePointResDto();
 
     resDto.id = data.id;

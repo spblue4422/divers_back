@@ -33,16 +33,18 @@ export class DiveShopService {
     return this.diveShopRepository.findByIdOrFail(shopId);
   }
 
+  /*
   async getMyDiveShop(myshop: number): Promise<DiveShopResDto> {
     return this.diveShopRepository.findByIdOrFail(myshop);
   }
+    */
 
   // 트랜잭션 필요
   async recommedShop(shopId: number, userId: number) {
     const { recommendation } =
       await this.diveShopRepository.findByIdOrFail(shopId);
 
-    await this.recommendationService.recommendTarget(
+    const recommendOrCancel = await this.recommendationService.recommendTarget(
       userId,
       'DIVESHOP',
       shopId,
@@ -50,7 +52,7 @@ export class DiveShopService {
 
     await this.diveShopRepository.update(
       { id: shopId },
-      { recommendation: recommendation + 1 },
+      { recommendation: recommendation + (recommendOrCancel ? 1 : -1) },
     );
 
     return MsgResDto.success();

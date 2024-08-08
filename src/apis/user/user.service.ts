@@ -11,22 +11,15 @@ import { DiversException } from 'src/common/exceptions';
 export class UserService {
   constructor(private readonly userRepository: UserRepostiory) {}
 
-  async getUserProfileById(userId: number): Promise<UserProfileResDto> {
+  async getUserProfileById(
+    userId: number,
+    owner: boolean,
+  ): Promise<MyProfileResDto | UserProfileResDto> {
     return this.userRepository
-      .findOneByOrFail({ id: userId })
-      .then((data) => UserProfileResDto.makeRes(data))
-      .catch(() => {
-        throw new DiversException('NO_USER');
-      });
-  }
-
-  async getMyProfile(userId: number): Promise<MyProfileResDto> {
-    return this.userRepository
-      .findOneByOrFail({ id: userId })
-      .then((data) => MyProfileResDto.makeRes(data))
-      .catch(() => {
-        throw new DiversException('INVALID_LOGIN');
-      });
+      .findOneByUserId(userId)
+      .then((data) =>
+        owner ? MyProfileResDto.makeRes(data) : UserProfileResDto.makeRes(data),
+      );
   }
 
   async createUser(

@@ -18,6 +18,8 @@ import {
 } from 'src/common/enums';
 import { ModifyDiveLogReqDto } from './dtos/modifyDiveLogReq.dto';
 import { DiversException } from 'src/common/exceptions';
+import { FindOptionsWhere } from 'typeorm';
+import { DiveLog } from 'src/entities';
 
 @Injectable()
 export class DiveLogService {
@@ -26,61 +28,37 @@ export class DiveLogService {
     private readonly diveLogDetailRepository: DiveLogDetailRepository,
   ) {}
 
-  async getMyDiveLogList(userId: number, pagination: PaginationReqDto) {
-    const { page, pagingCount } = pagination;
-
-    return this.diveLogRepository.getDiveLogListWithCount(
-      page,
-      pagingCount,
-      { userId },
-      { createdAt: 'DESC' },
-    );
-  }
-
   async getUserDiveLogList(
-    authId: number,
-    pagination: PaginationReqDto,
+    userId: number,
+    owner: boolean,
+    paginationForm: PaginationReqDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { page, pagingCount } = pagination;
+    const { page, pagingCount } = paginationForm;
+    const where: FindOptionsWhere<DiveLog> = owner
+      ? { userId }
+      : { userId, isPublic: true, isBlocked: false };
 
-    return this.diveLogRepository.getDiveLogListWithCount(
-      page,
-      pagingCount,
-      { user: { authId }, isPublic: true, isBlocked: false },
-      { createdAt: 'DESC' },
-    );
+    return this.diveLogRepository.findListWithCount(page, pagingCount, where, {
+      createdAt: 'DESC',
+    });
   }
 
   async getDiveLog(logId: number, userId: number): Promise<DiveLogResDto> {
-    const diveLog = await this.diveLogRepository
-      .findOneOrFail({
-        where: {
-          id: logId,
-        },
+    const entireLog = await this.diveLogDetailRepository
+      .findOneByOrFail({
+        logId,
       })
       .catch(() => {
         throw new DiversException('NO_DIVELOG');
       });
 
-    if (diveLog.userId == userId) return DiveLogResDto.makeRes(diveLog);
+    const { diveLog } = entireLog;
+
+    if (diveLog.userId == userId) return DiveLogResDto.makeDetailRes(entireLog);
     else if (diveLog.isPublic) {
       if (diveLog.isBlocked) throw new DiversException('BLOCKED_DIVELOG');
-      else return DiveLogResDto.makeRes(diveLog);
+      else return DiveLogResDto.makeDetailRes(entireLog);
     } else throw new DiversException('NO_ACCESS_PRIVATE_DIVELOG');
-  }
-
-  async getDiveLogDetail(logId: number) {
-    const diveLogDetail = await this.diveLogDetailRepository
-      .findOneOrFail({
-        where: {
-          logId,
-        },
-      })
-      .catch(() => {
-        throw new DiversException('NO_DIVELOG');
-      });
-    // 들고 올 때, value -> enum 다 해줘야 함.
-    // return DiveLogDetailResDto.
   }
 
   async convertKeyToValueForLog(keyObj: CreateDiveLogReqDto) {
@@ -129,6 +107,7 @@ export class DiveLogService {
       userId,
       ...createDiveLogBody,
     });
+
     await this.diveLogDetailRepository.insert({
       logId: identifiers[0].id,
       ...createDiveLogBody,

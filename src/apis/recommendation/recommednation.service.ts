@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RecommendationRepository } from './recommendation.repository';
 import { convertKeyToValue } from 'src/common/utils/enumConverter';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-
 @Injectable()
 export class RecommendationService {
   constructor(
@@ -19,14 +17,16 @@ export class RecommendationService {
         targetId,
       );
 
-    if (!recommendation)
+    if (!recommendation) {
       await this.recommendationRepository.insert({
         userId,
         target: targetVal,
         targetId,
       });
-    else await this.recommendationRepository.delete({ id: recommendation.id });
-
-    return MsgResDto.success();
+      return true;
+    } else {
+      await this.recommendationRepository.delete({ id: recommendation.id });
+      return false;
+    }
   }
 }

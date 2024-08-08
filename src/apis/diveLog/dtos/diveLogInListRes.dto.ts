@@ -6,7 +6,7 @@ export class DiveLogInListResDto {
   id: number;
 
   @ApiProperty()
-  userNickname: string;
+  nickname: string;
 
   @ApiProperty()
   pointName: string;
@@ -24,7 +24,7 @@ export class DiveLogInListResDto {
     const resDto = new DiveLogInListResDto();
 
     resDto.id = data.id;
-    resDto.userNickname = data.user.nickname;
+    resDto.nickname = data.user.nickname;
     resDto.pointName = data.pointName;
     resDto.diveDate = data.diveDate;
 

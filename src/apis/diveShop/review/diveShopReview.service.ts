@@ -5,6 +5,7 @@ import { DiveShopReviewInListResDto } from './dtos/diveShopReviewInListRes.dto';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
 import { CreateDiveShopReviewReqDto } from './dtos/createDiveShopReviewReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+import { DiversException } from 'src/common/exceptions';
 
 @Injectable()
 export class DiveShopReviewService {
@@ -37,12 +38,35 @@ export class DiveShopReviewService {
     return MsgResDto.success();
   }
 
-  async modifyReview(shopId: number, reviewId: number, modifyReviewBody) {
-    // await this.diveShopReviewRepository.f
+  async modifyReview(reviewId: number, userId: number, modifyReviewBody) {
+    await this.diveShopReviewRepository
+      .findOneByOrFail({
+        id: reviewId,
+        userId,
+      })
+      .catch(() => {
+        throw new DiversException('NO_DIVESHOP_REVIEW');
+      });
+
+    // save 들어갈 자리
+
     return MsgResDto.success();
   }
 
-  async deleteReview(shopId: number, reviewId: number) {}
+  async removeReview(reviewId: number, userId: number) {
+    await this.diveShopReviewRepository
+      .findOneByOrFail({
+        id: reviewId,
+        userId,
+      })
+      .catch(() => {
+        throw new DiversException('NO_DIVESHOP_REVIEW');
+      });
+
+    await this.diveShopReviewRepository.softDelete({ id: reviewId });
+
+    return MsgResDto.success();
+  }
 
   async recommendReview(reviewId: number) {}
 }

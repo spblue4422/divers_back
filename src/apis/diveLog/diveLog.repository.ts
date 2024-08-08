@@ -15,7 +15,7 @@ export class DiveLogRepository extends Repository<DiveLog> {
     super(DiveLog, dataSource.createEntityManager());
   }
 
-  async getDiveLogListWithCount(
+  async findListWithCount(
     page: number,
     pagingCount: number,
     where?: FindOptionsWhere<DiveLog>,

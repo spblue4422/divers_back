@@ -18,9 +18,9 @@ export class DiveShopController {
     description: '다이브샵 목록 조회',
   })
   async getDiveShopList(
-    @Query() pagination: PaginationReqDto,
+    @Query() paginationForm: PaginationReqDto,
   ): Promise<ListResDto<DiveShopInListResDto>> {
-    return this.diveShopService.getDiveShopList(pagination);
+    return this.diveShopService.getDiveShopList(paginationForm);
   }
 
   @Get('/:shopId')
@@ -44,6 +44,7 @@ export class DiveShopController {
   }
 
   // 다이브샵 정보도 생각해보면 사장 맘대로 수정하면 안되지 않을까? 세부적인 로직은 좀 더 고민해봐야할듯
+  /*
   @Patch('/:shopId/modify')
   @ApiOkResponse({ description: '다이브샵 정보 수정' })
   async modifyDiveShopProfile(
@@ -58,7 +59,7 @@ export class DiveShopController {
   async applyCertDiveShop(@Param('shopId') shopId: number): Promise<MsgResDto> {
     // 주요 로직 - 인증 신청 생성, 만약 이미 심사중인 신청이 존재하거나 반려당한 신청이 3개 이상이면 신청 불가
     return this.diveShopService.applyCertDiveShop(shopId);
-  }
+  }*/
 
   //어드민용 생성, 삭제 있어야 할듯
 }

@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { DiveShopReviewService } from './diveShopReview.service';
 import { CreateDiveShopReviewReqDto } from './dtos/createDiveShopReviewReq.dto';
@@ -15,7 +16,11 @@ import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ListResDto } from 'src/common/dtos/listRes.dto';
 import { DiveShopReviewInListResDto } from './dtos/diveShopReviewInListRes.dto';
 import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
+import { Current } from 'src/common/decorators/current';
+import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+import { AuthGuard } from 'src/apis/auth/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('shopReview')
 export class DiveShopReviewController {
   constructor(private readonly diveShopReviewServcie: DiveShopReviewService) {}
@@ -44,8 +49,10 @@ export class DiveShopReviewController {
   async createReview(
     @Param('shopId') shopId: number,
     @Body() createReviewBody: CreateDiveShopReviewReqDto,
-    userId: number,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
+    const { userId } = cur;
+
     return this.diveShopReviewServcie.createReview(
       shopId,
       userId,
@@ -61,8 +68,15 @@ export class DiveShopReviewController {
   async modifyReview(
     @Param('reviewId') reviewId: number,
     @Body() modifyReviewBody,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    return MsgResDto.success();
+    const { userId } = cur;
+
+    return this.diveShopReviewServcie.modifyReview(
+      reviewId,
+      userId,
+      modifyReviewBody,
+    );
   }
 
   @ApiOkResponse({
@@ -71,9 +85,12 @@ export class DiveShopReviewController {
   })
   @Delete('/:reviewId/remove')
   async removeReview(
-    @Param('shopId') shopId: number,
+    // @Param('shopId') shopId: number,
     @Param('reviewId') reviewId: number,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    return MsgResDto.success();
+    const { userId } = cur;
+
+    return this.diveShopReviewServcie.removeReview(reviewId, userId);
   }
 }
