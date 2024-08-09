@@ -1,10 +1,10 @@
 export enum Weather {
-  SUNNY = 0,
-  CLOUDY = 1,
-  RAINY = 2,
-  FOGGY = 3,
-  STORMY = 4,
-  SNOWY = 5,
+  SUNNY = 1,
+  CLOUDY = 2,
+  RAINY = 3,
+  FOGGY = 4,
+  STORMY = 5,
+  SNOWY = 6,
 }
 
 export enum JoinType {
@@ -17,31 +17,31 @@ export enum JoinType {
 }
 
 export enum DegreeExpression {
-  LOW = 0,
-  MIDDLE = 1,
-  HIGH = 2,
+  LOW = 1,
+  MIDDLE = 2,
+  HIGH = 3,
 }
 
 export enum DivingType {
-  'Boat',
-  'Night',
-  'Beach',
-  'Sunset',
-  'Cave',
-  'Liveaboard',
+  BOAT = 1,
+  NIGHT = 2,
+  BEACH = 3,
+  SUNSET = 4,
+  CAVE = 5,
+  LIVEABOARD = 6,
 }
 
 export enum DivingEquipment {
-  DIVE_COMP = 0,
-  SMB = 1,
+  DIVE_COMP = 1,
+  SMB = 2,
 }
 
 export enum DivingRank {
-  NONE = 0,
-  OPENWATER = 1,
-  ADVANCED = 2,
-  RESCUE = 3,
-  INSTRUCTOR = 4,
+  NONE = 1,
+  OPENWATER = 2,
+  ADVANCED = 3,
+  RESCUE = 4,
+  INSTRUCTOR = 5,
 }
 
 export enum SearchShop {
@@ -71,10 +71,10 @@ export enum SearchLog {
 }
 
 export enum RecommendationTarget {
-  SHOP = 0,
-  POINT = 1,
-  SHOP_REVIEW = 2,
-  POINT_REVIEW = 3,
+  DIVESHOP = 1,
+  DIVEPOINT = 2,
+  DIVESHOP_REVIEW = 3,
+  DIVEPOINT_REVIEW = 4,
 }
 
 export enum Role {

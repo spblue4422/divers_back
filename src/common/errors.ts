@@ -137,7 +137,7 @@ export const Errors = {
     errorCode: 1307,
     msg: '밴 당한 계정입니다.',
   },
-  NO_PERMISSON: {
+  NO_PERMISSION: {
     statusCode: 402,
     errorCode: 1308,
     msg: '이용 권한이 없습니다.',

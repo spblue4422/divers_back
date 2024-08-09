@@ -30,7 +30,7 @@ export class DiveShopService {
   }
 
   async getDiveShop(shopId: number): Promise<DiveShopResDto> {
-    return this.diveShopRepository.findByIdOrFail(shopId);
+    return this.diveShopRepository.findOneByShopId(shopId);
   }
 
   /*
@@ -40,9 +40,9 @@ export class DiveShopService {
     */
 
   // 트랜잭션 필요
-  async recommedShop(shopId: number, userId: number) {
+  async recommedDiveShop(shopId: number, userId: number) {
     const { recommendation } =
-      await this.diveShopRepository.findByIdOrFail(shopId);
+      await this.diveShopRepository.findOneByShopId(shopId);
 
     const recommendOrCancel = await this.recommendationService.recommendTarget(
       userId,
@@ -78,7 +78,7 @@ export class DiveShopService {
     shopId: number,
     modifyDiveShopBody: ModifyDiveShopReqDto,
   ): Promise<MsgResDto> {
-    await this.diveShopRepository.findByIdOrFail(shopId);
+    await this.diveShopRepository.findOneByShopId(shopId);
 
     await this.diveShopRepository.update(
       { id: shopId },

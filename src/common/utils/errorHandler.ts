@@ -28,6 +28,8 @@ export class AllExceptionFilter implements ExceptionFilter {
 
     const ctx = host.switchToHttp();
 
+    console.log(exception);
+
     if (exception instanceof DiversException) {
       const { statusCode, errorCode, msg } = exception;
       const responseBody: ErrorForm = { statusCode, errorCode, msg };

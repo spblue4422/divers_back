@@ -28,8 +28,7 @@ export class UserService {
   ): Promise<MsgResDto> {
     const { nickname } = createUserBody;
 
-    if (await this.checkNicknameDuplicate(nickname))
-      throw new DiversException('DUPLICATE_NICKNAME');
+    await this.checkNicknameDuplicate(nickname);
 
     await this.userRepository.insert({
       authId,

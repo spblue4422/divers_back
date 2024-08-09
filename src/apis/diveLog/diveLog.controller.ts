@@ -26,7 +26,8 @@ import { Roles } from 'src/common/decorators/roles';
 import { Role } from 'src/common/enums';
 
 @UseGuards(AuthGuard)
-@UseGuards(RoleGuard)
+// roleguard를 authguard안에 집어넣어서 한번에 검증하는 로직을 만들어야 할 것 같음.
+// @UseGuards(RoleGuard)
 @Controller('diveLog')
 export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}

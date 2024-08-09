@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Roles } from 'src/common/decorators/roles';
+import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 import { DiversException } from 'src/common/exceptions';
 
 @Injectable()
@@ -14,14 +15,18 @@ export class RoleGuard implements CanActivate {
     if (!roles) return true;
 
     const request = context.switchToHttp().getRequest<Request>();
-    const { role } = request['auth-info'];
+    // const auth: JwtAccessPayloadDto = request['auth-info'];
+    console.log(request['auth-info']);
+    // console.log(auth);
+    // const { role } = request;
+    // console.log(role);
 
-    return this.matchRoles(role, roles);
+    return this.matchRoles(1, roles);
   }
 
   private matchRoles(role: number, roles: number[]): boolean {
     // if (role == 888) return true;
     if (role in roles) return true;
-    else throw new DiversException('NO_PERMISSON');
+    else throw new DiversException('NO_PERMISSION');
   }
 }

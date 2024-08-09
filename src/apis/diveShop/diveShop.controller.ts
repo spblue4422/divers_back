@@ -7,8 +7,10 @@ import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
 import { DiveShopResDto } from './dtos/diveShopRes.dto';
 import { ModifyDiveShopReqDto } from './dtos/modifyDiveShopReq.dto';
 import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+import { Current } from 'src/common/decorators/current';
+import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
 
-@Controller('diveShop')
+@Controller('shop')
 export class DiveShopController {
   constructor(private readonly diveShopService: DiveShopService) {}
 
@@ -38,9 +40,11 @@ export class DiveShopController {
   @ApiOkResponse({ type: MsgResDto, description: '다이브샵 추천' })
   async recommendDiveShop(
     @Param('shopId') shopId: number,
-    userId: number,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    return this.diveShopService.recommedShop(shopId, userId);
+    const { userId } = cur;
+
+    return this.diveShopService.recommedDiveShop(shopId, userId);
   }
 
   // 다이브샵 정보도 생각해보면 사장 맘대로 수정하면 안되지 않을까? 세부적인 로직은 좀 더 고민해봐야할듯

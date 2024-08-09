@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RecommendationRepository } from './recommendation.repository';
 import { convertKeyToValue } from 'src/common/utils/enumConverter';
+import { RecommendationTarget } from 'src/common/enums';
 @Injectable()
 export class RecommendationService {
   constructor(
@@ -8,7 +9,7 @@ export class RecommendationService {
   ) {}
 
   async recommendTarget(userId: number, targetKey: string, targetId: number) {
-    const targetVal = await convertKeyToValue('RT', targetKey);
+    const targetVal = await convertKeyToValue(RecommendationTarget, targetKey);
 
     const recommendation =
       await this.recommendationRepository.findOneWithTarget(

@@ -18,12 +18,11 @@ export class DivePointService {
     paginationForm: PaginationReqDto,
   ): Promise<ListResDto<DivePointInListResDto>> {
     const { page, pagingCount } = paginationForm;
-
     return this.divePointRepository.findListWithCount(page, pagingCount);
   }
 
   async getDivePoint(pointId: number): Promise<DivePointResDto> {
-    return this.divePointRepository.findByIdOrFail(pointId);
+    return this.divePointRepository.findOneByPointId(pointId);
   }
 
   async recommendDivePoint(
@@ -31,7 +30,7 @@ export class DivePointService {
     userId: number,
   ): Promise<MsgResDto> {
     const { recommendation } =
-      await this.divePointRepository.findByIdOrFail(pointId);
+      await this.divePointRepository.findOneByPointId(pointId);
 
     const recommendOrCancel = await this.recommendationService.recommendTarget(
       userId,

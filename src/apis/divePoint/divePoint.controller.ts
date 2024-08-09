@@ -28,14 +28,14 @@ export class DivePointController {
   }
 
   @Get('/:pointId')
-  async getDivePointById(@Param() pointId: number) {
+  async getDivePointById(@Param('pointId') pointId: number) {
     return this.divePointService.getDivePoint(pointId);
   }
 
   // roleguard - 유저만?
-  @Patch('/recommend/:pointId')
+  @Patch('/:pointId/recommend')
   async recommendPoint(
-    @Param() pointId: number,
+    @Param('pointId') pointId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
     const { userId } = cur;

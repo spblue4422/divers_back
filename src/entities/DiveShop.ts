@@ -81,7 +81,7 @@ class DiveShop extends BasicDate {
   /**
    추천 수
   */
-  @Column()
+  @Column({ default: 0 })
   recommendation: number;
 
   /**

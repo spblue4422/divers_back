@@ -34,7 +34,7 @@ export class DiveShopRepository extends Repository<DiveShop> {
     }));
   }
 
-  async findByIdOrFail(shopId: number): Promise<DiveShopResDto> {
+  async findOneByShopId(shopId: number): Promise<DiveShopResDto> {
     return this.findOneOrFail({ where: { id: shopId } })
       .then((d) => DiveShopResDto.makeRes(d))
       .catch(() => {

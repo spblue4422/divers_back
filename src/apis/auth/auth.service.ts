@@ -129,7 +129,7 @@ export class AuthService {
     const { loginId, password, createUserBody } = signUpBody;
 
     // auth 만들기
-    const result: InsertResult = await this.createAuth(loginId, password, 0);
+    const result: InsertResult = await this.createAuth(loginId, password, 100);
 
     // 만든 auth에 해당하는 user 만들어주기
     await this.userService.createUser(result.identifiers[0].id, createUserBody);

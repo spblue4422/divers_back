@@ -61,15 +61,15 @@ export class CreateDiveLogReqDto {
 
   @ApiProperty({})
   @IsWeather()
-  weather: Weather;
+  weather: string;
 
   @ApiProperty({})
   @IsDegreeExpression()
-  wave: DegreeExpression;
+  wave: string;
 
   @ApiProperty({})
   @IsDegreeExpression()
-  current: DegreeExpression;
+  current: string;
 
   @ApiProperty({})
   @IsDate()
@@ -105,7 +105,7 @@ export class CreateDiveLogReqDto {
 
   @ApiProperty({})
   @IsDegreeExpression()
-  visibility: DegreeExpression;
+  visibility: string;
 
   @ApiProperty({})
   @IsNumber()
@@ -113,11 +113,11 @@ export class CreateDiveLogReqDto {
 
   @ApiProperty({})
   @IsEquipmentArray()
-  equipment: DivingEquipment[];
+  equipment: string[];
 
   @ApiProperty({})
   @IsDivingTypeArray()
-  type: DivingType[];
+  type: string[];
 
   @ApiProperty({})
   @IsString()

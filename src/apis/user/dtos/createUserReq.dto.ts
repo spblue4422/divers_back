@@ -15,6 +15,7 @@ export class CreateUserReqDto {
   lastname: string;
 
   @ApiProperty({ description: '국적' })
+  @IsString()
   countryCode: string;
 
   @ApiProperty({ description: '생년월일' })
