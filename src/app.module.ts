@@ -21,10 +21,9 @@ import { DiversTypeOrmModule } from '@/config/database';
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     JwtModule.register({
-      // auth module에서 빼왔는데 혹시 이상하면 다시 넘기자
       global: true,
-      secret: 'spblue4422',
-      signOptions: { expiresIn: '3600s' },
+      // secret: 'spblue4422',
+      // signOptions: { expiresIn: '3600s' },
     }),
     AuthModule,
     UserModule,
