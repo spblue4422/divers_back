@@ -44,13 +44,7 @@ export class DiveLogService {
   }
 
   async getDiveLog(logId: number, userId: number): Promise<DiveLogResDto> {
-    const entireLog = await this.diveLogDetailRepository
-      .findOneByOrFail({
-        logId,
-      })
-      .catch(() => {
-        throw new DiversException('NO_DIVELOG');
-      });
+    const entireLog = await this.diveLogDetailRepository.findOneByLogId(logId);
 
     const { diveLog } = entireLog;
 
