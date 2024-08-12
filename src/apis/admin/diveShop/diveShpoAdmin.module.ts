@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { DiveShopModule } from 'src/apis/diveShop/diveShop.module';
-import { DiveShopReviewModule } from 'src/apis/diveShop/review/diveShopReview.module';
+
+import { DiveShopModule } from '@/apis/diveShop/diveShop.module';
+import { DiveShopReviewModule } from '@/apis/diveShop/review/diveShopReview.module';
 
 @Module({
   imports: [DiveShopModule, DiveShopReviewModule],

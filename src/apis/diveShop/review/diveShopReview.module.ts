@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { DiveShopReviewController } from './diveShopReview.controller';
-import { DiveShopReviewService } from './diveShopReview.service';
-import { UserModule } from 'src/apis/user/user.module';
-import { DiveShopModule } from '../diveShop.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DiveShopReviewRepository } from './diveShopReview.repository';
-import { DiveShopReview } from 'src/entities';
+
+import { DiveShopModule } from '@/apis/diveShop/diveShop.module';
+import { DiveShopReviewController } from '@/apis/diveShop/review/diveShopReview.controller';
+import { DiveShopReviewRepository } from '@/apis/diveShop/review/diveShopReview.repository';
+import { DiveShopReviewService } from '@/apis/diveShop/review/diveShopReview.service';
+import { UserModule } from '@/apis/user/user.module';
+import { DiveShopReview } from '@/entities/index';
 
 @Module({
   imports: [

@@ -1,10 +1,11 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { UserModule } from '../user/user.module';
-import { DiveShopModule } from '../diveShop/diveShop.module';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { AuthRepository } from './auth.repository';
+
+import { AuthController } from '@/apis/auth/auth.controller';
+import { AuthRepository } from '@/apis/auth/auth.repository';
+import { AuthService } from '@/apis/auth/auth.service';
+import { DiveShopModule } from '@/apis/diveShop/diveShop.module';
+import { UserModule } from '@/apis/user/user.module';
 
 @Module({
   imports: [forwardRef(() => UserModule), forwardRef(() => DiveShopModule)],

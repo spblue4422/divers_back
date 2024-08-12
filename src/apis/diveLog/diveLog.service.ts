@@ -1,25 +1,27 @@
+import { FindOptionsWhere } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
+
 import {
   DiveLogDetailRepository,
   DiveLogRepository,
-} from './diveLog.repository';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DiveLogResDto } from './dtos/diveLogRes.dto';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
-import { convertKeyToValue } from 'src/common/utils/enumConverter';
+} from '@/apis/diveLog/diveLog.repository';
+import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
+import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
+import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
+import { ModifyDiveLogReqDto } from '@/apis/diveLog/dtos/modifyDiveLogReq.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import {
   DegreeExpression,
   DivingEquipment,
   DivingType,
   Weather,
-} from 'src/common/enums';
-import { ModifyDiveLogReqDto } from './dtos/modifyDiveLogReq.dto';
-import { DiversException } from 'src/common/exceptions';
-import { FindOptionsWhere } from 'typeorm';
-import { DiveLog } from 'src/entities';
+} from '@/common/enums';
+import { DiversException } from '@/common/exceptions';
+import { convertKeyToValue } from '@/common/utils/enumConverter';
+import { DiveLog } from '@/entities/index';
 
 @Injectable()
 export class DiveLogService {

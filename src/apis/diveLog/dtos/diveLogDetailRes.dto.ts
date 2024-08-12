@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import {
   DegreeExpression,
   DivingEquipment,
-  Weather,
   DivingType,
-} from 'src/common/enums';
-import { DiveLogDetail } from 'src/entities';
+  Weather,
+} from '@/common/enums';
+import { DiveLogDetail } from '@/entities/index';
 
 export class DiveLogDetailResDto {
   @ApiProperty({ description: '로그 id' })

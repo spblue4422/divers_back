@@ -4,13 +4,14 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
+
 import {
   DegreeExpression,
   DivingEquipment,
   DivingRank,
   DivingType,
   Weather,
-} from '../enums';
+} from '@/common/enums';
 
 // 나중에 registerDecorator에 대해 한번 정리해보자
 function CommonRegister(

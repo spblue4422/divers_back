@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
@@ -6,18 +5,21 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+
+import { ApiProperty } from '@nestjs/swagger';
+
 import {
   IsDegreeExpression,
   IsDivingTypeArray,
   IsEquipmentArray,
   IsWeather,
-} from 'src/common/decorators/validator';
+} from '@/common/decorators/validator';
 import {
   DegreeExpression,
   DivingEquipment,
   DivingType,
   Weather,
-} from 'src/common/enums';
+} from '@/common/enums';
 
 export class CreateDiveLogReqDto {
   @ApiProperty({})

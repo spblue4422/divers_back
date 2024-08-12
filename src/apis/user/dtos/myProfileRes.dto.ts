@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserProfileResDto } from './userProfileRes.dto';
-import { User } from 'src/entities';
+
+import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
+import { User } from '@/entities/index';
 
 export class MyProfileResDto extends UserProfileResDto {
   // 로그인 아이디 정도는 같이 들고와도 괜찮지 않을까

@@ -1,6 +1,9 @@
-import { Column, Entity, OneToOne, PrimaryColumn, JoinColumn } from 'typeorm';
-import DiveLog from './DiveLog';
-import { BasicDate } from './BasicDate';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+
+import { BasicDate, DiveLog } from '@/entities/index';
+
+// import DiveLog from './DiveLog';
+// import { BasicDate } from './BasicDate';
 
 @Entity('dive_log_detail')
 class DiveLogDetail extends BasicDate {

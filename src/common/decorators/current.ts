@@ -1,5 +1,6 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { JwtAccessPayloadDto } from '../dtos/jwtPayload.dto';
+import { ExecutionContext, createParamDecorator } from '@nestjs/common';
+
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 
 export const Current = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {

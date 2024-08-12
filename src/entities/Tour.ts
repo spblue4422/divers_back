@@ -5,9 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BasicDate } from './BasicDate';
-import Country from './Country';
-import User from './User';
+
+import { BasicDate, Country, User } from '@/entities/index';
 
 @Entity('tour')
 class Tour extends BasicDate {

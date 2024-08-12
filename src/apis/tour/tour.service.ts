@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { TourRepository } from './tour.repository';
+
+import { TourRepository } from '@/apis/tour/tour.repository';
 
 @Injectable()
 export class TourService {

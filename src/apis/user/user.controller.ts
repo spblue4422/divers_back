@@ -7,15 +7,16 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserProfileResDto } from './dtos/userProfileRes.dto';
-import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { MyProfileResDto } from './dtos/myProfileRes.dto';
-import { Current } from 'src/common/decorators/current';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
+
+import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { ChangeUserProfileReqDto } from '@/apis/user/dtos/changeUserProfileReq.dto';
+import { MyProfileResDto } from '@/apis/user/dtos/myProfileRes.dto';
+import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
+import { UserService } from '@/apis/user/user.service';
+import { Current } from '@/common/decorators/current';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
 
 @Controller('user')
 export class UserController {

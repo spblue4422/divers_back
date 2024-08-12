@@ -5,11 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import DivePoint from './DivePoint';
-import DiveShop from './DiveShop';
-import Tour from './Tour';
-import User from './User';
-import { BasicDate } from 'src/entities/BasicDate';
+
+import { BasicDate, DivePoint, DiveShop, Tour, User } from '@/entities/index';
 
 @Entity('dive_log')
 class DiveLog extends BasicDate {

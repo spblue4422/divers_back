@@ -1,18 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { AuthRepository } from './auth.repository';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { SignInResDto } from './dtos/signInRes.dto';
-import { ConfigService } from '@nestjs/config';
-import { UserSignUpReqDto } from './dtos/userSignUpReq.dto';
-import { UserService } from '../user/user.service';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
 import { InsertResult } from 'typeorm';
-import { SignInReqDto } from './dtos/signInReq.dto';
-import { DiveShopService } from '../diveShop/diveShop.service';
-import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
-import { DiversException } from 'src/common/exceptions';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+
+import { AuthRepository } from '@/apis/auth/auth.repository';
+import { ShopSignUpReqDto } from '@/apis/auth/dtos/shopSignUpReq.dto';
+import { SignInReqDto } from '@/apis/auth/dtos/signInReq.dto';
+import { SignInResDto } from '@/apis/auth/dtos/signInRes.dto';
+import { UserSignUpReqDto } from '@/apis/auth/dtos/userSignUpReq.dto';
+import { DiveShopService } from '@/apis/diveShop/diveShop.service';
+import { UserService } from '@/apis/user/user.service';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { DiversException } from '@/common/exceptions';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {

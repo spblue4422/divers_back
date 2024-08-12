@@ -1,5 +1,6 @@
 import { HttpException } from '@nestjs/common';
-import { ErrorName, Errors } from './errors';
+
+import { ErrorName, Errors } from '@/common/errors';
 
 export class DiversException extends HttpException {
   constructor(errorName: ErrorName) {

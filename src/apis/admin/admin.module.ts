@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { userAdminModule } from './user/userAdmin.module';
-import { DiveShopAdminModule } from './diveShop/diveShpoAdmin.module';
+
+import { DiveShopAdminModule } from '@/apis/admin/diveShop/diveShpoAdmin.module';
+import { userAdminModule } from '@/apis/admin/user/userAdmin.module';
 
 @Module({
   imports: [userAdminModule, DiveShopAdminModule],

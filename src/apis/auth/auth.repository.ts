@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { DiversException } from 'src/common/exceptions';
-import { Auth } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
+
+import { Injectable } from '@nestjs/common';
+
+import { DiversException } from '@/common/exceptions';
+import { Auth } from '@/entities/index';
 
 @Injectable()
 export class AuthRepository extends Repository<Auth> {

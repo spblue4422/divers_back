@@ -9,16 +9,17 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { DiveShopReviewService } from './diveShopReview.service';
-import { CreateDiveShopReviewReqDto } from './dtos/createDiveShopReviewReq.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DiveShopReviewInListResDto } from './dtos/diveShopReviewInListRes.dto';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { Current } from 'src/common/decorators/current';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
-import { AuthGuard } from 'src/apis/auth/guards/auth.guard';
+
+import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { DiveShopReviewService } from '@/apis/diveShop/review/diveShopReview.service';
+import { CreateDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/createDiveShopReviewReq.dto';
+import { DiveShopReviewInListResDto } from '@/apis/diveShop/review/dtos/diveShopReviewInListRes.dto';
+import { Current } from '@/common/decorators/current';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 
 @UseGuards(AuthGuard)
 @Controller('shopReview')

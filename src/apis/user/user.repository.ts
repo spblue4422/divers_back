@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { DiversException } from 'src/common/exceptions';
-import { User } from 'src/entities';
 import { DataSource, Repository } from 'typeorm';
+
+import { Injectable } from '@nestjs/common';
+
+import { DiversException } from '@/common/exceptions';
+import { User } from '@/entities/index';
 
 @Injectable()
 export class UserRepostiory extends Repository<User> {

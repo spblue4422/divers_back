@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DiversTypeOrmModule } from './config/database';
-import { UserModule } from './apis/user/user.module';
-import { DiveShopModule } from './apis/diveShop/diveShop.module';
-import { DivePointModule } from './apis/divePoint/divePoint.module';
-import { DiveLogModule } from './apis/diveLog/diveLog.module';
-import { AuthModule } from './apis/auth/auth.module';
-import { DiveShopReviewModule } from './apis/diveShop/review/diveShopReview.module';
-import { DivePointReviewModule } from './apis/divePoint/review/divePointReview.module';
-import { JwtModule } from '@nestjs/jwt';
-import { RecommendationModule } from './apis/recommendation/recommendation.module';
 import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionFilter } from './common/utils/errorHandler';
+import { JwtModule } from '@nestjs/jwt';
+
+import { AuthModule } from '@/apis/auth/auth.module';
+import { DiveLogModule } from '@/apis/diveLog/diveLog.module';
+import { DivePointModule } from '@/apis/divePoint/divePoint.module';
+import { DivePointReviewModule } from '@/apis/divePoint/review/divePointReview.module';
+import { DiveShopModule } from '@/apis/diveShop/diveShop.module';
+import { DiveShopReviewModule } from '@/apis/diveShop/review/diveShopReview.module';
+import { RecommendationModule } from '@/apis/recommendation/recommendation.module';
+import { UserModule } from '@/apis/user/user.module';
+import { AllExceptionFilter } from '@/common/utils/errorHandler';
+import { DiversTypeOrmModule } from '@/config/database';
 
 @Module({
   imports: [

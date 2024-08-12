@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { BasicDate } from './BasicDate';
+
+import { BasicDate } from '@/entities/index';
 
 @Entity('auth')
 class Auth extends BasicDate {

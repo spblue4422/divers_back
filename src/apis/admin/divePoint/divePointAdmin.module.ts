@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { DivePointModule } from 'src/apis/divePoint/divePoint.module';
-import { DivePointReviewModule } from 'src/apis/divePoint/review/divePointReview.module';
+
+import { DivePointModule } from '@/apis/divePoint/divePoint.module';
+import { DivePointReviewModule } from '@/apis/divePoint/review/divePointReview.module';
 
 @Module({
   imports: [DivePointModule, DivePointReviewModule],

@@ -1,5 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
+
+import { ApiProperty } from '@nestjs/swagger';
 
 export class PaginationReqDto {
   @ApiProperty({ description: '페이지 번호' })

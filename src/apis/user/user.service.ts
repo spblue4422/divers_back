@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepostiory } from './user.repository';
-import { UserProfileResDto } from './dtos/userProfileRes.dto';
-import { MyProfileResDto } from './dtos/myProfileRes.dto';
-import { ChangeUserProfileReqDto } from './dtos/changeUserProfileReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { CreateUserReqDto } from './dtos/createUserReq.dto';
-import { DiversException } from 'src/common/exceptions';
+
+import { ChangeUserProfileReqDto } from '@/apis/user/dtos/changeUserProfileReq.dto';
+import { CreateUserReqDto } from '@/apis/user/dtos/createUserReq.dto';
+import { MyProfileResDto } from '@/apis/user/dtos/myProfileRes.dto';
+import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
+import { UserRepostiory } from '@/apis/user/user.repository';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { DiversException } from '@/common/exceptions';
 
 @Injectable()
 export class UserService {

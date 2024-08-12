@@ -6,9 +6,11 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import Auth from './Auth';
-import Country from './Country';
-import { BasicDate } from 'src/entities/BasicDate';
+
+import { Auth, BasicDate, Country } from '@/entities/index';
+
+// import Country from '@/entities/index/Country';
+// import BasicDate from '@/entities/index/BasicDate';
 
 @Entity('dive_shop')
 class DiveShop extends BasicDate {

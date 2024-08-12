@@ -5,7 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export abstract class BasicDate {
+abstract class BasicDate {
   /**
    생성일자
   */
@@ -24,3 +24,5 @@ export abstract class BasicDate {
   @DeleteDateColumn()
   deletedAt: Timestamp;
 }
+
+export default BasicDate;

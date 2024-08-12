@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DivePointReviewRepository } from './divePointReview.repository';
+
+import { DivePointReviewRepository } from '@/apis/divePoint/review/divePointReview.repository';
 
 @Injectable()
 export class DivePointReviewService {

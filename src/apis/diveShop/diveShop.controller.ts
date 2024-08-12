@@ -1,14 +1,15 @@
 import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
-import { DiveShopService } from './diveShop.service';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
-import { DiveShopResDto } from './dtos/diveShopRes.dto';
-import { ModifyDiveShopReqDto } from './dtos/modifyDiveShopReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { Current } from 'src/common/decorators/current';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+
+import { DiveShopService } from '@/apis/diveShop/diveShop.service';
+import { DiveShopInListResDto } from '@/apis/diveShop/dtos/diveShopInListRes.dto';
+import { DiveShopResDto } from '@/apis/diveShop/dtos/diveShopRes.dto';
+import { ModifyDiveShopReqDto } from '@/apis/diveShop/dtos/modifyDiveShopReq.dto';
+import { Current } from '@/common/decorators/current';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 
 @Controller('shop')
 export class DiveShopController {

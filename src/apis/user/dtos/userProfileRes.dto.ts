@@ -1,7 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { DivingRank } from 'src/common/enums';
-import { User } from 'src/entities';
+
+import { ApiProperty } from '@nestjs/swagger';
+
+import { DivingRank } from '@/common/enums';
+import { User } from '@/entities/index';
 
 export class UserProfileResDto {
   @ApiProperty({ description: '유저 id' })

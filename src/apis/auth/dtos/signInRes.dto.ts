@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
 
 export class SignInResDto extends MsgResDto {
   @ApiProperty({ description: 'Access Token' })

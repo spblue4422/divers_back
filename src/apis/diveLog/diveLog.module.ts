@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { DiveLogController } from './diveLog.controller';
-import { DiveLogService } from './diveLog.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { DiveLogController } from '@/apis/diveLog/diveLog.controller';
 import {
   DiveLogDetailRepository,
   DiveLogRepository,
-} from './diveLog.repository';
-import { UserModule } from '../user/user.module';
-import { DiveLog, DiveLogDetail } from 'src/entities';
+} from '@/apis/diveLog/diveLog.repository';
+import { DiveLogService } from '@/apis/diveLog/diveLog.service';
+import { UserModule } from '@/apis/user/user.module';
+import { DiveLog, DiveLogDetail } from '@/entities/index';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DiveLog, DiveLogDetail]), UserModule],

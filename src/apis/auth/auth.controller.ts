@@ -9,18 +9,19 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { SignInReqDto } from './dtos/signInReq.dto';
-import { UserSignUpReqDto } from './dtos/userSignUpReq.dto';
-import { FindLoginIdReqDto } from './dtos/findLoginIdReq.dto';
-import { ResetPasswordReqDto } from './dtos/resetPasswordReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { AuthService } from './auth.service';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { SignInResDto } from './dtos/signInRes.dto';
-import { ShopSignUpReqDto } from './dtos/shopSignUpReq.dto';
-import { AuthGuard } from './guards/auth.guard';
-import { Current } from 'src/common/decorators/current';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
+
+import { AuthService } from '@/apis/auth/auth.service';
+import { FindLoginIdReqDto } from '@/apis/auth/dtos/findLoginIdReq.dto';
+import { ResetPasswordReqDto } from '@/apis/auth/dtos/resetPasswordReq.dto';
+import { ShopSignUpReqDto } from '@/apis/auth/dtos/shopSignUpReq.dto';
+import { SignInReqDto } from '@/apis/auth/dtos/signInReq.dto';
+import { SignInResDto } from '@/apis/auth/dtos/signInRes.dto';
+import { UserSignUpReqDto } from '@/apis/auth/dtos/userSignUpReq.dto';
+import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { Current } from '@/common/decorators/current';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
 
 //@UseGuards(AuthGuard)
 @Controller('auth')

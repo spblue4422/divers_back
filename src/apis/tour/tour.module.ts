@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TourRepository } from './tour.repository';
-import { TourService } from './tour.service';
-import { Tour } from 'src/entities';
-import { DiveLogModule } from '../diveLog/diveLog.module';
+
+import { DiveLogModule } from '@/apis/diveLog/diveLog.module';
+import { TourRepository } from '@/apis/tour/tour.repository';
+import { TourService } from '@/apis/tour/tour.service';
+import { Tour } from '@/entities/index';
 
 @Module({
   imports: [DiveLogModule, TypeOrmModule.forFeature([Tour])],

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DivePoint } from 'src/entities';
+
+import { DivePoint } from '@/entities/index';
 
 export class DivePointInListResDto {
   @ApiProperty({ description: '포인트 id' })

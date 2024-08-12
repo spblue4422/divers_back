@@ -6,14 +6,15 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { DivePointService } from './divePoint.service';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { Current } from 'src/common/decorators/current';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DivePointInListResDto } from './dtos/divePointInListRes.dto';
+
+import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { DivePointService } from '@/apis/divePoint/divePoint.service';
+import { DivePointInListResDto } from '@/apis/divePoint/dtos/divePointInListRes.dto';
+import { Current } from '@/common/decorators/current';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 
 @UseGuards(AuthGuard)
 @Controller('point')

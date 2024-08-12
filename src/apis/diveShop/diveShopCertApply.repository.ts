@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
 import {
   DataSource,
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
-import { DiveShopCertApply } from 'src/entities';
-import { CertApplicationInListResDto } from './dtos/certApplicationInListRes.dto';
-import { CertApplicationResDto } from './dtos/certApplicationRes.dto';
-import { DiversException } from 'src/common/exceptions';
+
+import { Injectable } from '@nestjs/common';
+
+import { CertApplicationInListResDto } from '@/apis/diveShop/dtos/certApplicationInListRes.dto';
+import { CertApplicationResDto } from '@/apis/diveShop/dtos/certApplicationRes.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { DiversException } from '@/common/exceptions';
+import { DiveShopCertApply } from '@/entities/index';
 
 @Injectable()
 export class DiveShopCertApplyRepository extends Repository<DiveShopCertApply> {

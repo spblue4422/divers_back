@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DiveShopModule } from '../diveShop/diveShop.module';
-import { DivePointModule } from '../divePoint/divePoint.module';
-import { UserModule } from '../user/user.module';
-import { DiveLogModule } from '../diveLog/diveLog.module';
-import { SearchService } from './search.service';
+
+import { DiveLogModule } from '@/apis/diveLog/diveLog.module';
+import { DivePointModule } from '@/apis/divePoint/divePoint.module';
+import { DiveShopModule } from '@/apis/diveShop/diveShop.module';
+import { SearchService } from '@/apis/search/search.service';
+import { UserModule } from '@/apis/user/user.module';
 
 @Module({
   imports: [DiveShopModule, DivePointModule, UserModule, DiveLogModule],

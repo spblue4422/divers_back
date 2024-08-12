@@ -1,6 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
-import { Tour } from 'src/entities';
+
+import { ApiProperty } from '@nestjs/swagger';
+
+import { Tour } from '@/entities/index';
 
 export class TourInListResDto {
   @ApiProperty({})

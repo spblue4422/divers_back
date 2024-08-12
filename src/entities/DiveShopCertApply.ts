@@ -5,7 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import DiveShop from './DiveShop';
+
+import { DiveShop } from '@/entities/index';
 
 @Entity('dive_shop_cert_apply')
 class DiveShopCertApply {

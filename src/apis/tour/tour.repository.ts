@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { Tour } from 'src/entities';
 import {
   DataSource,
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
-import { TourInListResDto } from './dtos/tourInListRes.dto';
+
+import { Injectable } from '@nestjs/common';
+
+import { TourInListResDto } from '@/apis/tour/dtos/tourInListRes.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { Tour } from '@/entities/index';
 
 @Injectable()
 export class TourRepository extends Repository<Tour> {

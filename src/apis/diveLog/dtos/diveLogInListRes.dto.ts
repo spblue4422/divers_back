@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DiveLog } from 'src/entities';
+
+import { DiveLog } from '@/entities/index';
 
 export class DiveLogInListResDto {
   @ApiProperty()

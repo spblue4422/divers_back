@@ -5,9 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import User from './User';
-import DiveShop from './DiveShop';
-import { BasicDate } from 'src/entities/BasicDate';
+
+import { BasicDate, DiveShop, User } from '@/entities/index';
 
 @Entity('review_dive_shop')
 class DiveShopReview extends BasicDate {

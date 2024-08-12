@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { RecommendationRepository } from './recommendation.repository';
-import { convertKeyToValue } from 'src/common/utils/enumConverter';
-import { RecommendationTarget } from 'src/common/enums';
+
+import { RecommendationRepository } from '@/apis/recommendation/recommendation.repository';
+import { RecommendationTarget } from '@/common/enums';
+import { convertKeyToValue } from '@/common/utils/enumConverter';
+
 @Injectable()
 export class RecommendationService {
   constructor(

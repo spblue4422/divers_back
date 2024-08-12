@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DiveLogDetail } from 'src/entities';
-import { DiveLogInListResDto } from './diveLogInListRes.dto';
+
+import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
 import {
   DegreeExpression,
   DivingEquipment,
   DivingType,
   Weather,
-} from 'src/common/enums';
+} from '@/common/enums';
+import { DiveLogDetail } from '@/entities/index';
 
 export class DiveLogResDto extends DiveLogInListResDto {
   @ApiProperty()

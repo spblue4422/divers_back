@@ -9,21 +9,22 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { DiveLogService } from './diveLog.service';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DiveLogResDto } from './dtos/diveLogRes.dto';
-import { DiveLogInListResDto } from './dtos/diveLogInListRes.dto';
-import { CreateDiveLogReqDto } from './dtos/createDiveLogReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { DiveLogDetailResDto } from './dtos/diveLogDetailRes.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { Current } from 'src/common/decorators/current';
-import { JwtAccessPayloadDto } from 'src/common/dtos/jwtPayload.dto';
-import { RoleGuard } from '../auth/guards/role.guard';
-import { Roles } from 'src/common/decorators/roles';
-import { Role } from 'src/common/enums';
+
+import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { RoleGuard } from '@/apis/auth/guards/role.guard';
+import { DiveLogService } from '@/apis/diveLog/diveLog.service';
+import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
+import { DiveLogDetailResDto } from '@/apis/diveLog/dtos/diveLogDetailRes.dto';
+import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
+import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
+import { Current } from '@/common/decorators/current';
+import { Roles } from '@/common/decorators/roles';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
+import { Role } from '@/common/enums';
 
 @UseGuards(AuthGuard)
 // roleguard를 authguard안에 집어넣어서 한번에 검증하는 로직을 만들어야 할 것 같음.

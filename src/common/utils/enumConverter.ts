@@ -1,4 +1,4 @@
-import { DiversException } from '../exceptions';
+import { DiversException } from '@/common/exceptions';
 
 export function convertKeyToValue<T>(enumObj: T, key: string): number {
   if (!enumObj[key]) {

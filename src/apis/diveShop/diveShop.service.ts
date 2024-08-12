@@ -1,17 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { DiveShopRepository } from './diveShop.repository';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { DiveShopResDto } from './dtos/diveShopRes.dto';
-import { RecommendationService } from '../recommendation/recommednation.service';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { ModifyDiveShopReqDto } from './dtos/modifyDiveShopReq.dto';
-import { CreateDiveShopReqDto } from './dtos/createDiveShopReqDto';
-import { DiveShopCertApplyRepository } from './diveShopCertApply.repository';
 import { InsertResult } from 'typeorm';
-import { CertApplicationResDto } from './dtos/certApplicationRes.dto';
-import { DiversException } from 'src/common/exceptions';
+
+import { Injectable } from '@nestjs/common';
+
+import { DiveShopRepository } from '@/apis/diveShop/diveShop.repository';
+import { DiveShopCertApplyRepository } from '@/apis/diveShop/diveShopCertApply.repository';
+import { CertApplicationResDto } from '@/apis/diveShop/dtos/certApplicationRes.dto';
+import { CreateDiveShopReqDto } from '@/apis/diveShop/dtos/createDiveShopReqDto';
+import { DiveShopInListResDto } from '@/apis/diveShop/dtos/diveShopInListRes.dto';
+import { DiveShopResDto } from '@/apis/diveShop/dtos/diveShopRes.dto';
+import { ModifyDiveShopReqDto } from '@/apis/diveShop/dtos/modifyDiveShopReq.dto';
+import { RecommendationService } from '@/apis/recommendation/recommendation.service';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
+import { DiversException } from '@/common/exceptions';
 
 @Injectable()
 export class DiveShopService {

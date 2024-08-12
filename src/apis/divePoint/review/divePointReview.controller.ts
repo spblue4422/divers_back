@@ -7,9 +7,10 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { DivePointReviewService } from './divePointReview.service';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
+
+import { DivePointReviewService } from '@/apis/divePoint/review/divePointReview.service';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
 
 @Controller()
 export class DivePointReviewController {

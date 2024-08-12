@@ -1,6 +1,7 @@
-import { DivePoint } from 'src/entities';
-import { DivePointInListResDto } from './divePointInListRes.dto';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { DivePointInListResDto } from '@/apis/divePoint/dtos/divePointInListRes.dto';
+import { DivePoint } from '@/entities/index';
 
 export class DivePointResDto extends DivePointInListResDto {
   @ApiProperty({ description: '설명' })

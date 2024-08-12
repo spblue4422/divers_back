@@ -1,7 +1,8 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { ErrorForm, Errors } from '../errors';
 import { HttpAdapterHost } from '@nestjs/core';
-import { DiversException } from '../exceptions';
+
+import { ErrorForm, Errors } from '@/common/errors';
+import { DiversException } from '@/common/exceptions';
 
 const handleError = (err): ErrorForm => {
   const { statusCode, errorCode, msg } = Object.keys(Errors).includes(

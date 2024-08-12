@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DiveShopReviewRepository } from './diveShopReview.repository';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
-import { DiveShopReviewInListResDto } from './dtos/diveShopReviewInListRes.dto';
-import { PaginationReqDto } from 'src/common/dtos/paginationReq.dto';
-import { CreateDiveShopReviewReqDto } from './dtos/createDiveShopReviewReq.dto';
-import { MsgResDto } from 'src/common/dtos/msgRes.dto';
-import { DiversException } from 'src/common/exceptions';
+
+import { DiveShopReviewRepository } from '@/apis/diveShop/review/diveShopReview.repository';
+import { CreateDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/createDiveShopReviewReq.dto';
+import { DiveShopReviewInListResDto } from '@/apis/diveShop/review/dtos/diveShopReviewInListRes.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
+import { DiversException } from '@/common/exceptions';
 
 @Injectable()
 export class DiveShopReviewService {

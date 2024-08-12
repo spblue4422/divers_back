@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { DivePointController } from './divePoint.controller';
-import { DivePointService } from './divePoint.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DivePointRepostiory } from './divePoint.repository';
-import { UserModule } from '../user/user.module';
-import { RecommendationModule } from '../recommendation/recommendation.module';
-import { DivePoint } from 'src/entities';
-import { AuthModule } from '../auth/auth.module';
+
+import { AuthModule } from '@/apis/auth/auth.module';
+import { DivePointController } from '@/apis/divePoint/divePoint.controller';
+import { DivePointRepostiory } from '@/apis/divePoint/divePoint.repository';
+import { DivePointService } from '@/apis/divePoint/divePoint.service';
+import { RecommendationModule } from '@/apis/recommendation/recommendation.module';
+import { UserModule } from '@/apis/user/user.module';
+import { DivePoint } from '@/entities/index';
 
 @Module({
   imports: [

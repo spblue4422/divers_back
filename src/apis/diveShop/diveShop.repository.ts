@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { ListResDto } from 'src/common/dtos/listRes.dto';
 import {
   DataSource,
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
-import { DiveShop } from 'src/entities';
-import { DiveShopInListResDto } from './dtos/diveShopInListRes.dto';
-import { DiveShopResDto } from './dtos/diveShopRes.dto';
-import { DiversException } from 'src/common/exceptions';
+
+import { Injectable } from '@nestjs/common';
+
+import { DiveShopInListResDto } from '@/apis/diveShop/dtos/diveShopInListRes.dto';
+import { DiveShopResDto } from '@/apis/diveShop/dtos/diveShopRes.dto';
+import { ListResDto } from '@/common/dtos/listRes.dto';
+import { DiversException } from '@/common/exceptions';
+import { DiveShop } from '@/entities/index';
 
 @Injectable()
 export class DiveShopRepository extends Repository<DiveShop> {

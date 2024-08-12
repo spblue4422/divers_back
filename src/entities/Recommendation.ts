@@ -5,8 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import User from './User';
-import { BasicDate } from './BasicDate';
+
+import { BasicDate, User } from '@/entities/index';
+
+// import { BasicDate } from './BasicDate';
 
 // 그냥 delete하는게 낳을듯
 @Entity('recommendation')

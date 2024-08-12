@@ -5,8 +5,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import Country from './Country';
-import { BasicDate } from 'src/entities/BasicDate';
+
+import { BasicDate, Country } from '@/entities/index';
+
+// import Country from './Country';
+// import { BasicDate } from '@/entities/index/BasicDate';
 
 @Entity('dive_point')
 class DivePoint extends BasicDate {
