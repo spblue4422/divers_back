@@ -15,7 +15,6 @@ import { AuthGuard } from '@/apis/auth/guards/auth.guard';
 import { RoleGuard } from '@/apis/auth/guards/role.guard';
 import { DiveLogService } from '@/apis/diveLog/diveLog.service';
 import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
-import { DiveLogDetailResDto } from '@/apis/diveLog/dtos/diveLogDetailRes.dto';
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
 import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
 import { Current } from '@/common/decorators/current';

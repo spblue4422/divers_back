@@ -54,7 +54,7 @@ class DivePoint extends BasicDate {
   recommendation: number;
 
   //평균 평점을 각 테이블에 굳이 저장해야할까?
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 3, scale: 1 })
   averageStar: number;
 }
 

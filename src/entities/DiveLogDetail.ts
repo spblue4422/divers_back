@@ -2,11 +2,8 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 import { BasicDate, DiveLog } from '@/entities/index';
 
-// import DiveLog from './DiveLog';
-// import { BasicDate } from './BasicDate';
-
 @Entity('dive_log_detail')
-class DiveLogDetail extends BasicDate {
+class DiveLogDetail {
   @OneToOne(() => DiveLog, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'logId' })
   diveLog: DiveLog;
@@ -68,19 +65,19 @@ class DiveLogDetail extends BasicDate {
   /**
    평균 수심
   */
-  @Column()
+  @Column({ type: 'decimal', precision: 4, scale: 1 })
   avgDepth: number;
 
   /**
    최대 수심
   */
-  @Column()
+  @Column({ type: 'decimal', precision: 4, scale: 1 })
   maxDepth: number;
 
   /**
    평균 수온
   */
-  @Column()
+  @Column({ type: 'decimal', precision: 4, scale: 1 })
   waterTemperature: number;
 
   /**
@@ -92,7 +89,7 @@ class DiveLogDetail extends BasicDate {
   /**
    웨이트
   */
-  @Column()
+  @Column({ type: 'decimal', precision: 4, scale: 1 })
   weight: number;
 
   /**

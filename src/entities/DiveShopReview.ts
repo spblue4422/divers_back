@@ -45,21 +45,14 @@ class DiveShopReview extends BasicDate {
   /**
    별점
   */
-  @Column()
+  @Column({ type: 'decimal', precision: 3, scale: 1 })
   star: number;
 
   /**
    좋아요
   */
-  @Column({
-    default: 0,
-  })
-  likes: number;
-
-  @Column({
-    default: 0,
-  })
-  dislikes: number;
+  @Column({ default: 0 })
+  recommendation: number;
 
   /**
    블락 여부

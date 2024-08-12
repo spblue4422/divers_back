@@ -25,7 +25,7 @@ export class DiveShopReviewInListResDto {
   star: number;
 
   @ApiProperty({})
-  likes: number;
+  recommendation: number;
 
   static makeRes(data: DiveShopReview) {
     const resDto = new DiveShopReviewInListResDto();
@@ -36,7 +36,7 @@ export class DiveShopReviewInListResDto {
     resDto.shopName = data.diveShop.name;
     resDto.text = data.text;
     resDto.star = data.star;
-    resDto.likes = data.likes;
+    resDto.recommendation = data.recommendation;
 
     return resDto;
   }

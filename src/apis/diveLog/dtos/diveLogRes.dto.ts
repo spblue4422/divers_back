@@ -1,3 +1,5 @@
+import { Timestamp } from 'typeorm';
+
 import { ApiProperty } from '@nestjs/swagger';
 
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
@@ -120,12 +122,12 @@ export class DiveLogResDto extends DiveLogInListResDto {
     resDto.equipment = data.equipment
       .split(',')
       .map((e) => DivingEquipment[Number(e)] as unknown as DivingEquipment);
-    // resDto.type = data.type
+    // type.split(',')의 결과물 => ['1', '2', '3']
     resDto.type = data.type
       .split(',')
       .map((e) => DivingType[Number(e)] as unknown as DivingType);
     resDto.text = data.text;
-    resDto.createdAt = new Date(data.createdAt.toString());
+    resDto.createdAt = new Date(diveLog.createdAt.toString());
 
     return resDto;
   }

@@ -8,9 +8,6 @@ import {
 
 import { BasicDate, User } from '@/entities/index';
 
-// import { BasicDate } from './BasicDate';
-
-// 그냥 delete하는게 낳을듯
 @Entity('recommendation')
 class Recommendation extends BasicDate {
   @PrimaryGeneratedColumn()

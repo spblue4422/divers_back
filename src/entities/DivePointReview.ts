@@ -8,11 +8,6 @@ import {
 
 import { BasicDate, DivePoint, DiveShop, User } from '@/entities/index';
 
-// import DivePoint from './DivePoint';
-// import DiveShop from './DiveShop';
-// import User from './User';
-// import { BasicDate } from '@/entities/index/BasicDate';
-
 @Entity('review_dive_point')
 class DivePointReview extends BasicDate {
   /**
@@ -31,6 +26,7 @@ class DivePointReview extends BasicDate {
   @Column()
   userId: number;
 
+  // 내가 shop을 넣은 이유가 뭐지?
   @ManyToOne(() => DiveShop)
   @JoinColumn({ name: 'shopId' })
   diveShop: DiveShop;
@@ -66,24 +62,14 @@ class DivePointReview extends BasicDate {
   /**
    별점
   */
-  @Column()
+  @Column({ type: 'decimal', precision: 3, scale: 1 })
   star: number;
 
   /**
    좋아요
   */
-  @Column({
-    default: 0,
-  })
-  likes: number;
-
-  /**
-   싫어요 - 이거보다 그냥 신고를 두는게 나으려나?
-  */
-  @Column({
-    default: 0,
-  })
-  dislikes: number;
+  @Column({ default: 0 })
+  recommendation: number;
 
   /**
    블락 여부

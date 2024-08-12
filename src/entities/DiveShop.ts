@@ -89,7 +89,7 @@ class DiveShop extends BasicDate {
   /**
    평균 평점이 필요할까
   */
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 3, scale: 1 })
   averageStar: number;
 
   @Column({ nullable: true, default: null })
