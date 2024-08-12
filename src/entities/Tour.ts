@@ -6,7 +6,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { BasicDate, Country, User } from '@/entities/index';
+import BasicDate from '@/entities/BasicDate';
+import { Country, User } from '@/entities/index';
 
 @Entity('tour')
 class Tour extends BasicDate {

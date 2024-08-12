@@ -1,6 +1,6 @@
 import { Column, PrimaryColumn } from 'typeorm';
 
-import { BasicDate } from '@/entities/index';
+import BasicDate from '@/entities/BasicDate';
 
 class Admin extends BasicDate {
   @PrimaryColumn()

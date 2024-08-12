@@ -6,7 +6,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { BasicDate, User } from '@/entities/index';
+import BasicDate from '@/entities/BasicDate';
+import { User } from '@/entities/index';
 
 @Entity('recommendation')
 class Recommendation extends BasicDate {

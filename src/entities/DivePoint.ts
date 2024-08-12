@@ -6,7 +6,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { BasicDate, Country } from '@/entities/index';
+import BasicDate from '@/entities/BasicDate';
+import { Country } from '@/entities/index';
 
 // import Country from './Country';
 // import { BasicDate } from '@/entities/index/BasicDate';
