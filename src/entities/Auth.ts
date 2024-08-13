@@ -7,6 +7,9 @@ class Auth extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
 
+  /**
+   handle - user, shop, admin table에 걸린 foregin key
+   */
   @Column({ unique: true })
   handle: string;
 

@@ -55,17 +55,4 @@ export class UserService {
 
     return MsgResDto.success();
   }
-
-  // Used in AuthService
-  // 더 좋은 방법이 있을까?
-  // async getUserWithAuth(authId: number) {
-  //   return this.userRepository
-  //     .findOneOrFail({
-  //       where: { authId },
-  //       relations: { auth: true },
-  //     })
-  //     .catch(() => {
-  //       throw new DiversException('INVALID_LOGIN');
-  //     });
-  // }
 }

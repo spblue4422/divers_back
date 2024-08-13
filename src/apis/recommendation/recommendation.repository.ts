@@ -10,7 +10,11 @@ export class RecommendationRepository extends Repository<Recommendation> {
     super(Recommendation, dataSource.createEntityManager());
   }
 
-  async findOneWithTarget(userId: number, target: number, targetId: number) {
+  async findOneWithTarget(
+    userId: number,
+    target: number,
+    targetId: number,
+  ): Promise<Recommendation> {
     return this.findOne({ where: { userId, target, targetId } });
   }
 }

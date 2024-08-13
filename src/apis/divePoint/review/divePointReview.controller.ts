@@ -50,7 +50,7 @@ export class DivePointReviewController {
     description: '유저가 작성한 다이빙 포인트 리뷰 목록 조회',
   })
   async getUserPointReviewList(
-    @Query('handle') targetHandle: string,
+    @Query('user') userHandle: string,
     @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DivePointReviewResDto>> {
@@ -58,7 +58,7 @@ export class DivePointReviewController {
     const { page, pagingCount } = paginationForm;
 
     return this.divePointReviewService.getDivePointReviewListByHandle(
-      targetHandle,
+      userHandle,
       page,
       pagingCount,
     );

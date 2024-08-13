@@ -176,7 +176,7 @@ export class AuthService {
     return MsgResDto.success();
   }
 
-  async accessRefresh(refreshToken: string) {
+  async accessRefresh(refreshToken: string): Promise<SignInResDto> {
     if (!refreshToken) throw new DiversException('NO_REFRESHTOKEN');
 
     const { handle } = await this.jwtService
@@ -223,7 +223,7 @@ export class AuthService {
     const salt = await bcrypt.genSalt();
     const encrypted = await bcrypt.hash(password, salt);
 
-    return this.authRepository.insert({
+    await this.authRepository.insert({
       handle,
       loginId,
       salt,

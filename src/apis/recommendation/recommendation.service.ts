@@ -11,7 +11,11 @@ export class RecommendationService {
     private readonly recommendationRepository: RecommendationRepository,
   ) {}
 
-  async recommendTarget(keyId: number, targetKey: string, targetId: number) {
+  async recommendTarget(
+    keyId: number,
+    targetKey: string,
+    targetId: number,
+  ): Promise<boolean> {
     const targetVal = await convertKeyToValue(RecommendationTarget, targetKey);
 
     const { id: rId } = await this.recommendationRepository.findOneWithTarget(

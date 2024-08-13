@@ -42,7 +42,7 @@ export class DiveShopService {
     */
 
   // 트랜잭션 필요
-  async recommedDiveShop(shopId: number, userId: number) {
+  async recommedDiveShop(shopId: number, userId: number): Promise<MsgResDto> {
     const { recommendation } =
       await this.diveShopRepository.findOneByShopId(shopId);
 

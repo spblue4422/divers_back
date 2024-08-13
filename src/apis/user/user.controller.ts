@@ -48,7 +48,7 @@ export class UserController {
     description: '본인/다른 유저 프로필 확인',
   })
   async getUserProfile(
-    @Query('handle') targetHandle: string,
+    @Query('user') userHandle: string,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<UserProfileResDto | MyProfileResDto> {
     const { handle } = cur;
@@ -56,18 +56,18 @@ export class UserController {
     return this.userService
       .getUserByHandle(handle)
       .then((data) =>
-        handle == targetHandle
+        handle == userHandle
           ? MyProfileResDto.makeRes(data)
           : UserProfileResDto.makeRes(data),
       );
   }
 
   @UseGuards(AuthGuard)
-  @Patch('/change/profile')
+  @Patch('/profile')
   @Roles([Role.USER])
   @ApiOkResponse({
     type: MsgResDto,
-    description: '유저 프로필 수정',
+    description: '유저 프로필 정보 변경',
   })
   async changeMyProfile(
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
@@ -85,7 +85,10 @@ export class UserController {
     type: MsgResDto,
     description: '프로필 이미지 변경',
   })
-  async changeMyProfileImage(@Body() changeProfImgBody) {}
+  async changeMyProfileImage(
+    @Body() changeProfImgBody,
+    @Current() cur: JwtAccessPayloadDto,
+  ) {}
 
   @Get('/checkDuplicate/nickname')
   @ApiOkResponse({

@@ -54,7 +54,7 @@ export class DiveLogController {
     description: '유저 다이브 로그 목록 조회',
   })
   async getUserDiveLogList(
-    @Query('handle') targetHandle: string,
+    @Query('user') userHandle: string,
     @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
