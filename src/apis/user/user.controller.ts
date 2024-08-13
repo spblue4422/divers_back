@@ -28,16 +28,15 @@ export class UserController {
     description: '자신 프로필 확인',
   })
   @UseGuards(AuthGuard)
-  @Get('/my/profile')
+  @Get('/myProfile')
   async getMyProfile(
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MyProfileResDto> {
-    const { userId } = cur;
+    const { handle } = cur;
 
-    return this.userService.getUserProfileById(
-      userId,
-      true,
-    ) as unknown as MyProfileResDto;
+    return this.userService
+      .getUserByHandle(handle)
+      .then((data) => MyProfileResDto.makeRes(data));
   }
 
   // 롤가드 - 유저만
@@ -48,12 +47,12 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Patch('/change/profile')
   async changeMyProfile(
-    @Current() cur: JwtAccessPayloadDto,
     @Body() changeUserProfileBody: ChangeUserProfileReqDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = cur;
+    const { handle } = cur;
 
-    return await this.userService.changeUser(userId, changeUserProfileBody);
+    return this.userService.changeUser(handle, changeUserProfileBody);
   }
 
   @ApiOkResponse({
@@ -61,11 +60,13 @@ export class UserController {
     description: '유저 프로필 확인',
   })
   @UseGuards(AuthGuard)
-  @Get('/:userId/profile')
+  @Get('/profile')
   async getUserProfile(
-    @Param('userId') userId: number,
+    @Query('handle') handle: string,
   ): Promise<UserProfileResDto> {
-    return this.userService.getUserProfileById(userId, false);
+    return this.userService
+      .getUserByHandle(handle)
+      .then((data) => UserProfileResDto.makeRes(data));
   }
 
   @ApiOkResponse({
@@ -73,33 +74,41 @@ export class UserController {
     description: '프로필 이미지 변경',
   })
   @UseGuards(AuthGuard)
-  @Patch('/:userId/change/profileImage')
+  @Patch('/profileImage')
   async changeMyProfileImage(@Body() changeProfImgBody) {}
-
-  @ApiOkResponse({
-    type: MsgResDto,
-    description: '이메일 인증',
-  })
-  @Patch('/:userId/certificate/email')
-  async certificateEmail(@Body() cfEmailBody) {}
-
-  @ApiOkResponse({
-    type: MsgResDto,
-    description: '휴대폰 인증',
-  })
-  @Patch('/:userId/certificate/phone')
-  async certificatePhone(@Body() cfPhoneBody) {}
 
   @ApiOkResponse({
     type: MsgResDto,
     description: '닉네임 중복 체크',
   })
   @Get('/checkDuplicate/nickname')
-  async checkNicknameDuplicate(@Query('name') nickname: string) {
+  async checkNicknameDuplicate(
+    @Query('name') nickname: string,
+  ): Promise<MsgResDto> {
     return this.userService.checkNicknameDuplicate(nickname);
   }
 
+  @ApiOkResponse({
+    type: MsgResDto,
+    description: '이메일 인증',
+  })
+  @Patch('/certificate/email')
+  async certificateEmail(
+    @Body() cfEmailBody,
+    @Current() cur: JwtAccessPayloadDto,
+  ) {}
+
+  @ApiOkResponse({
+    type: MsgResDto,
+    description: '휴대폰 인증',
+  })
+  @Patch('/certificate/phone')
+  async certificatePhone(
+    @Body() cfPhoneBody,
+    @Current() cur: JwtAccessPayloadDto,
+  ) {}
+
   // 차후 개발 feature로 빼지뭐 ㅋㅋ
-  @Patch('/:userId/certificate/rank')
-  async certificateDiveRank() {}
+  @Patch('/certificate/rank')
+  async certificateDiveRank(@Current() cur: JwtAccessPayloadDto) {}
 }
