@@ -18,13 +18,14 @@ export class RecommendationService {
   ): Promise<boolean> {
     const targetVal = await convertKeyToValue(RecommendationTarget, targetKey);
 
-    const { id: rId } = await this.recommendationRepository.findOneWithTarget(
-      keyId,
-      targetVal,
-      targetId,
-    );
+    const recommendation =
+      await this.recommendationRepository.findOneWithTarget(
+        keyId,
+        targetVal,
+        targetId,
+      );
 
-    if (!rId) {
+    if (!recommendation) {
       await this.recommendationRepository.insert({
         userId: keyId,
         target: targetVal,
@@ -32,7 +33,7 @@ export class RecommendationService {
       });
       return true;
     } else {
-      await this.recommendationRepository.delete({ id: rId });
+      await this.recommendationRepository.delete({ id: recommendation.id });
       return false;
     }
   }

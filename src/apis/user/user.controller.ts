@@ -54,7 +54,7 @@ export class UserController {
     const { handle } = cur;
 
     return this.userService
-      .getUserByHandle(handle)
+      .getUserByHandle(userHandle)
       .then((data) =>
         handle == userHandle
           ? MyProfileResDto.makeRes(data)

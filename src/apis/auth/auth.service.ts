@@ -134,6 +134,8 @@ export class AuthService {
 
     const newHandle = Buffer.from(parse(v4())).toString('base64').slice(0, -2);
 
+    // 트랜잭션 필수 -> 지금은 nickname만 중복으로하면 auth만 만들어지고 user가 안만들어지는 현상이 있음
+
     // auth 만들기
     await this.createAuth(newHandle, loginId, password, Role.USER);
 

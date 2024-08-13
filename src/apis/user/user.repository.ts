@@ -26,7 +26,7 @@ export class UserRepostiory extends Repository<User> {
   async findOneByAuthHandle(handle: string): Promise<User> {
     return this.findOneOrFail({
       where: {
-        authHandle: handle,
+        authHandle: handle ?? '',
       },
     }).catch(() => {
       throw new DiversException('NO_USER');
