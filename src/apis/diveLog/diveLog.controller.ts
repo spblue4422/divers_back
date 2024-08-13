@@ -42,26 +42,26 @@ export class DiveLogController {
     @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveLogService.getUserDiveLogList(userId, true, paginationForm);
+    return this.diveLogService.getUserDiveLogList(keyId, true, paginationForm);
   }
 
-  @Get('/user/:userId/list')
+  @Get('/list')
   @Roles([Role.USER])
   @ApiOkResponse({
     type: ListResDto<DiveLogInListResDto>,
     description: '유저 다이브 로그 목록 조회',
   })
   async getUserDiveLogList(
-    @Param('userId') userId: number,
+    @Query('handle') targetHandle: string,
     @Query() paginationForm: PaginationReqDto,
+    @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    return this.diveLogService.getUserDiveLogList(
-      userId,
-      false,
-      paginationForm,
-    );
+    const { handle, keyId } = cur;
+    const { page, pagingCount } = paginationForm;
+
+    return this.diveLogService.getUserDiveLogList(keyId, false, paginationForm);
   }
 
   @Get('/:logId')
@@ -74,9 +74,9 @@ export class DiveLogController {
     @Param() logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<DiveLogResDto> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveLogService.getDiveLog(logId, userId);
+    return this.diveLogService.getDiveLog(logId, keyId);
   }
 
   @Post('/create')
@@ -86,9 +86,9 @@ export class DiveLogController {
     @Body() createDiveLogBody: CreateDiveLogReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveLogService.createDiveLog(userId, createDiveLogBody);
+    return this.diveLogService.createDiveLog(keyId, createDiveLogBody);
   }
 
   @Patch('/:logId/modify')
@@ -99,9 +99,9 @@ export class DiveLogController {
     @Body() modifyDiveLogBody,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
+    return this.diveLogService.modifyDiveLog(logId, keyId, modifyDiveLogBody);
   }
 
   @Delete('/:logId/remove')
@@ -111,9 +111,9 @@ export class DiveLogController {
     @Param() logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveLogService.removeDiveLog(logId, userId);
+    return this.diveLogService.removeDiveLog(logId, keyId);
   }
 
   @Patch('/:logId/changePublic')
