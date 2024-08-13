@@ -16,11 +16,11 @@ class User extends BasicDate {
   id: number;
 
   @OneToOne(() => Auth, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'authId' })
+  @JoinColumn({ name: 'authHandle', referencedColumnName: 'handle' })
   auth: Auth;
 
   @Column()
-  authId: number;
+  authHandle: string;
 
   /**
    닉네임

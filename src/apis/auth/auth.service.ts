@@ -13,8 +13,10 @@ import { DiveShopService } from '@/apis/diveShop/diveShop.service';
 import { UserService } from '@/apis/user/user.service';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { Role } from '@/common/enums';
 import { DiversException } from '@/common/exceptions';
 import * as bcrypt from 'bcrypt';
+import { parse, v4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +37,7 @@ export class AuthService {
     const { loginId, password } = signInBody;
     //존재하는 계정인지 확인
     const { id, isBanned, salt, role } =
-      await this.authRepository.findOneByLoginIdOrFail(loginId);
+      await this.authRepository.findOneByLoginId(loginId);
 
     // 밴 당한 계정인지 확인
     if (isBanned) throw new DiversException('BANNED_USER');
@@ -65,32 +67,32 @@ export class AuthService {
     const { loginId, password } = signInBody;
 
     // 존재하는 계정인지 확인
-    const { id, isBanned, salt, role } =
-      await this.authRepository.findOneByLoginIdOrFail(loginId);
+    const { handle, isBanned, salt, role } =
+      await this.authRepository.findOneByLoginId(loginId);
 
     // 밴 여부 확인
     if (isBanned) throw new DiversException('BANNED_USER');
+
+    // 유저인지 확인. 에러 코드 맞는지 나중에 생각
+    if (role != Role.USER) throw new DiversException('NO_PERMISSION');
 
     // 비밀번호 암호화 검증
     const encrypted = await bcrypt.hash(password, salt);
 
     if (bcrypt.compare(password, encrypted)) {
-      const { id: userId } = await this.userService.getUserWithAuth(id);
+      // const { id: userId } = await this.userService.getUserWithAuth(id);
 
       // accessToken
-      const accessToken = await this.jwtService.signAsync(
-        { authId: id, userId, role },
-        { secret: this.secret, expiresIn: this.access_expired },
-      );
+      const accessToken = await this.signToken({ handle, role });
 
       // refreshToken
-      const refreshToken = await this.jwtService.signAsync(
-        { authId: id },
-        { secret: this.secret, expiresIn: this.refresh_expired },
-      );
+      const refreshToken = await this.signToken({ handle });
 
       // save refreshToken in database
-      await this.authRepository.save({ id, refreshToken });
+      await this.authRepository.updateAndCatchFail(
+        { handle },
+        { refreshToken },
+      );
 
       return SignInResDto.signInSuccess(accessToken, refreshToken);
     } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
@@ -130,11 +132,13 @@ export class AuthService {
   async userSignUp(signUpBody: UserSignUpReqDto): Promise<MsgResDto> {
     const { loginId, password, createUserBody } = signUpBody;
 
+    const newHandle = Buffer.from(parse(v4())).toString('base64').slice(0, -2);
+
     // auth 만들기
-    const result: InsertResult = await this.createAuth(loginId, password, 100);
+    await this.createAuth(newHandle, loginId, password, Role.USER);
 
     // 만든 auth에 해당하는 user 만들어주기
-    await this.userService.createUser(result.identifiers[0].id, createUserBody);
+    await this.userService.createUser(newHandle, createUserBody);
 
     return MsgResDto.success();
   }
@@ -156,8 +160,11 @@ export class AuthService {
   }
     */
 
-  async signOut(authId: number): Promise<MsgResDto> {
-    await this.authRepository.save({ id: authId, refreshToken: null });
+  async signOut(handle: string): Promise<MsgResDto> {
+    await this.authRepository.updateAndCatchFail(
+      { handle },
+      { refreshToken: null },
+    );
 
     return MsgResDto.success();
   }
@@ -172,45 +179,49 @@ export class AuthService {
   async accessRefresh(refreshToken: string) {
     if (!refreshToken) throw new DiversException('NO_REFRESHTOKEN');
 
-    const { authId } = await this.jwtService
+    const { handle } = await this.jwtService
       .verifyAsync(refreshToken)
       .catch(() => {
         throw new DiversException('INVALID_TOKEN');
       });
 
-    const { id: userId, auth } = await this.userService.getUserWithAuth(authId);
-    const { role, refreshToken: savedRefresh } = auth;
+    // const { id: userId, auth } = await this.userService.getUserWithAuth(authId);
+    const { role, refreshToken: savedRefresh } =
+      await this.authRepository.findOneByHandle(handle);
 
     if (refreshToken != savedRefresh)
       throw new DiversException('INVALID_TOKEN');
 
     const newAccessToken = await this.signToken({
-      authId,
-      userId,
+      handle,
       role,
     });
 
-    const newRefreshToken = await this.signToken({ authId });
+    const newRefreshToken = await this.signToken({ handle });
 
-    await this.authRepository.save({
-      id: authId,
-      refreshToken: newRefreshToken,
-    });
+    await this.authRepository.updateAndCatchFail(
+      { handle },
+      { refreshToken: newRefreshToken },
+    );
 
     return SignInResDto.signInSuccess(newAccessToken, newRefreshToken);
   }
 
-  async createAuth(loginId: string, password: string, role: number) {
+  async createAuth(
+    handle: string,
+    loginId: string,
+    password: string,
+    role: number,
+  ) {
     const salt = await bcrypt.genSalt();
     const encrypted = await bcrypt.hash(password, salt);
 
     return this.authRepository.insert({
+      handle,
       loginId,
       salt,
       password: encrypted,
-      // 0 - user, 1 - shop, 888 - admin
-      // 나중에 enum 로직 넣든지 하자
-      role,
+      role, //100, 200, 800
     });
   }
 

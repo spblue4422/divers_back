@@ -7,6 +7,9 @@ class Auth extends BasicDate {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  handle: string;
+
   /**
    로그인 아이디
   */

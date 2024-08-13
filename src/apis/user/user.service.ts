@@ -24,7 +24,7 @@ export class UserService {
   }
 
   async createUser(
-    authId: number,
+    authHandle: string,
     createUserBody: CreateUserReqDto,
   ): Promise<MsgResDto> {
     const { nickname } = createUserBody;
@@ -32,7 +32,7 @@ export class UserService {
     await this.checkNicknameDuplicate(nickname);
 
     await this.userRepository.insert({
-      authId,
+      authHandle,
       ...createUserBody,
     });
 

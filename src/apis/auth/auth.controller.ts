@@ -23,7 +23,6 @@ import { Current } from '@/common/decorators/current';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 
-//@UseGuards(AuthGuard)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -44,9 +43,9 @@ export class AuthController {
     description: '로그아웃',
   })
   async signOut(@Current() cur: JwtAccessPayloadDto): Promise<MsgResDto> {
-    const { authId } = cur;
+    const { handle } = cur;
 
-    return this.authService.signOut(authId);
+    return this.authService.signOut(handle);
   }
 
   @Post('/user/signUp')
