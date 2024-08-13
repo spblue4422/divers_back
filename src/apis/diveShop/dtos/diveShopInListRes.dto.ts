@@ -7,7 +7,7 @@ export class DiveShopInListResDto {
   id: number;
 
   @ApiProperty({})
-  name: string;
+  shopName: string;
 
   @ApiProperty({})
   countryCode: string;
@@ -22,7 +22,7 @@ export class DiveShopInListResDto {
     const resDto = new DiveShopInListResDto();
 
     resDto.id = data.id;
-    resDto.name = data.name;
+    resDto.shopName = data.name;
     resDto.countryCode = data.countryCode;
     resDto.city = data.city;
     resDto.averageStar = data.averageStar;

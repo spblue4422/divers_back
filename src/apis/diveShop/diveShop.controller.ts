@@ -26,7 +26,9 @@ export class DiveShopController {
   async getDiveShopList(
     @Query() paginationForm: PaginationReqDto,
   ): Promise<ListResDto<DiveShopInListResDto>> {
-    return this.diveShopService.getDiveShopList(paginationForm);
+    const { page, pagingCount } = paginationForm;
+
+    return this.diveShopService.getDiveShopList(page, pagingCount);
   }
 
   @Get('/:shopId')
@@ -41,7 +43,7 @@ export class DiveShopController {
     return this.diveShopService.getDiveShop(shopId);
   }
 
-  @Patch('/:shopId/recommend')
+  @Get('/:shopId/recommend')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브샵 추천' })
   async recommendDiveShop(

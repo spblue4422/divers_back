@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { DiveShopReview } from '@/entities/index';
 
-export class DiveShopReviewInListResDto {
+export class DiveShopReviewResDto {
   @ApiProperty({})
   id: number;
 
@@ -28,7 +28,7 @@ export class DiveShopReviewInListResDto {
   recommendation: number;
 
   static makeRes(data: DiveShopReview) {
-    const resDto = new DiveShopReviewInListResDto();
+    const resDto = new DiveShopReviewResDto();
 
     resDto.id = data.id;
     resDto.userHandle = data.user.authHandle;

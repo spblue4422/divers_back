@@ -24,10 +24,9 @@ export class DiveShopService {
   ) {}
 
   async getDiveShopList(
-    pagination: PaginationReqDto,
+    page: number,
+    pagingCount: number,
   ): Promise<ListResDto<DiveShopInListResDto>> {
-    const { page, pagingCount } = pagination;
-
     return this.diveShopRepository.findListWithCount(page, pagingCount);
   }
 
