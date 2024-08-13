@@ -89,7 +89,7 @@ export class AuthController {
     description: '액세스 토큰 재발급',
   })
   async refreshAccessToken(
-    @Headers('refresh-token') refreshToken,
+    @Headers('refresh-token') refreshToken: string,
   ): Promise<SignInResDto> {
     return this.authService.accessRefresh(refreshToken);
   }

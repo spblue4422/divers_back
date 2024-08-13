@@ -80,10 +80,10 @@ export class AuthService {
     const encrypted = await bcrypt.hash(password, salt);
 
     if (bcrypt.compare(password, encrypted)) {
-      // const { id: userId } = await this.userService.getUserWithAuth(id);
+      const { id: keyId } = await this.userService.getUserByHandle(handle);
 
       // accessToken
-      const accessToken = await this.signToken({ handle, role });
+      const accessToken = await this.signToken({ handle, keyId, role });
 
       // refreshToken
       const refreshToken = await this.signToken({ handle });
@@ -185,15 +185,22 @@ export class AuthService {
         throw new DiversException('INVALID_TOKEN');
       });
 
-    // const { id: userId, auth } = await this.userService.getUserWithAuth(authId);
     const { role, refreshToken: savedRefresh } =
       await this.authRepository.findOneByHandle(handle);
+
+    let keyId: number;
+
+    if (role == Role.USER)
+      keyId = (await this.userService.getUserByHandle(handle)).id;
+    else if (role == Role.SHOP) keyId = 1;
+    else keyId = 1;
 
     if (refreshToken != savedRefresh)
       throw new DiversException('INVALID_TOKEN');
 
     const newAccessToken = await this.signToken({
       handle,
+      keyId,
       role,
     });
 

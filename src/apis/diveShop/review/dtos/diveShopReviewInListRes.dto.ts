@@ -7,7 +7,7 @@ export class DiveShopReviewInListResDto {
   id: number;
 
   @ApiProperty({})
-  userId: number;
+  userHandle: string;
 
   @ApiProperty({})
   nickname: string;
@@ -31,6 +31,7 @@ export class DiveShopReviewInListResDto {
     const resDto = new DiveShopReviewInListResDto();
 
     resDto.id = data.id;
+    resDto.userHandle = data.user.authHandle;
     resDto.nickname = data.user.nickname;
     resDto.shopId = data.shopId;
     resDto.shopName = data.diveShop.name;

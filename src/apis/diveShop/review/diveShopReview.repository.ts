@@ -28,6 +28,7 @@ export class DiveShopReviewRepository extends Repository<DiveShopReview> {
       order,
       skip: page - 1,
       take: pagingCount,
+      relations: { user: true },
     }).then(([data, count]) => ({
       dataList: data.map((d) => DiveShopReviewInListResDto.makeRes(d)),
       totalCount: count,

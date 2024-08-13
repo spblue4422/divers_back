@@ -14,6 +14,8 @@ import { ApiOkResponse } from '@nestjs/swagger';
 import { DivePointReviewResDto } from './dtos/divePointReviewRes.dto';
 import { AuthGuard } from '@/apis/auth/guards/auth.guard';
 import { DivePointReviewService } from '@/apis/divePoint/review/divePointReview.service';
+import { Current } from '@/common/decorators/current';
+import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
@@ -29,7 +31,7 @@ export class DivePointReviewController {
     description: '다이빙 포인트의 리뷰 목록 조회',
   })
   @Get('/list')
-  async getReviewListByPointId(
+  async getPointReviewListByPointId(
     @Param('pointId') pointId: number,
     @Query() paginationForm: PaginationReqDto,
   ): Promise<ListResDto<DivePointReviewResDto>> {
@@ -42,19 +44,21 @@ export class DivePointReviewController {
     );
   }
 
+  @Get('list/user')
   @ApiOkResponse({
+    type: ListResDto<DivePointReviewResDto>,
     description: '유저가 작성한 다이빙 포인트 리뷰 목록 조회',
   })
-  @Get('list/user/:userId')
-  async getReviewListByUserId(
-    @Param('userId') userId: number,
+  async getUserPointReviewList(
+    @Query('handle') targetHandle: string,
     @Query() paginationForm: PaginationReqDto,
-  ) {
-    // 본인 껀지 확인하는 로직을 추가합시당
+    @Current() cur: JwtAccessPayloadDto,
+  ): Promise<ListResDto<DivePointReviewResDto>> {
+    const { handle } = cur;
     const { page, pagingCount } = paginationForm;
 
-    return this.divePointReviewService.getDivePointReviewListByUserId(
-      userId,
+    return this.divePointReviewService.getDivePointReviewListByHandle(
+      targetHandle,
       page,
       pagingCount,
     );
@@ -65,7 +69,12 @@ export class DivePointReviewController {
     description: '포인트 리뷰 생성',
   })
   @Post()
-  async createReview(@Body() createReviewBody) {}
+  async createReview(
+    @Body() createReviewBody,
+    @Current() cur: JwtAccessPayloadDto,
+  ) {
+    const { keyId } = cur;
+  }
 
   @ApiOkResponse({
     type: MsgResDto,
@@ -75,12 +84,20 @@ export class DivePointReviewController {
   async modifyReview(
     @Param('reviewId') reviewId: number,
     @Body() modifyReviewBody,
-  ) {}
+    @Current() cur: JwtAccessPayloadDto,
+  ) {
+    const { keyId } = cur;
+  }
 
   @ApiOkResponse({
     type: MsgResDto,
     description: '포인트 리뷰 삭제',
   })
   @Delete()
-  async deleteReview(@Param('reviewId') reviewId: number) {}
+  async deleteReview(
+    @Param('reviewId') reviewId: number,
+    @Current() cur: JwtAccessPayloadDto,
+  ) {
+    const { keyId } = cur;
+  }
 }

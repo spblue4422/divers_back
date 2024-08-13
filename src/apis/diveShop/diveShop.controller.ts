@@ -6,16 +6,19 @@ import { DiveShopInListResDto } from '@/apis/diveShop/dtos/diveShopInListRes.dto
 import { DiveShopResDto } from '@/apis/diveShop/dtos/diveShopRes.dto';
 import { ModifyDiveShopReqDto } from '@/apis/diveShop/dtos/modifyDiveShopReq.dto';
 import { Current } from '@/common/decorators/current';
+import { Roles } from '@/common/decorators/roles';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
+import { Role } from '@/common/enums';
 
 @Controller('shop')
 export class DiveShopController {
   constructor(private readonly diveShopService: DiveShopService) {}
 
   @Get('/list')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: ListResDto<DiveShopInListResDto>,
     description: '다이브샵 목록 조회',
@@ -27,6 +30,7 @@ export class DiveShopController {
   }
 
   @Get('/:shopId')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: DiveShopResDto,
     description: '다이브샵 상세정보 조회',
@@ -38,14 +42,15 @@ export class DiveShopController {
   }
 
   @Patch('/:shopId/recommend')
+  @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브샵 추천' })
   async recommendDiveShop(
     @Param('shopId') shopId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveShopService.recommedDiveShop(shopId, userId);
+    return this.diveShopService.recommedDiveShop(shopId, keyId);
   }
 
   // 다이브샵 정보도 생각해보면 사장 맘대로 수정하면 안되지 않을까? 세부적인 로직은 좀 더 고민해봐야할듯

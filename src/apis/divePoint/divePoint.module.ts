@@ -12,7 +12,6 @@ import { DivePoint } from '@/entities/index';
 @Module({
   imports: [
     TypeOrmModule.forFeature([DivePoint]),
-    UserModule,
     RecommendationModule,
     AuthModule,
   ],

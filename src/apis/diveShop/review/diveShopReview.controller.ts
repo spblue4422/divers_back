@@ -52,11 +52,11 @@ export class DiveShopReviewController {
     @Body() createReviewBody: CreateDiveShopReviewReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
     return this.diveShopReviewServcie.createReview(
       shopId,
-      userId,
+      keyId,
       createReviewBody,
     );
   }
@@ -71,11 +71,11 @@ export class DiveShopReviewController {
     @Body() modifyReviewBody,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
     return this.diveShopReviewServcie.modifyReview(
       reviewId,
-      userId,
+      keyId,
       modifyReviewBody,
     );
   }
@@ -90,8 +90,8 @@ export class DiveShopReviewController {
     @Param('reviewId') reviewId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { userId } = cur;
+    const { keyId } = cur;
 
-    return this.diveShopReviewServcie.removeReview(reviewId, userId);
+    return this.diveShopReviewServcie.removeReview(reviewId, keyId);
   }
 }
