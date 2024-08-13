@@ -17,7 +17,7 @@ export class DivePointResDto extends DivePointInListResDto {
     const resDto = new DivePointResDto();
 
     resDto.id = data.id;
-    resDto.name = data.name;
+    resDto.pointName = data.name;
     resDto.description = data.description;
     resDto.countryCode = data.countryCode;
     resDto.location = data.location;

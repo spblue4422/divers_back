@@ -29,6 +29,9 @@ export class DivePointReviewResDto {
   @ApiProperty({ description: '추천' })
   recommendation: number;
 
+  @ApiProperty({ description: '블락 여부' })
+  isBlocked: boolean;
+
   @ApiProperty({ description: '생성일자' })
   createdAt: Date;
 
@@ -43,6 +46,7 @@ export class DivePointReviewResDto {
     resDto.text = data.text;
     resDto.star = data.star;
     resDto.recommendation = data.recommendation;
+    resDto.isBlocked = data.isBlocked;
     resDto.createdAt = new Date(data.createdAt.toString());
 
     return resDto;

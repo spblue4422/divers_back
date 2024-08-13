@@ -47,15 +47,15 @@ export class DivePointController {
   }
 
   // roleguard - 유저만?
-  @Patch('/:pointId/recommend')
+  @Get('/:pointId/recommend')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '' })
+  @ApiOkResponse({ type: MsgResDto, description: '다이빙 포인트 추천' })
   async recommendPoint(
     @Param('pointId') pointId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { keyId } = cur;
+    const { keyId: userId } = cur;
 
-    return this.divePointService.recommendDivePoint(pointId, keyId);
+    return this.divePointService.recommendDivePoint(pointId, userId);
   }
 }

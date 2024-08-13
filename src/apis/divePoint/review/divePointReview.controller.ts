@@ -20,15 +20,15 @@ import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 
-@Controller()
 @UseGuards(AuthGuard)
+@Controller()
 export class DivePointReviewController {
   constructor(
     private readonly divePointReviewService: DivePointReviewService,
   ) {}
 
   @ApiOkResponse({
-    description: '다이빙 포인트의 리뷰 목록 조회',
+    description: '다이빙 포인트 리뷰 목록 조회',
   })
   @Get('/list')
   async getPointReviewListByPointId(
@@ -61,6 +61,7 @@ export class DivePointReviewController {
       userHandle,
       page,
       pagingCount,
+      handle == userHandle
     );
   }
 

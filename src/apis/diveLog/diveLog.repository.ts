@@ -3,6 +3,7 @@ import {
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
+  UpdateResult,
 } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
@@ -10,7 +11,9 @@ import { Injectable } from '@nestjs/common';
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { DiversException } from '@/common/exceptions';
+import { UpdateCriteria } from '@/common/types';
 import { DiveLog, DiveLogDetail } from '@/entities/index';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
 export class DiveLogRepository extends Repository<DiveLog> {
@@ -26,14 +29,23 @@ export class DiveLogRepository extends Repository<DiveLog> {
   ): Promise<ListResDto<DiveLogInListResDto>> {
     return this.findAndCount({
       where,
-      relations: { user: true }, // join안걸리면 그때 배열로 바꾸자
       order,
       skip: page - 1,
       take: pagingCount,
+      relations: { user: true },
     }).then(([data, count]) => ({
       dataList: data.map((d) => DiveLogInListResDto.makeRes(d)),
       totalCount: count,
     }));
+  }
+
+  async updateAndCatchFail(
+    where: UpdateCriteria<DiveLog>,
+    target: QueryDeepPartialEntity<DiveLog>,
+  ): Promise<UpdateResult> {
+    return this.update(where, target).catch(() => {
+      throw new DiversException('NO_DIVELOG');
+    });
   }
 }
 
@@ -69,6 +81,15 @@ export class DiveLogDetailRepository extends Repository<DiveLogDetail> {
       },
       relations: { diveLog: { user: true } },
     }).catch(() => {
+      throw new DiversException('NO_DIVELOG');
+    });
+  }
+
+  async updateAndCatchFail(
+    where: UpdateCriteria<DiveLogDetail>,
+    target: QueryDeepPartialEntity<DiveLogDetail>,
+  ): Promise<UpdateResult> {
+    return this.update(where, target).catch(() => {
       throw new DiversException('NO_DIVELOG');
     });
   }

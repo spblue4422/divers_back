@@ -26,26 +26,9 @@ import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
 @UseGuards(AuthGuard)
-// roleguard를 authguard안에 집어넣어서 한번에 검증하는 로직을 만들어야 할 것 같음.
-// @UseGuards(RoleGuard)
 @Controller('diveLog')
 export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}
-
-  @Get('/my/list')
-  @Roles([Role.USER])
-  @ApiOkResponse({
-    type: ListResDto<DiveLogInListResDto>,
-    description: '내 다이브 로그 목록 조회',
-  })
-  async getMyDiveLogList(
-    @Query() paginationForm: PaginationReqDto,
-    @Current() cur: JwtAccessPayloadDto,
-  ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { keyId } = cur;
-
-    return this.diveLogService.getUserDiveLogList(keyId, true, paginationForm);
-  }
 
   @Get('/list')
   @Roles([Role.USER])
@@ -58,10 +41,15 @@ export class DiveLogController {
     @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { handle, keyId } = cur;
+    const { handle } = cur;
     const { page, pagingCount } = paginationForm;
 
-    return this.diveLogService.getUserDiveLogList(keyId, false, paginationForm);
+    return this.diveLogService.getDiveLogListByUserHandle(
+      userHandle,
+      page,
+      pagingCount,
+      handle == userHandle,
+    );
   }
 
   @Get('/:logId')
@@ -74,24 +62,24 @@ export class DiveLogController {
     @Param() logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<DiveLogResDto> {
-    const { keyId } = cur;
+    const { keyId: userId } = cur;
 
-    return this.diveLogService.getDiveLog(logId, keyId);
+    return this.diveLogService.getDiveLog(logId, userId);
   }
 
-  @Post('/create')
+  @Post('')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 생성' })
   async createDiveLog(
     @Body() createDiveLogBody: CreateDiveLogReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { keyId } = cur;
+    const { keyId: userId } = cur;
 
-    return this.diveLogService.createDiveLog(keyId, createDiveLogBody);
+    return this.diveLogService.createDiveLog(userId, createDiveLogBody);
   }
 
-  @Patch('/:logId/modify')
+  @Patch('/:logId')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 수정' })
   async modfiyDiveLog(
@@ -99,21 +87,21 @@ export class DiveLogController {
     @Body() modifyDiveLogBody,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { keyId } = cur;
+    const { keyId: userId } = cur;
 
-    return this.diveLogService.modifyDiveLog(logId, keyId, modifyDiveLogBody);
+    return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
   }
 
-  @Delete('/:logId/remove')
+  @Delete('/:logId')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 삭제' })
   async removeDiveLog(
     @Param() logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ) {
-    const { keyId } = cur;
+    const { keyId: userId } = cur;
 
-    return this.diveLogService.removeDiveLog(logId, keyId);
+    return this.diveLogService.removeDiveLog(logId, userId);
   }
 
   @Patch('/:logId/changePublic')
