@@ -35,13 +35,13 @@ class DiveLogDetail {
   /**
    입수 시각
   */
-  @Column()
+  @Column({ type: 'time' })
   diveInAt: Date;
 
   /**
    출수 시각
   */
-  @Column()
+  @Column({ type: 'time' })
   diveOutAt: Date;
 
   /**
