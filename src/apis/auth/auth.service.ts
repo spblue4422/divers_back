@@ -33,30 +33,38 @@ export class AuthService {
   private access_expired = this.configService.get<string>('ACCESS_EXPIRED');
   private refresh_expired = this.configService.get<string>('REFRESH_EXPIRED');
 
+  // 통합 로그인 method 사전 작성
   async signIn(signInBody: SignInReqDto): Promise<SignInResDto> {
     const { loginId, password } = signInBody;
-    //존재하는 계정인지 확인
-    const { id, isBanned, salt, role } =
+
+    // 존재하는 계정인지 확인
+    const { handle, isBanned, salt, role } =
       await this.authRepository.findOneByLoginId(loginId);
 
-    // 밴 당한 계정인지 확인
+    // 밴 여부 확인
     if (isBanned) throw new DiversException('BANNED_USER');
 
-    //비밀번호 암호화 검증
+    // 비밀번호 암호화 검증
     const encrypted = await bcrypt.hash(password, salt);
 
     if (bcrypt.compare(password, encrypted)) {
-      const accessToken = await this.jwtService.signAsync(
-        { authId: id, loginId, role },
-        { secret: this.secret, expiresIn: this.access_expired },
-      );
+      let keyId: number;
 
-      const refreshToken = await this.jwtService.signAsync(
-        { authId: id },
-        { secret: this.secret, expiresIn: this.refresh_expired },
-      );
+      if (role == Role.USER)
+        keyId = (await this.userService.getUserByHandle(handle)).id;
+      else keyId = 1; // 나중에 diveShopService와 adminService에서 하나씩 구현해오자.
 
-      await this.authRepository.save({ id, refreshToken });
+      // accessToken
+      const accessToken = await this.signToken({ handle, keyId, role });
+
+      // refreshToken
+      const refreshToken = await this.signToken({ handle });
+
+      // save refreshToken in database
+      await this.authRepository.updateAndCatchFail(
+        { handle },
+        { refreshToken },
+      );
 
       return SignInResDto.signInSuccess(accessToken, refreshToken);
     } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
