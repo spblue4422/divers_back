@@ -12,7 +12,7 @@ import {
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { DivePointReviewResDto } from './dtos/divePointReviewRes.dto';
-import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DivePointReviewService } from '@/apis/divePoint/review/divePointReview.service';
 import { Current } from '@/common/decorators/current';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
@@ -20,7 +20,7 @@ import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthRoleGuard)
 @Controller()
 export class DivePointReviewController {
   constructor(
@@ -61,7 +61,7 @@ export class DivePointReviewController {
       userHandle,
       page,
       pagingCount,
-      handle == userHandle
+      handle == userHandle,
     );
   }
 

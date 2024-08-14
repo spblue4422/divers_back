@@ -11,8 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
-import { AuthGuard } from '@/apis/auth/guards/auth.guard';
-import { RoleGuard } from '@/apis/auth/guards/role.guard';
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DiveLogService } from '@/apis/diveLog/diveLog.service';
 import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
@@ -25,7 +24,7 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthRoleGuard)
 @Controller('diveLog')
 export class DiveLogController {
   constructor(private readonly diveLogService: DiveLogService) {}

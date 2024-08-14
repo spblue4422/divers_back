@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
-import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { ChangeUserProfileReqDto } from '@/apis/user/dtos/changeUserProfileReq.dto';
 import { MyProfileResDto } from '@/apis/user/dtos/myProfileRes.dto';
 import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
@@ -29,7 +29,7 @@ export class UserController {
   //   type: MyProfileResDto,
   //   description: '자신 프로필 확인',
   // })
-  // @UseGuards(AuthGuard)
+  // @UseGuards(AuthRoleGuard)
   // @Get('/myProfile')
   // async getMyProfile(
   //   @Current() cur: JwtAccessPayloadDto,
@@ -41,8 +41,9 @@ export class UserController {
   //     .then((data) => MyProfileResDto.makeRes(data));
   // }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Get('/profile')
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: MyProfileResDto,
     description: '본인/다른 유저 프로필 확인',
@@ -62,7 +63,7 @@ export class UserController {
       );
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Patch('/profile')
   @Roles([Role.USER])
   @ApiOkResponse({
@@ -78,7 +79,7 @@ export class UserController {
     return this.userService.changeUser(handle, changeUserProfileBody);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Patch('/profileImage')
   @Roles([Role.USER])
   @ApiOkResponse({
@@ -101,7 +102,7 @@ export class UserController {
     return this.userService.checkNicknameDuplicate(nickname);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Patch('/certificate/email')
   @Roles([Role.USER])
   @ApiOkResponse({
@@ -113,7 +114,7 @@ export class UserController {
     @Current() cur: JwtAccessPayloadDto,
   ) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Patch('/certificate/phone')
   @Roles([Role.USER])
   @ApiOkResponse({
@@ -126,7 +127,7 @@ export class UserController {
   ) {}
 
   // 차후 개발 feature로 빼지뭐 ㅋㅋ
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Patch('/certificate/rank')
   @Roles([Role.USER])
   async certificateDiveRank(@Current() cur: JwtAccessPayloadDto) {}

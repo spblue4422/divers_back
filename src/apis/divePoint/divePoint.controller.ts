@@ -9,7 +9,7 @@ import {
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { DivePointResDto } from './dtos/divePointRes.dto';
-import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DivePointService } from '@/apis/divePoint/divePoint.service';
 import { DivePointInListResDto } from '@/apis/divePoint/dtos/divePointInListRes.dto';
 import { Current } from '@/common/decorators/current';
@@ -20,7 +20,7 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthRoleGuard)
 @Controller('point')
 export class DivePointController {
   constructor(private readonly divePointService: DivePointService) {}
@@ -46,7 +46,6 @@ export class DivePointController {
     return this.divePointService.getDivePoint(pointId);
   }
 
-  // roleguard - 유저만?
   @Get('/:pointId/recommend')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이빙 포인트 추천' })
