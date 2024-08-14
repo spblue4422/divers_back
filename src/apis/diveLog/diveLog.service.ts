@@ -22,6 +22,7 @@ import {
 import { DiversException } from '@/common/exceptions';
 import { convertKeyToValue } from '@/common/utils/enumConverter';
 import { DiveLog } from '@/entities/index';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class DiveLogService {
@@ -93,6 +94,7 @@ export class DiveLogService {
     };
   }
 
+  @Transactional()
   async createDiveLog(userId: number, createDiveLogBody: CreateDiveLogReqDto) {
     //이거 좀 줄일 수 있지않을까?
     const {
@@ -125,6 +127,7 @@ export class DiveLogService {
   }
 
   // 부분 수정(log와 logDetail 따로)이 있어도 괜찮을듯?
+  @Transactional()
   async modifyDiveLog(
     logId: number,
     userId: number,

@@ -8,6 +8,7 @@ import { UserRepostiory } from '@/apis/user/user.repository';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { DiversException } from '@/common/exceptions';
 import { User } from '@/entities';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class UserService {
@@ -17,6 +18,7 @@ export class UserService {
     return this.userRepository.findOneByAuthHandle(handle);
   }
 
+  // @Transactional()
   async createUser(
     authHandle: string,
     createUserBody: CreateUserReqDto,
@@ -49,6 +51,7 @@ export class UserService {
     return MsgResDto.success();
   }
 
+  // @Transactional()
   async checkNicknameDuplicate(nickname: string): Promise<MsgResDto> {
     if (await this.userRepository.exists({ where: { nickname } }))
       throw new DiversException('DUPLICATE_NICKNAME');

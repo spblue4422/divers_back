@@ -14,6 +14,7 @@ import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { DiversException } from '@/common/exceptions';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class DiveShopService {
@@ -41,6 +42,7 @@ export class DiveShopService {
     */
 
   // 트랜잭션 필요
+  @Transactional()
   async recommedDiveShop(shopId: number, userId: number): Promise<MsgResDto> {
     const { recommendation } =
       await this.diveShopRepository.findOneByShopId(shopId);

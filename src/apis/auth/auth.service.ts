@@ -16,6 +16,7 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { Role } from '@/common/enums';
 import { DiversException } from '@/common/exceptions';
 import * as bcrypt from 'bcrypt';
+import { Transactional } from 'typeorm-transactional';
 import { parse, v4 } from 'uuid';
 
 @Injectable()
@@ -137,6 +138,7 @@ export class AuthService {
   //   } else throw new DiversException('WRONG_ID_PW'); // 틀린 비밀번호
   // }
 
+  @Transactional()
   async userSignUp(signUpBody: UserSignUpReqDto): Promise<MsgResDto> {
     const { loginId, password, createUserBody } = signUpBody;
 
@@ -224,6 +226,7 @@ export class AuthService {
     return SignInResDto.signInSuccess(newAccessToken, newRefreshToken);
   }
 
+  // @Transactional()
   async createAuth(
     handle: string,
     loginId: string,
@@ -238,7 +241,7 @@ export class AuthService {
       loginId,
       salt,
       password: encrypted,
-      role, //100, 200, 800
+      role, //100, 200, 888
     });
   }
 

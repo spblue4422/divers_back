@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { DivePointReviewResDto } from './dtos/divePointReviewRes.dto';
 import { DivePointReviewRepository } from '@/apis/divePoint/review/divePointReview.repository';
 import { ListResDto } from '@/common/dtos/listRes.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class DivePointReviewService {
@@ -51,4 +52,7 @@ export class DivePointReviewService {
       { user: true },
     );
   }
+
+  @Transactional()
+  async recommendDivePoint() {}
 }

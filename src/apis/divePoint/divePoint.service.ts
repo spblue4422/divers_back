@@ -6,6 +6,7 @@ import { DivePointResDto } from '@/apis/divePoint/dtos/divePointRes.dto';
 import { RecommendationService } from '@/apis/recommendation/recommendation.service';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class DivePointService {
@@ -25,6 +26,7 @@ export class DivePointService {
     return this.divePointRepository.findOneByPointId(pointId);
   }
 
+  @Transactional()
   async recommendDivePoint(
     pointId: number,
     userId: number,

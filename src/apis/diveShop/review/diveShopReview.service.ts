@@ -7,6 +7,7 @@ import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { DiversException } from '@/common/exceptions';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class DiveShopReviewService {
@@ -66,5 +67,6 @@ export class DiveShopReviewService {
     return MsgResDto.success();
   }
 
+  @Transactional()
   async recommendReview(reviewId: number) {}
 }

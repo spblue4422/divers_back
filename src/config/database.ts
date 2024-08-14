@@ -1,5 +1,9 @@
+import { DataSource } from 'typeorm';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 export const DiversTypeOrmModule = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
@@ -16,5 +20,10 @@ export const DiversTypeOrmModule = TypeOrmModule.forRootAsync({
       synchronize: true,
       timezone: '+09:00',
     };
+  },
+  async dataSourceFactory(option) {
+    if (!option) throw new Error('Invalid options passed');
+
+    return addTransactionalDataSource(new DataSource(option));
   },
 });
