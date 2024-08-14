@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
-import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DiveShopReviewService } from '@/apis/diveShop/review/diveShopReview.service';
 import { CreateDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/createDiveShopReviewReq.dto';
 import { DiveShopReviewResDto } from '@/apis/diveShop/review/dtos/diveShopReviewRes.dto';
@@ -21,7 +21,7 @@ import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthRoleGuard)
 @Controller('')
 export class DiveShopReviewController {
   constructor(private readonly diveShopReviewServcie: DiveShopReviewService) {}

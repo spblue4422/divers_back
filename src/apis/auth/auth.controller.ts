@@ -18,7 +18,7 @@ import { ShopSignUpReqDto } from '@/apis/auth/dtos/shopSignUpReq.dto';
 import { SignInReqDto } from '@/apis/auth/dtos/signInReq.dto';
 import { SignInResDto } from '@/apis/auth/dtos/signInRes.dto';
 import { UserSignUpReqDto } from '@/apis/auth/dtos/userSignUpReq.dto';
-import { AuthGuard } from '@/apis/auth/guards/auth.guard';
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { Current } from '@/common/decorators/current';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
@@ -36,7 +36,7 @@ export class AuthController {
     return this.authService.userSignIn(signInBody);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Get('/signOut')
   @ApiOkResponse({
     type: MsgResDto,
@@ -66,7 +66,7 @@ export class AuthController {
     */
 
   //어디까지 날려야할까?
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRoleGuard)
   @Delete('/withdraw')
   @ApiOkResponse({
     type: MsgResDto,
