@@ -13,7 +13,7 @@ import { DiveLogDetail } from '@/entities/index';
 
 export class DiveLogResDto extends DiveLogInListResDto {
   @ApiProperty()
-  userId: number;
+  userHandle: string;
 
   @ApiProperty()
   shopId: number;
@@ -31,7 +31,7 @@ export class DiveLogResDto extends DiveLogInListResDto {
   buddy: string;
 
   @ApiProperty()
-  blockReason?: string;
+  blockReason: string;
 
   @ApiProperty({ description: '날씨' })
   weather: Weather;
@@ -89,7 +89,7 @@ export class DiveLogResDto extends DiveLogInListResDto {
     const { diveLog } = data;
 
     resDto.id = data.logId;
-    resDto.userId = diveLog.userId;
+    resDto.userHandle = diveLog.user.authHandle;
     resDto.nickname = diveLog.user.nickname;
     resDto.shopId = diveLog.shopId ?? 0;
     resDto.shopName = diveLog.shopName;

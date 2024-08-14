@@ -7,7 +7,7 @@ export class DivePointInListResDto {
   id: number;
 
   @ApiProperty({ description: '이름' })
-  name: string;
+  pointName: string;
 
   @ApiProperty({ description: '국가 코드' })
   countryCode: string;
@@ -19,7 +19,7 @@ export class DivePointInListResDto {
     const resDto = new DivePointInListResDto();
 
     resDto.id = data.id;
-    resDto.name = data.name;
+    resDto.pointName = data.name;
     resDto.countryCode = data.countryCode;
     resDto.averageStar = data.averageStar;
 

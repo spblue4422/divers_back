@@ -17,5 +17,5 @@ export class CreateDiveShopReviewReqDto {
 
   @ApiProperty({})
   @IsNumber()
-  likes: number;
+  recommendation: number;
 }

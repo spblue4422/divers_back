@@ -30,19 +30,25 @@ export class DiveLogService {
     private readonly diveLogDetailRepository: DiveLogDetailRepository,
   ) {}
 
-  async getUserDiveLogList(
-    userId: number,
-    owner: boolean,
-    paginationForm: PaginationReqDto,
+  async getDiveLogListByUserHandle(
+    handle: string,
+    page: number,
+    pagingCount: number,
+    isOwner: boolean,
+    order?,
   ): Promise<ListResDto<DiveLogInListResDto>> {
-    const { page, pagingCount } = paginationForm;
-    const where: FindOptionsWhere<DiveLog> = owner
-      ? { userId }
-      : { userId, isPublic: true, isBlocked: false };
+    const where: FindOptionsWhere<DiveLog> = isOwner
+      ? { user: { authHandle: handle } }
+      : { user: { authHandle: handle }, isPublic: true, isBlocked: false };
 
-    return this.diveLogRepository.findListWithCount(page, pagingCount, where, {
-      createdAt: 'DESC',
-    });
+    return this.diveLogRepository.findListWithCount(
+      page,
+      pagingCount,
+      where,
+      order ?? {
+        createdAt: 'DESC',
+      },
+    );
   }
 
   async getDiveLog(logId: number, userId: number): Promise<DiveLogResDto> {
@@ -138,21 +144,25 @@ export class DiveLogService {
     )
       throw new DiversException('NO_DIVELOG');
 
-    await this.diveLogRepository.save({
-      id: logId,
-      ...modifyDiveLogBody,
-    });
+    await this.diveLogRepository.updateAndCatchFail(
+      { id: logId },
+      {
+        ...modifyDiveLogBody,
+      },
+    );
 
-    await this.diveLogDetailRepository.save({
-      logId,
-      ...modifyDiveLogBody,
-      weather: weatherVal,
-      wave: waveVal,
-      current: currentVal,
-      visibility: visibilityVal,
-      equipment: equipmentValStr,
-      type: typeValStr,
-    });
+    await this.diveLogDetailRepository.updateAndCatchFail(
+      { logId },
+      {
+        ...modifyDiveLogBody,
+        weather: weatherVal,
+        wave: waveVal,
+        current: currentVal,
+        visibility: visibilityVal,
+        equipment: equipmentValStr,
+        type: typeValStr,
+      },
+    );
 
     return MsgResDto.success();
   }

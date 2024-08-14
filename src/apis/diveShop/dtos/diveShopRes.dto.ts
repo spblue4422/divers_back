@@ -23,7 +23,7 @@ export class DiveShopResDto extends DiveShopInListResDto {
     const resDto = new DiveShopResDto();
 
     resDto.id = data.id;
-    resDto.name = data.name;
+    resDto.shopName = data.name;
     resDto.countryCode = data.countryCode;
     resDto.city = data.city;
     resDto.description = data.description;

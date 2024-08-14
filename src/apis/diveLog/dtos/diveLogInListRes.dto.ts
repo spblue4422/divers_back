@@ -16,10 +16,10 @@ export class DiveLogInListResDto {
   diveDate: Date;
 
   @ApiProperty()
-  isPublic?: boolean;
+  isPublic: boolean;
 
   @ApiProperty()
-  isBlocked?: boolean;
+  isBlocked: boolean;
 
   static makeRes(data: DiveLog) {
     const resDto = new DiveLogInListResDto();
@@ -28,6 +28,8 @@ export class DiveLogInListResDto {
     resDto.nickname = data.user.nickname;
     resDto.pointName = data.pointName;
     resDto.diveDate = data.diveDate;
+    resDto.isPublic = data.isPublic;
+    resDto.isBlocked = data.isBlocked;
 
     return resDto;
   }

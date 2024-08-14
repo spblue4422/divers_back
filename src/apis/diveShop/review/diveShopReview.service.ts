@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { DiveShopReviewRepository } from '@/apis/diveShop/review/diveShopReview.repository';
 import { CreateDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/createDiveShopReviewReq.dto';
-import { DiveShopReviewInListResDto } from '@/apis/diveShop/review/dtos/diveShopReviewInListRes.dto';
+import { DiveShopReviewResDto } from '@/apis/diveShop/review/dtos/diveShopReviewRes.dto';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
@@ -14,18 +14,17 @@ export class DiveShopReviewService {
     private readonly diveShopReviewRepository: DiveShopReviewRepository,
   ) {}
 
-  async getShopReviewListById(
+  async getDiveShopReviewListById(
     shopId: number,
-    pagination: PaginationReqDto,
-  ): Promise<ListResDto<DiveShopReviewInListResDto>> {
-    const { page, pagingCount } = pagination;
-
+    page: number,
+    pagingCount: number,
+  ): Promise<ListResDto<DiveShopReviewResDto>> {
     return this.diveShopReviewRepository.findListWithCount(page, pagingCount, {
       shopId,
     });
   }
 
-  async createReview(
+  async createDiveShopReview(
     shopId: number,
     userId: number,
     createReviewBody: CreateDiveShopReviewReqDto,
@@ -39,22 +38,20 @@ export class DiveShopReviewService {
     return MsgResDto.success();
   }
 
-  async modifyReview(reviewId: number, userId: number, modifyReviewBody) {
-    await this.diveShopReviewRepository
-      .findOneByOrFail({
-        id: reviewId,
-        userId,
-      })
-      .catch(() => {
-        throw new DiversException('NO_DIVESHOP_REVIEW');
-      });
-
-    // save 들어갈 자리
+  async modifyDiveShopReview(
+    reviewId: number,
+    userId: number,
+    modifyReviewBody,
+  ) {
+    await this.diveShopReviewRepository.update(
+      { id: reviewId, userId },
+      { ...modifyReviewBody },
+    );
 
     return MsgResDto.success();
   }
 
-  async removeReview(reviewId: number, userId: number) {
+  async removeDiveShopReview(reviewId: number, userId: number) {
     await this.diveShopReviewRepository
       .findOneByOrFail({
         id: reviewId,

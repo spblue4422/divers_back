@@ -8,6 +8,12 @@ class Auth extends BasicDate {
   id: number;
 
   /**
+   handle - user, shop, admin table에 걸린 foregin key
+   */
+  @Column({ unique: true })
+  handle: string;
+
+  /**
    로그인 아이디
   */
   @Column({ unique: true })

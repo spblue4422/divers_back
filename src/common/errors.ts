@@ -22,6 +22,11 @@ export const Errors = {
     errorCode: -100,
     msg: '존재하지 않는 enum입니다',
   },
+  NO_AUTH: {
+    statusCode: 404,
+    errorCode: 999,
+    msg: '존재하지 않는 계정입니다.',
+  },
   NO_USER: {
     statusCode: 404,
     errorCode: 1000,

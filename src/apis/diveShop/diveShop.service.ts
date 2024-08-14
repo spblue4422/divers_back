@@ -24,10 +24,9 @@ export class DiveShopService {
   ) {}
 
   async getDiveShopList(
-    pagination: PaginationReqDto,
+    page: number,
+    pagingCount: number,
   ): Promise<ListResDto<DiveShopInListResDto>> {
-    const { page, pagingCount } = pagination;
-
     return this.diveShopRepository.findListWithCount(page, pagingCount);
   }
 
@@ -42,7 +41,7 @@ export class DiveShopService {
     */
 
   // 트랜잭션 필요
-  async recommedDiveShop(shopId: number, userId: number) {
+  async recommedDiveShop(shopId: number, userId: number): Promise<MsgResDto> {
     const { recommendation } =
       await this.diveShopRepository.findOneByShopId(shopId);
 

@@ -36,11 +36,10 @@ export class DivePointRepostiory extends Repository<DivePoint> {
     }));
   }
 
-  async findOneByPointId(pointId: number) {
+  async findOneByPointId(pointId: number): Promise<DivePointResDto> {
     return this.findOneOrFail({ where: { id: pointId } })
       .then((d) => DivePointResDto.makeRes(d))
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         throw new DiversException('NO_DIVEPOINT');
       });
   }
