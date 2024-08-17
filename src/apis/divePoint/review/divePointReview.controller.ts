@@ -124,7 +124,7 @@ export class DivePointReviewController {
   }
 
   @Patch()
-  @Roles([Role.USER, Role.ADMIN])
+  @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이빙 포인트 리뷰 추천' })
   async recommendDivePointReview(
     @Param('reviewId') reviewId: number,

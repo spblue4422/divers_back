@@ -3,19 +3,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DiveShop } from '@/entities/index';
 
 export class DiveShopInListResDto {
-  @ApiProperty({})
+  @ApiProperty({ description: 'dive_shop_id' })
   id: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '다이빙 샵 이름' })
   shopName: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '국가 코드' })
   countryCode: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '도시' })
   city: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '평균 별점' })
   averageStar: number;
 
   static makeRes(data: DiveShop) {

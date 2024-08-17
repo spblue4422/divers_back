@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { ChangeUserProfileReqDto } from '@/apis/user/dtos/changeUserProfileReq.dto';
 import { CreateUserReqDto } from '@/apis/user/dtos/createUserReq.dto';
-import { MyProfileResDto } from '@/apis/user/dtos/myProfileRes.dto';
-import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
+import { ModifyUserProfileReqDto } from '@/apis/user/dtos/modifyUserProfileReq.dto';
 import { UserRepostiory } from '@/apis/user/user.repository';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { DiversException } from '@/common/exceptions';
 import { User } from '@/entities';
-import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class UserService {
@@ -18,7 +15,6 @@ export class UserService {
     return this.userRepository.findOneByAuthHandle(handle);
   }
 
-  // @Transactional()
   async createUser(
     authHandle: string,
     createUserBody: CreateUserReqDto,
@@ -35,9 +31,9 @@ export class UserService {
     return MsgResDto.success();
   }
 
-  async changeUser(
+  async modifyUser(
     handle: string,
-    changeProfileBody: ChangeUserProfileReqDto,
+    changeProfileBody: ModifyUserProfileReqDto,
   ): Promise<MsgResDto> {
     //혹시 모르니 로직 넣어둘까. => 이거 api를 따로 만들어두면 빼도 되는 부분
     const { nickname } = changeProfileBody;
@@ -51,7 +47,6 @@ export class UserService {
     return MsgResDto.success();
   }
 
-  // @Transactional()
   async checkNicknameDuplicate(nickname: string): Promise<MsgResDto> {
     if (await this.userRepository.exists({ where: { nickname } }))
       throw new DiversException('DUPLICATE_NICKNAME');

@@ -3,22 +3,22 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DiveLog } from '@/entities/index';
 
 export class DiveLogInListResDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'dive_log_id' })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '닉네임' })
   nickname: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '다이빙 포인트 이름' })
   pointName: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '다이빙 일자' })
   diveDate: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: '공개 여부' })
   isPublic: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ description: '블락 여부' })
   isBlocked: boolean;
 
   static makeRes(data: DiveLog) {

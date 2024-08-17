@@ -1,5 +1,3 @@
-import { InsertResult } from 'typeorm';
-
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -235,8 +233,8 @@ export class AuthService {
     return SignInResDto.signInSuccess(newAccessToken, newRefreshToken);
   }
 
-  async createAuth(reqBody: CreateAuthReqDto) {
-    const { handle, loginId, password, role } = reqBody;
+  async createAuth(createAuthBody: CreateAuthReqDto) {
+    const { handle, loginId, password, role } = createAuthBody;
 
     const salt = await bcrypt.genSalt();
     const encrypted = await bcrypt.hash(password, salt);
@@ -246,7 +244,7 @@ export class AuthService {
       loginId,
       salt,
       password: encrypted,
-      role, //100, 200, 888
+      role,
     });
   }
 

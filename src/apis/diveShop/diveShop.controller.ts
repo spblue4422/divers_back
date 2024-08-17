@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
+import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DiveShopService } from '@/apis/diveShop/diveShop.service';
 import { DiveShopInListResDto } from '@/apis/diveShop/dtos/diveShopInListRes.dto';
 import { DiveShopResDto } from '@/apis/diveShop/dtos/diveShopRes.dto';
@@ -13,6 +22,7 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
+@UseGuards(AuthRoleGuard)
 @Controller('shop')
 export class DiveShopController {
   constructor(private readonly diveShopService: DiveShopService) {}

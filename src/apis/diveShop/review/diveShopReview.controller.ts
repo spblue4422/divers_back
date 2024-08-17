@@ -55,12 +55,18 @@ export class DiveShopReviewController {
     @Query('id') userHandle: string,
     @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
-  ) {
-    const { keyId: userId } = cur;
+  ): Promise<ListResDto<DiveShopReviewResDto>> {
+    const { handle } = cur;
     const { page, pagingCount } = paginationForm;
+
+    return this.diveShopReviewServcie.getDiveShopReviewListByUser(
+      userHandle,
+      page,
+      pagingCount,
+      handle == userHandle,
+    );
   }
 
-  //이거 되나?
   @Post('/:shopId')
   @Roles([Role.USER, Role.ADMIN])
   @ApiOkResponse({
@@ -118,7 +124,7 @@ export class DiveShopReviewController {
   }
 
   @Patch('/:reviewId/recommend')
-  @Roles([Role.USER, Role.ADMIN])
+  @Roles([Role.USER])
   @ApiOkResponse({
     type: MsgResDto,
     description: '다이빙 샵 리뷰 추천',

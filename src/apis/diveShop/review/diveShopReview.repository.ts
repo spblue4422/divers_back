@@ -1,7 +1,6 @@
 import {
   DataSource,
   FindOptionsOrder,
-  FindOptionsRelations,
   FindOptionsWhere,
   Repository,
   UpdateResult,

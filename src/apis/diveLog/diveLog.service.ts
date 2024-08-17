@@ -12,7 +12,6 @@ import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
 import { ModifyDiveLogReqDto } from '@/apis/diveLog/dtos/modifyDiveLogReq.dto';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
-import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import {
   DegreeExpression,
   DivingEquipment,
@@ -106,7 +105,6 @@ export class DiveLogService {
       typeValStr,
     } = await this.convertKeyToValueForLog(createDiveLogBody);
 
-    //이거 잘 될지 모르겠음. 안되면 body에서 로그랑 디테일 분리하자
     const { identifiers } = await this.diveLogRepository.insert({
       userId,
       ...createDiveLogBody,
@@ -141,11 +139,6 @@ export class DiveLogService {
       equipmentValStr,
       typeValStr,
     } = await this.convertKeyToValueForLog(modifyDiveLogBody);
-
-    // if (
-    //   !(await this.diveLogRepository.exists({ where: { id: logId, userId } }))
-    // )
-    //   throw new DiversException('NO_DIVELOG');
 
     await this.diveLogRepository.updateAndCatchFail(
       { id: logId, userId },

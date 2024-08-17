@@ -12,7 +12,6 @@ import { ModifyDiveShopReqDto } from '@/apis/diveShop/dtos/modifyDiveShopReq.dto
 import { RecommendationService } from '@/apis/recommendation/recommendation.service';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
-import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { DiversException } from '@/common/exceptions';
 import { Transactional } from 'typeorm-transactional';
 

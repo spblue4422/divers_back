@@ -3,10 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DivePoint } from '@/entities/index';
 
 export class DivePointInListResDto {
-  @ApiProperty({ description: '포인트 id' })
+  @ApiProperty({ description: 'dive_point_id' })
   id: number;
 
-  @ApiProperty({ description: '이름' })
+  @ApiProperty({ description: '다이빙 포인트 이름' })
   pointName: string;
 
   @ApiProperty({ description: '국가 코드' })

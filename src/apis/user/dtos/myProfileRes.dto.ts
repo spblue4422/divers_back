@@ -4,7 +4,6 @@ import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
 import { User } from '@/entities/index';
 
 export class MyProfileResDto extends UserProfileResDto {
-  // 로그인 아이디 정도는 같이 들고와도 괜찮지 않을까
   @ApiProperty({ description: '이름' })
   firstname: string;
 

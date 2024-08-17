@@ -7,10 +7,10 @@ export class DivePointResDto extends DivePointInListResDto {
   @ApiProperty({ description: '설명' })
   description: string;
 
-  @ApiProperty({ description: '위치' })
+  @ApiProperty({ description: '지역' })
   location: string;
 
-  @ApiProperty({ description: '추천수' })
+  @ApiProperty({ description: '추천 수' })
   recommendation: number;
 
   static makeRes(data: DivePoint) {

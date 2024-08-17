@@ -1,11 +1,9 @@
-import { Timestamp } from 'typeorm';
-
 import { ApiProperty } from '@nestjs/swagger';
 
 import { DivePointReview } from '@/entities';
 
 export class DivePointReviewResDto {
-  @ApiProperty({ description: 'point_review_id' })
+  @ApiProperty({ description: 'dive_point_review_id' })
   id: number;
 
   @ApiProperty({ description: 'user_handle' })

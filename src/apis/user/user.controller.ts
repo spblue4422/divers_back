@@ -10,7 +10,7 @@ import {
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
-import { ChangeUserProfileReqDto } from '@/apis/user/dtos/changeUserProfileReq.dto';
+import { ModifyUserProfileReqDto } from '@/apis/user/dtos/modifyUserProfileReq.dto';
 import { MyProfileResDto } from '@/apis/user/dtos/myProfileRes.dto';
 import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
 import { UserService } from '@/apis/user/user.service';
@@ -23,23 +23,6 @@ import { Role } from '@/common/enums';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  // 롤가드 - 유저만
-  // @ApiOkResponse({
-  //   type: MyProfileResDto,
-  //   description: '자신 프로필 확인',
-  // })
-  // @UseGuards(AuthRoleGuard)
-  // @Get('/myProfile')
-  // async getMyProfile(
-  //   @Current() cur: JwtAccessPayloadDto,
-  // ): Promise<MyProfileResDto> {
-  //   const { handle } = cur;
-
-  //   return this.userService
-  //     .getUserByHandle(handle)
-  //     .then((data) => MyProfileResDto.makeRes(data));
-  // }
 
   @UseGuards(AuthRoleGuard)
   @Get('/profile')
@@ -70,13 +53,13 @@ export class UserController {
     type: MsgResDto,
     description: '유저 프로필 정보 변경',
   })
-  async changeMyProfile(
-    @Body() changeUserProfileBody: ChangeUserProfileReqDto,
+  async modifyUserProfile(
+    @Body() modfiyUserProfileBody: ModifyUserProfileReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
     const { handle } = cur;
 
-    return this.userService.changeUser(handle, changeUserProfileBody);
+    return this.userService.modifyUser(handle, modfiyUserProfileBody);
   }
 
   @UseGuards(AuthRoleGuard)

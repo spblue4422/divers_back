@@ -9,7 +9,7 @@ export class SignInResDto extends MsgResDto {
   @ApiProperty({ description: 'Refresh Token' })
   refreshToken: string;
 
-  static async signInSuccess(at: string, rt: string): Promise<SignInResDto> {
+  static signInSuccess(at: string, rt: string): SignInResDto {
     const resDto = new SignInResDto();
 
     resDto.code = 'SUCCESS';

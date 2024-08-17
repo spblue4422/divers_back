@@ -65,7 +65,6 @@ export class AuthController {
   }
     */
 
-  //어디까지 날려야할까?
   @UseGuards(AuthRoleGuard)
   @Delete('/withdraw')
   @ApiOkResponse({

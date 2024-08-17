@@ -10,7 +10,7 @@ export class CertApplicationResDto {
   shopId: number;
 
   @ApiProperty()
-  name: string;
+  shopName: string;
 
   @ApiProperty()
   state: string;
@@ -25,10 +25,9 @@ export class CertApplicationResDto {
     const { approvedDate, rejectedDate } = data;
     const resDto = new CertApplicationResDto();
 
-    // 따로 값을 안 넣어주면 null로 알아서 들어가겠지?
     resDto.id = data.id;
     resDto.shopId = data.shopId;
-    resDto.name = data.diveShop.name;
+    resDto.shopName = data.diveShop.name;
     if (approvedDate) {
       resDto.state = '승인';
       resDto.judgedDate = approvedDate;

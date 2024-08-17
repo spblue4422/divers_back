@@ -6,7 +6,7 @@ import { DivingRank } from '@/common/enums';
 import { User } from '@/entities/index';
 
 export class UserProfileResDto {
-  @ApiProperty({ description: 'handle' })
+  @ApiProperty({ description: 'auth_handle' })
   handle: string;
 
   @ApiProperty({ description: '닉네임' })

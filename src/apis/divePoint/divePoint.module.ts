@@ -6,7 +6,6 @@ import { DivePointController } from '@/apis/divePoint/divePoint.controller';
 import { DivePointRepostiory } from '@/apis/divePoint/divePoint.repository';
 import { DivePointService } from '@/apis/divePoint/divePoint.service';
 import { RecommendationModule } from '@/apis/recommendation/recommendation.module';
-import { UserModule } from '@/apis/user/user.module';
 import { DivePoint } from '@/entities/index';
 
 @Module({

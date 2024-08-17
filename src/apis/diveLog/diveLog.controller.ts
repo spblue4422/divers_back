@@ -33,7 +33,7 @@ export class DiveLogController {
   @Roles([Role.USER])
   @ApiOkResponse({
     type: ListResDto<DiveLogInListResDto>,
-    description: '유저 다이브 로그 목록 조회',
+    description: '유저가 작성한 다이브 로그 목록 조회',
   })
   async getUserDiveLogList(
     @Query('id') userHandle: string,

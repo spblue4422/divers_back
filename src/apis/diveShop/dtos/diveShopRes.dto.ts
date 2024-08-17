@@ -4,19 +4,19 @@ import { DiveShopInListResDto } from '@/apis/diveShop/dtos/diveShopInListRes.dto
 import { DiveShop } from '@/entities/index';
 
 export class DiveShopResDto extends DiveShopInListResDto {
-  @ApiProperty()
+  @ApiProperty({ description: '대표자 이름' })
   representative: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '연락처' })
   phone: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '설명' })
   description: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '상세 주소' })
   detailAddress: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '추천 수' })
   recommendation: number;
 
   static makeRes(data: DiveShop) {

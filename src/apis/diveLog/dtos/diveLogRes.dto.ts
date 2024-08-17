@@ -1,5 +1,3 @@
-import { Timestamp } from 'typeorm';
-
 import { ApiProperty } from '@nestjs/swagger';
 
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
@@ -12,25 +10,25 @@ import {
 import { DiveLogDetail } from '@/entities/index';
 
 export class DiveLogResDto extends DiveLogInListResDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'user_handle' })
   userHandle: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'dive_shop_id' })
   shopId: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '다이빙 샵 이름' })
   shopName: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'dive_point_id' })
   pointId: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: '지역' })
   location: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '버디' })
   buddy: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '블락 이유' })
   blockReason: string;
 
   @ApiProperty({ description: '날씨' })
@@ -122,7 +120,7 @@ export class DiveLogResDto extends DiveLogInListResDto {
     resDto.equipment = data.equipment
       .split(',')
       .map((e) => DivingEquipment[Number(e)] as unknown as DivingEquipment);
-    // type.split(',')의 결과물 => ['1', '2', '3']
+    // type.split(',')의 결과물 => ['1', '2', '3', '4', '5']
     resDto.type = data.type
       .split(',')
       .map((e) => DivingType[Number(e)] as unknown as DivingType);

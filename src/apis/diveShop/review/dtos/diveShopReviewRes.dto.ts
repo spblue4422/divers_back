@@ -3,34 +3,34 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DiveShopReview } from '@/entities/index';
 
 export class DiveShopReviewResDto {
-  @ApiProperty({})
+  @ApiProperty({ description: 'dive_shop_review_id' })
   id: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: 'user_handle' })
   userHandle: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '닉네임' })
   nickname: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: 'dive_shop_id' })
   shopId: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '다이빙 샵 이름' })
   shopName: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '리뷰 내용' })
   text: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '별점' })
   star: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '추천 수' })
   recommendation: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '블락 여부' })
   isBlocked: boolean;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '생성 일자' })
   createdAt: Date;
 
   static makeRes(data: DiveShopReview) {

@@ -14,114 +14,108 @@ import {
   IsEquipmentArray,
   IsWeather,
 } from '@/common/decorators/validator';
-import {
-  DegreeExpression,
-  DivingEquipment,
-  DivingType,
-  Weather,
-} from '@/common/enums';
 
 export class CreateDiveLogReqDto {
-  @ApiProperty({})
+  @ApiProperty({ description: 'tour_id' })
   @IsOptional()
   @IsNumber()
   tourId?: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: 'dive_shop_id' })
   @IsOptional()
   @IsNumber()
   shopId?: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '다이빙 샵 이름' })
   @IsString()
   shopName: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: 'dive_point_id' })
   @IsOptional()
   @IsNumber()
   pointId?: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '다이빙 포인트 이름' })
   @IsString()
   pointName: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '지역' })
   @IsString()
   location: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '버디' })
   @IsString()
   buddy: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '다이빙 일자' })
   @IsDate()
   diveDate: Date;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '공개 여부' })
   @IsBoolean()
   isPublic: boolean;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '날씨' })
   @IsWeather()
   weather: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '파도' })
   @IsDegreeExpression()
   wave: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '조류' })
   @IsDegreeExpression()
   current: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '입수 시각' })
   @IsDate()
   diveInAt: Date;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '출수 시각' })
   @IsDate()
   diveOutAt: Date;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '잠수 시간' })
   @IsNumber()
   diveTime: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '입수 잔압' })
   @IsNumber()
   pressureIn: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '출수 잔압' })
   @IsNumber()
   pressureOut: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '평균 수심' })
   @IsNumber()
   avgDepth: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '최대 수심' })
   @IsNumber()
   maxDepth: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '수온' })
   @IsNumber()
   waterTemperature: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '시야' })
   @IsDegreeExpression()
   visibility: string;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '웨이트' })
   @IsNumber()
   weight: number;
 
-  @ApiProperty({})
+  @ApiProperty({ description: '장비' })
   @IsEquipmentArray()
   equipment: string[];
 
-  @ApiProperty({})
+  @ApiProperty({ description: '다이빙 유형' })
   @IsDivingTypeArray()
   type: string[];
 
-  @ApiProperty({})
+  @ApiProperty({ description: '추가 메모' })
   @IsString()
   text: string;
 }
