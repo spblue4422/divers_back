@@ -132,7 +132,7 @@ export class DiveLogService {
     logId: number,
     userId: number,
     modifyDiveLogBody: ModifyDiveLogReqDto,
-  ) {
+  ): Promise<MsgResDto> {
     const {
       weatherVal,
       waveVal,
@@ -142,13 +142,13 @@ export class DiveLogService {
       typeValStr,
     } = await this.convertKeyToValueForLog(modifyDiveLogBody);
 
-    if (
-      !(await this.diveLogRepository.exists({ where: { id: logId, userId } }))
-    )
-      throw new DiversException('NO_DIVELOG');
+    // if (
+    //   !(await this.diveLogRepository.exists({ where: { id: logId, userId } }))
+    // )
+    //   throw new DiversException('NO_DIVELOG');
 
     await this.diveLogRepository.updateAndCatchFail(
-      { id: logId },
+      { id: logId, userId },
       {
         ...modifyDiveLogBody,
       },
@@ -170,11 +170,24 @@ export class DiveLogService {
     return MsgResDto.success();
   }
 
-  async removeDiveLog(logId: number, userId: number) {
+  async removeDiveLog(logId: number, userId: number): Promise<MsgResDto> {
     //디테일 자동으로 soft remove 가능할까?
     await this.diveLogRepository.softRemove({ id: logId, userId }).catch(() => {
       throw new DiversException('NO_DIVELOG');
     });
+
+    return MsgResDto.success();
+  }
+
+  async changeIsPublic(
+    logId: number,
+    userId: number,
+    isPublic: string,
+  ): Promise<MsgResDto> {
+    await this.diveLogRepository.updateAndCatchFail(
+      { id: logId, userId },
+      { isPublic: isPublic == 'public' },
+    );
 
     return MsgResDto.success();
   }

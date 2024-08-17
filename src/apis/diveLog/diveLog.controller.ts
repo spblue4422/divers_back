@@ -58,7 +58,7 @@ export class DiveLogController {
     description: '다이브 로그 조회',
   })
   async getDiveLogById(
-    @Param() logId: number,
+    @Param('logId') logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<DiveLogResDto> {
     const { keyId: userId } = cur;
@@ -82,7 +82,7 @@ export class DiveLogController {
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 수정' })
   async modfiyDiveLog(
-    @Param() logId: number,
+    @Param('logId') logId: number,
     @Body() modifyDiveLogBody,
     @Current() cur: JwtAccessPayloadDto,
   ) {
@@ -95,7 +95,7 @@ export class DiveLogController {
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 삭제' })
   async removeDiveLog(
-    @Param() logId: number,
+    @Param('logId') logId: number,
     @Current() cur: JwtAccessPayloadDto,
   ) {
     const { keyId: userId } = cur;
@@ -103,7 +103,16 @@ export class DiveLogController {
     return this.diveLogService.removeDiveLog(logId, userId);
   }
 
-  @Patch('/:logId/changePublic')
+  @Patch('/:logId/:state')
   @Roles([Role.USER])
-  async changeIsPublic() {}
+  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 공개 여부 설정' })
+  async changeIsPublic(
+    @Param('logId') logId: number,
+    @Param('state') state: string, // 'public' || 'private'
+    @Current() cur: JwtAccessPayloadDto,
+  ): Promise<MsgResDto> {
+    const { keyId: userId } = cur;
+
+    return this.diveLogService.changeIsPublic(logId, userId, state);
+  }
 }
