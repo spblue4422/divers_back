@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+import { CreateAuthReqDto } from './dtos/createAuthReq.dto';
 import { AuthRepository } from '@/apis/auth/auth.repository';
 import { ShopSignUpReqDto } from '@/apis/auth/dtos/shopSignUpReq.dto';
 import { SignInReqDto } from '@/apis/auth/dtos/signInReq.dto';
@@ -11,7 +12,10 @@ import { SignInResDto } from '@/apis/auth/dtos/signInRes.dto';
 import { UserSignUpReqDto } from '@/apis/auth/dtos/userSignUpReq.dto';
 import { DiveShopService } from '@/apis/diveShop/diveShop.service';
 import { UserService } from '@/apis/user/user.service';
-import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
+import {
+  JwtAccessPayloadDto,
+  JwtRefreshPayloadDto,
+} from '@/common/dtos/jwtPayload.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { Role } from '@/common/enums';
 import { DiversException } from '@/common/exceptions';
@@ -147,7 +151,12 @@ export class AuthService {
     // 트랜잭션 필수 -> 지금은 nickname만 중복으로하면 auth만 만들어지고 user가 안만들어지는 현상이 있음
 
     // auth 만들기
-    await this.createAuth(newHandle, loginId, password, Role.USER);
+    await this.createAuth({
+      handle: newHandle,
+      loginId,
+      password,
+      role: Role.USER,
+    });
 
     // 만든 auth에 해당하는 user 만들어주기
     await this.userService.createUser(newHandle, createUserBody);
@@ -226,13 +235,9 @@ export class AuthService {
     return SignInResDto.signInSuccess(newAccessToken, newRefreshToken);
   }
 
-  // @Transactional()
-  async createAuth(
-    handle: string,
-    loginId: string,
-    password: string,
-    role: number,
-  ) {
+  async createAuth(reqBody: CreateAuthReqDto) {
+    const { handle, loginId, password, role } = reqBody;
+
     const salt = await bcrypt.genSalt();
     const encrypted = await bcrypt.hash(password, salt);
 
@@ -245,7 +250,9 @@ export class AuthService {
     });
   }
 
-  async signToken(data: object): Promise<string> {
+  async signToken(
+    data: JwtAccessPayloadDto | JwtRefreshPayloadDto,
+  ): Promise<string> {
     if (data instanceof JwtAccessPayloadDto)
       return this.jwtService.signAsync(data, {
         secret: this.secret,
