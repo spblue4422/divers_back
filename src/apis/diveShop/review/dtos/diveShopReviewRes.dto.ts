@@ -27,6 +27,12 @@ export class DiveShopReviewResDto {
   @ApiProperty({})
   recommendation: number;
 
+  @ApiProperty({})
+  isBlocked: boolean;
+
+  @ApiProperty({})
+  createdAt: Date;
+
   static makeRes(data: DiveShopReview) {
     const resDto = new DiveShopReviewResDto();
 
@@ -38,6 +44,8 @@ export class DiveShopReviewResDto {
     resDto.text = data.text;
     resDto.star = data.star;
     resDto.recommendation = data.recommendation;
+    resDto.isBlocked = data.isBlocked;
+    resDto.createdAt = new Date(data.createdAt.toString());
 
     return resDto;
   }

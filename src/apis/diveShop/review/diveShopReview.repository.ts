@@ -1,6 +1,7 @@
 import {
   DataSource,
   FindOptionsOrder,
+  FindOptionsRelations,
   FindOptionsWhere,
   Repository,
   UpdateResult,
@@ -37,6 +38,12 @@ export class DiveShopReviewRepository extends Repository<DiveShopReview> {
       dataList: data.map((d) => DiveShopReviewResDto.makeRes(d)),
       totalCount: count,
     }));
+  }
+
+  async findOneByReviewId(reviewId: number): Promise<DiveShopReview> {
+    return this.findOneOrFail({ where: { id: reviewId } }).catch(() => {
+      throw new DiversException('NO_DIVESHOP_REVIEW');
+    });
   }
 
   async updateAndCatchFail(

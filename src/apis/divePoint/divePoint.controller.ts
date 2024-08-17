@@ -46,7 +46,7 @@ export class DivePointController {
     return this.divePointService.getDivePoint(pointId);
   }
 
-  @Get('/:pointId/recommend')
+  @Patch('/:pointId/recommend')
   @Roles([Role.USER])
   @ApiOkResponse({ type: MsgResDto, description: '다이빙 포인트 추천' })
   async recommendPoint(

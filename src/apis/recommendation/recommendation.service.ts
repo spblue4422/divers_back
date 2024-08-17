@@ -13,10 +13,14 @@ export class RecommendationService {
 
   async recommendTarget(
     keyId: number,
-    targetKey: string,
+    targetKey:
+      | 'DIVESHOP'
+      | 'DIVEPOINT'
+      | 'DIVESHOP_REVIEW'
+      | 'DIVEPOINT_REVIEW', // 나중에 깔끔하게 바꿔보자
     targetId: number,
   ): Promise<boolean> {
-    const targetVal = await convertKeyToValue(RecommendationTarget, targetKey);
+    const targetVal = convertKeyToValue(RecommendationTarget, targetKey);
 
     const recommendation =
       await this.recommendationRepository.findOneWithTarget(

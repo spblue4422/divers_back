@@ -5,14 +5,15 @@ import { DiveShopModule } from '@/apis/diveShop/diveShop.module';
 import { DiveShopReviewController } from '@/apis/diveShop/review/diveShopReview.controller';
 import { DiveShopReviewRepository } from '@/apis/diveShop/review/diveShopReview.repository';
 import { DiveShopReviewService } from '@/apis/diveShop/review/diveShopReview.service';
+import { RecommendationModule } from '@/apis/recommendation/recommendation.module';
 import { UserModule } from '@/apis/user/user.module';
 import { DiveShopReview } from '@/entities/index';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([DiveShopReview]),
-    UserModule,
     DiveShopModule,
+    RecommendationModule,
   ],
   controllers: [DiveShopReviewController],
   providers: [DiveShopReviewService, DiveShopReviewRepository],
