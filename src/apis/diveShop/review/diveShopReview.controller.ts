@@ -9,7 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DiveShopReviewService } from '@/apis/diveShop/review/diveShopReview.service';
@@ -23,15 +28,18 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
+@ApiTags('DiveShopReview')
+@ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
 @Controller('')
 export class DiveShopReviewController {
   constructor(private readonly diveShopReviewServcie: DiveShopReviewService) {}
 
   @Get('/list')
+  @ApiOperation({ description: '다이빙 샵 리뷰 목록 조회 API' })
   @ApiOkResponse({
     type: ListResDto<DiveShopReviewResDto>,
-    description: '다이빙 샵 리뷰 목록 조회',
+    description: '다이빙 샵 리뷰 목록',
   })
   async getDiveShopReviewListByDiveShop(
     @Param('shopId') shopId: number,
@@ -47,9 +55,10 @@ export class DiveShopReviewController {
   }
 
   @Get('/list/user')
+  @ApiOperation({ description: '유저가 작성한 다이빙 샵 리뷰 목록 조회 API' })
   @ApiOkResponse({
     type: ListResDto<DiveShopReviewResDto>,
-    description: '유저가 작성한 다이빙 샵 리뷰 목록 조회',
+    description: '다이빙 샵 리뷰 목록',
   })
   async getDiveShopReviewListByUser(
     @Query('id') userHandle: string,
@@ -69,9 +78,10 @@ export class DiveShopReviewController {
 
   @Post('/:shopId')
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 샵 리뷰 작성 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 샵 리뷰 생성',
+    description: '작성 성공',
   })
   async createDiveShopReview(
     @Param('shopId') shopId: number,
@@ -89,9 +99,10 @@ export class DiveShopReviewController {
 
   @Patch('/:reviewId')
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 샵 리뷰 수정 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 샵 리뷰 수정',
+    description: '수정 성공',
   })
   async modifyDiveShopReview(
     @Param('reviewId') reviewId: number,
@@ -109,9 +120,10 @@ export class DiveShopReviewController {
 
   @Delete('/:reviewId')
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 샵 리뷰 삭제 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 샵 리뷰 삭제',
+    description: '삭제 성공',
   })
   async removeDiveShopReview(
     // @Param('shopId') shopId: number,
@@ -125,9 +137,10 @@ export class DiveShopReviewController {
 
   @Patch('/:reviewId/recommend')
   @Roles([Role.USER])
+  @ApiOperation({ description: '다이빙 샵 리뷰 추천 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 샵 리뷰 추천',
+    description: '추천/추천 취소 성공',
   })
   async recommendDiveShopReview(
     @Param('reviewId') reviewId: number,

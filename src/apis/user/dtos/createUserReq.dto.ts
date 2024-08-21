@@ -3,27 +3,27 @@ import { IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserReqDto {
-  @ApiProperty({ description: '닉네임' })
+  @ApiProperty({ description: '닉네임', default: '닉네임' })
   @IsString()
   nickname: string;
 
-  @ApiProperty({ description: '이름' })
+  @ApiProperty({ description: '이름', default: '승은' })
   @IsString()
   firstname: string;
 
-  @ApiProperty({ description: '성' })
+  @ApiProperty({ description: '성', default: '유' })
   @IsString()
   lastname: string;
 
-  @ApiProperty({ description: '국적' })
+  @ApiProperty({ description: '국적', default: 'KOR' })
   @IsString()
   countryCode: string;
 
-  @ApiProperty({ description: '생년월일' })
+  @ApiProperty({ description: '생년월일', default: '20001211' })
   @IsOptional()
   birth: string;
 
-  @ApiProperty({ description: '성별' })
+  @ApiProperty({ description: '성별', default: '남' })
   @IsOptional()
   gender: string;
 

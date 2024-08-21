@@ -7,7 +7,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DiveShopService } from '@/apis/diveShop/diveShop.service';
@@ -22,6 +27,8 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
+@ApiTags('DiveShop')
+@ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
 @Controller('shop')
 export class DiveShopController {
@@ -29,9 +36,10 @@ export class DiveShopController {
 
   @Get('/list')
   @Roles([Role.USER])
+  @ApiOperation({ description: '다이빙 샵 목록 조회 API' })
   @ApiOkResponse({
     type: ListResDto<DiveShopInListResDto>,
-    description: '다이브샵 목록 조회',
+    description: '다이빙 샵 목록',
   })
   async getDiveShopList(
     @Query() paginationForm: PaginationReqDto,
@@ -43,9 +51,10 @@ export class DiveShopController {
 
   @Get('/:shopId')
   @Roles([Role.USER])
+  @ApiOperation({ description: '다이빙 샵 상세 정보 조회 API' })
   @ApiOkResponse({
     type: DiveShopResDto,
-    description: '다이브샵 상세정보 조회',
+    description: '다이빙 샵 정보',
   })
   async getDiveShopById(
     @Param('shopId') shopId: number,
@@ -55,7 +64,8 @@ export class DiveShopController {
 
   @Patch('/:shopId/recommend')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이브샵 추천' })
+  @ApiOperation({ description: '다이빙 샵 추천 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '추천/추천 취소 성공' })
   async recommendDiveShop(
     @Param('shopId') shopId: number,
     @Current() cur: JwtAccessPayloadDto,

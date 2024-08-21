@@ -3,10 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 
 export class SignInResDto extends MsgResDto {
-  @ApiProperty({ description: 'Access Token' })
+  @ApiProperty({ description: '액세스 토큰', default: 'accessToken' })
   accessToken: string;
 
-  @ApiProperty({ description: 'Refresh Token' })
+  @ApiProperty({ description: '리프레쉬 토큰', default: 'refreshToken' })
   refreshToken: string;
 
   static signInSuccess(at: string, rt: string): SignInResDto {

@@ -5,6 +5,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from '@/app.module';
 import { AllExceptionFilter } from '@/common/utils/errorHandler';
+import { DiversSwaggerConfig } from '@/config/swagger';
+import expressBasicAuth from 'express-basic-auth';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
 async function bootstrap() {
@@ -12,14 +14,21 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Divers Api Swagger')
-    .setDescription('Divers Api Description')
-    .setVersion('0.0.0')
-    .build();
+  app.use(
+    ['/docs'],
+    expressBasicAuth({
+      challenge: true,
+      users: {
+        [app.get(ConfigService).get('SWAGGER_ID')]: app
+          .get(ConfigService)
+          .get('SWAGGER_PASSWORD'),
+      },
+    }),
+  );
 
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, document);
+  const document = SwaggerModule.createDocument(app, DiversSwaggerConfig);
+  if (process.env.NODE_ENV != 'prod')
+    SwaggerModule.setup('docs', app, document);
 
   app.useGlobalPipes(
     new ValidationPipe({

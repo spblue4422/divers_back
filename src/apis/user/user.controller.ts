@@ -7,7 +7,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { ModifyUserProfileReqDto } from '@/apis/user/dtos/modifyUserProfileReq.dto';
@@ -20,16 +25,19 @@ import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { Role } from '@/common/enums';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthRoleGuard)
   @Get('/profile')
+  @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: '본인/다른 유저 프로필 확인 API' })
   @ApiOkResponse({
     type: MyProfileResDto,
-    description: '본인/다른 유저 프로필 확인',
+    description: '본인/다른 유저 프로필 정보',
   })
   async getUserProfile(
     @Query('user') userHandle: string,
@@ -46,12 +54,14 @@ export class UserController {
       );
   }
 
-  @UseGuards(AuthRoleGuard)
   @Patch('/profile')
+  @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: '유저 프로필 정보 변경 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '유저 프로필 정보 변경',
+    description: '변경 성공',
   })
   async modifyUserProfile(
     @Body() modfiyUserProfileBody: ModifyUserProfileReqDto,
@@ -62,12 +72,14 @@ export class UserController {
     return this.userService.modifyUser(handle, modfiyUserProfileBody);
   }
 
-  @UseGuards(AuthRoleGuard)
   @Patch('/profileImage')
+  @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: '유저 프로필 이미지 변경 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '프로필 이미지 변경',
+    description: '변경 성공',
   })
   async changeMyProfileImage(
     @Body() changeProfImgBody,
@@ -75,9 +87,10 @@ export class UserController {
   ) {}
 
   @Get('/checkDuplicate/nickname')
+  @ApiOperation({ description: '닉네임 중복 체크 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '닉네임 중복 체크',
+    description: '검사 통과',
   })
   async checkNicknameDuplicate(
     @Query('name') nickname: string,
@@ -85,24 +98,28 @@ export class UserController {
     return this.userService.checkNicknameDuplicate(nickname);
   }
 
-  @UseGuards(AuthRoleGuard)
   @Patch('/certificate/email')
+  @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: '이메일 인증 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '이메일 인증',
+    description: '인증 성공',
   })
   async certificateEmail(
     @Body() cfEmailBody,
     @Current() cur: JwtAccessPayloadDto,
   ) {}
 
-  @UseGuards(AuthRoleGuard)
   @Patch('/certificate/phone')
+  @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: '휴대폰 인증 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '휴대폰 인증',
+    description: '인증 성공',
   })
   async certificatePhone(
     @Body() cfPhoneBody,
@@ -110,8 +127,11 @@ export class UserController {
   ) {}
 
   // 차후 개발 feature로 빼지뭐 ㅋㅋ
-  @UseGuards(AuthRoleGuard)
   @Patch('/certificate/rank')
+  @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: '자격증 인증 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '인증 성공' })
   async certificateDiveRank(@Current() cur: JwtAccessPayloadDto) {}
 }

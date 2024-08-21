@@ -71,7 +71,7 @@ class User extends BasicDate {
   /**
    다이빙 자격증 단계
   */
-  @Column({ default: 0 })
+  @Column({ default: 1 })
   diveRank: number;
 
   /**

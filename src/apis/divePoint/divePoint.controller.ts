@@ -6,7 +6,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { DivePointResDto } from './dtos/divePointRes.dto';
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
@@ -20,15 +25,18 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
+@ApiTags('DivePoint')
+@ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
 @Controller('point')
 export class DivePointController {
   constructor(private readonly divePointService: DivePointService) {}
 
   @Get('/list')
+  @ApiOperation({ description: '다이빙 포인트 목록 조회 API' })
   @ApiOkResponse({
     type: ListResDto<DivePointInListResDto>,
-    description: '다이빙 포인트 목록 조회',
+    description: '다이빙 포인트 목록',
   })
   async getDivePointList(
     @Query() paginationForm: PaginationReqDto,
@@ -39,7 +47,8 @@ export class DivePointController {
   }
 
   @Get('/:pointId')
-  @ApiOkResponse({ type: DivePointResDto, description: '다이빙 포인트 조회' })
+  @ApiOperation({ description: '다이빙 포인트 상세 조회 API' })
+  @ApiOkResponse({ type: DivePointResDto, description: '다이빙 포인트 정보' })
   async getDivePointById(
     @Param('pointId') pointId: number,
   ): Promise<DivePointResDto> {
@@ -48,7 +57,8 @@ export class DivePointController {
 
   @Patch('/:pointId/recommend')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이빙 포인트 추천' })
+  @ApiOperation({ description: '다이빙 포인트 추천 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '추천/추천 취소 성공' })
   async recommendPoint(
     @Param('pointId') pointId: number,
     @Current() cur: JwtAccessPayloadDto,

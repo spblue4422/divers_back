@@ -1,22 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { UserProfileResDto } from '@/apis/user/dtos/userProfileRes.dto';
+import { DivingRank } from '@/common/enums';
 import { User } from '@/entities/index';
 
 export class MyProfileResDto extends UserProfileResDto {
-  @ApiProperty({ description: '이름' })
+  @ApiProperty({ description: '이름', default: '승은' })
   firstname: string;
 
-  @ApiProperty({ description: '성' })
+  @ApiProperty({ description: '성', default: '유' })
   lastname: string;
 
-  @ApiProperty({ description: '생년월일' })
+  @ApiProperty({ description: '생년월일', default: '20001211' })
   birth: string;
 
-  @ApiProperty({ description: '성별' })
+  @ApiProperty({ description: '성별', default: '남' })
   gender: string;
 
-  @ApiProperty({ description: '가입일자' })
+  @ApiProperty({ description: '가입일자', default: '20240801' })
   createdAt: Date;
 
   static async makeRes(data: User) {
@@ -26,7 +27,7 @@ export class MyProfileResDto extends UserProfileResDto {
     resDto.nickname = data.nickname;
     resDto.countryCode = data.countryCode;
     resDto.profileImageUrl = data.profileImageUrl;
-    resDto.diveRank = data.diveRank;
+    resDto.diveRank = DivingRank[data.diveRank] as unknown as DivingRank;
     resDto.firstname = data.firstname;
     resDto.lastname = data.lastname;
     resDto.birth = data.birth;

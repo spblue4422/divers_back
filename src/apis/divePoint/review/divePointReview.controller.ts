@@ -9,7 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { CreateDivePointReviewReqDto } from './dtos/createDivePointReviewReq.dto';
 import { DivePointReviewResDto } from './dtos/divePointReviewRes.dto';
@@ -25,6 +30,8 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
+@ApiTags('DivePointReview')
+@ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
 @Controller()
 export class DivePointReviewController {
@@ -34,8 +41,9 @@ export class DivePointReviewController {
 
   @Get('/list')
   @Roles([Role.USER, Role.SHOP, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 포인트 리뷰 목록 조회 API' })
   @ApiOkResponse({
-    description: '다이빙 포인트 리뷰 목록 조회',
+    description: '다이빙 포인트 리뷰 목록',
   })
   async getDivePointReviewListByDivePoint(
     @Param('pointId') pointId: number,
@@ -52,9 +60,12 @@ export class DivePointReviewController {
 
   @Get('list/user')
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({
+    description: '유저가 작성한 다이빙 포인트 리뷰 목록 조회 API',
+  })
   @ApiOkResponse({
     type: ListResDto<DivePointReviewResDto>,
-    description: '유저가 작성한 다이빙 포인트 리뷰 목록 조회',
+    description: '다이빙 포인트 리뷰 목록',
   })
   async getDivePointReviewListByUser(
     @Query('id') userHandle: string,
@@ -74,9 +85,10 @@ export class DivePointReviewController {
 
   @Post()
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 포인트 리뷰 작성 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 포인트 리뷰 생성',
+    description: '작성 성공',
   })
   async createDivePointReview(
     @Body() createDivePointReviewBody: CreateDivePointReviewReqDto,
@@ -92,9 +104,10 @@ export class DivePointReviewController {
 
   @Patch()
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 포인트 리뷰 수정 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 포인트 리뷰 수정',
+    description: '수정 성공',
   })
   async modifyDivePointReview(
     @Param('reviewId') reviewId: number,
@@ -112,9 +125,10 @@ export class DivePointReviewController {
 
   @Delete()
   @Roles([Role.USER, Role.ADMIN])
+  @ApiOperation({ description: '다이빙 포인트 리뷰 삭제 API' })
   @ApiOkResponse({
     type: MsgResDto,
-    description: '다이빙 포인트 리뷰 삭제',
+    description: '삭제 성공',
   })
   async removeDivePointReview(
     @Param('reviewId') reviewId: number,
@@ -125,7 +139,8 @@ export class DivePointReviewController {
 
   @Patch()
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이빙 포인트 리뷰 추천' })
+  @ApiOperation({ description: '다이빙 포인트 리뷰 추천 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '추천/추천 취소 성공' })
   async recommendDivePointReview(
     @Param('reviewId') reviewId: number,
     @Current() cur: JwtAccessPayloadDto,

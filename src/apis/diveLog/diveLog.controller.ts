@@ -9,7 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DiveLogService } from '@/apis/diveLog/diveLog.service';
@@ -24,6 +29,8 @@ import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { PaginationReqDto } from '@/common/dtos/paginationReq.dto';
 import { Role } from '@/common/enums';
 
+@ApiTags('DiveLog')
+@ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
 @Controller('diveLog')
 export class DiveLogController {
@@ -31,9 +38,10 @@ export class DiveLogController {
 
   @Get('/list')
   @Roles([Role.USER])
+  @ApiOperation({ description: '유저가 작성한 다이브 로그 목록 조회 API' })
   @ApiOkResponse({
     type: ListResDto<DiveLogInListResDto>,
-    description: '유저가 작성한 다이브 로그 목록 조회',
+    description: '다이브 로그 목록',
   })
   async getUserDiveLogList(
     @Query('id') userHandle: string,
@@ -53,9 +61,10 @@ export class DiveLogController {
 
   @Get('/:logId')
   @Roles([Role.USER])
+  @ApiOperation({ description: '다이브 로그 상세 조회 API' })
   @ApiOkResponse({
     type: DiveLogResDto,
-    description: '다이브 로그 조회',
+    description: '다이브 로그',
   })
   async getDiveLogById(
     @Param('logId') logId: number,
@@ -68,7 +77,8 @@ export class DiveLogController {
 
   @Post('')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 생성' })
+  @ApiOperation({ description: '다이브 로그 작성 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '작성 성공' })
   async createDiveLog(
     @Body() createDiveLogBody: CreateDiveLogReqDto,
     @Current() cur: JwtAccessPayloadDto,
@@ -80,7 +90,8 @@ export class DiveLogController {
 
   @Patch('/:logId')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 수정' })
+  @ApiOperation({ description: '다이브 로그 수정 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '수정 성공' })
   async modfiyDiveLog(
     @Param('logId') logId: number,
     @Body() modifyDiveLogBody,
@@ -93,7 +104,8 @@ export class DiveLogController {
 
   @Delete('/:logId')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 삭제' })
+  @ApiOperation({ description: '다이브 로그 삭제 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '삭제 성공' })
   async removeDiveLog(
     @Param('logId') logId: number,
     @Current() cur: JwtAccessPayloadDto,
@@ -105,7 +117,8 @@ export class DiveLogController {
 
   @Patch('/:logId/:state')
   @Roles([Role.USER])
-  @ApiOkResponse({ type: MsgResDto, description: '다이브 로그 공개 여부 설정' })
+  @ApiOperation({ description: '다이브 로그 공개 여부 설정 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '설정 성공' })
   async changeIsPublic(
     @Param('logId') logId: number,
     @Param('state') state: string, // 'public' || 'private'
