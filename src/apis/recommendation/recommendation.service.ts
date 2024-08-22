@@ -21,12 +21,11 @@ export class RecommendationService {
   ): Promise<boolean> {
     const targetVal = convertKeyToValue(RecommendationTarget, targetKey);
 
-    const recommendation =
-      await this.recommendationRepository.findOneWithTarget(
-        keyId,
-        targetVal,
-        targetId,
-      );
+    const recommendation = await this.recommendationRepository.findOneByTarget(
+      keyId,
+      targetVal,
+      targetId,
+    );
 
     if (!recommendation) {
       await this.recommendationRepository.insert({

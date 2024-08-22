@@ -3,16 +3,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DivePoint } from '@/entities/index';
 
 export class DivePointInListResDto {
-  @ApiProperty({ description: 'dive_point_id' })
+  @ApiProperty({ description: 'dive_point_id', default: 1 })
   id: number;
 
-  @ApiProperty({ description: '다이빙 포인트 이름' })
+  @ApiProperty({ description: '다이빙 포인트 이름', default: '엄바위' })
   pointName: string;
 
-  @ApiProperty({ description: '국가 코드' })
+  @ApiProperty({ description: '국가 코드', default: 'KOR' })
   countryCode: string;
 
-  @ApiProperty({ description: '별점' })
+  @ApiProperty({ description: '별점', default: 5.0 })
   averageStar: number;
 
   static makeRes(data: DivePoint) {

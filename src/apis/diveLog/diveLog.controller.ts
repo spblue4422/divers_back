@@ -43,7 +43,7 @@ export class DiveLogController {
     type: ListResDto<DiveLogInListResDto>,
     description: '다이브 로그 목록',
   })
-  async getUserDiveLogList(
+  async getDiveLogListByUser(
     @Query('id') userHandle: string,
     @Query() paginationForm: PaginationReqDto,
     @Current() cur: JwtAccessPayloadDto,
@@ -96,7 +96,7 @@ export class DiveLogController {
     @Param('logId') logId: number,
     @Body() modifyDiveLogBody,
     @Current() cur: JwtAccessPayloadDto,
-  ) {
+  ): Promise<MsgResDto> {
     const { keyId: userId } = cur;
 
     return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
@@ -109,7 +109,7 @@ export class DiveLogController {
   async removeDiveLog(
     @Param('logId') logId: number,
     @Current() cur: JwtAccessPayloadDto,
-  ) {
+  ): Promise<MsgResDto> {
     const { keyId: userId } = cur;
 
     return this.diveLogService.removeDiveLog(logId, userId);

@@ -27,6 +27,7 @@ export class CreateDiveLogReqDto {
   shopId?: number;
 
   @ApiProperty({ description: '다이빙 샵 이름' })
+  @IsOptional()
   @IsString()
   shopName: string;
 
@@ -40,10 +41,12 @@ export class CreateDiveLogReqDto {
   pointName: string;
 
   @ApiProperty({ description: '지역' })
+  @IsOptional()
   @IsString()
   location: string;
 
   @ApiProperty({ description: '버디' })
+  @IsOptional()
   @IsString()
   buddy: string;
 

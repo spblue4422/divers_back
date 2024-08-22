@@ -11,7 +11,7 @@ import { User } from '@/entities';
 export class UserService {
   constructor(private readonly userRepository: UserRepostiory) {}
 
-  async getUserByHandle(handle: string): Promise<User> {
+  async getUser(handle: string): Promise<User> {
     return this.userRepository.findOneByAuthHandle(handle);
   }
 

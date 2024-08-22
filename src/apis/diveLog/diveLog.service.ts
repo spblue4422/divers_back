@@ -63,7 +63,7 @@ export class DiveLogService {
     } else throw new DiversException('NO_ACCESS_PRIVATE_DIVELOG');
   }
 
-  async convertKeyToValueForLog(keyObj: CreateDiveLogReqDto) {
+  async convertKeyToValueForDiveLog(keyObj: CreateDiveLogReqDto) {
     const { weather, wave, current, visibility, equipment, type } = keyObj;
 
     const weatherVal = await convertKeyToValue(Weather, weather.toString());
@@ -84,26 +84,22 @@ export class DiveLogService {
       .toString();
 
     return {
-      weatherVal,
-      waveVal,
-      currentVal,
-      visibilityVal,
-      equipmentValStr,
-      typeValStr,
+      weather: weatherVal,
+      wave: waveVal,
+      current: currentVal,
+      visibility: visibilityVal,
+      equipment: equipmentValStr,
+      type: typeValStr,
     };
   }
 
   @Transactional()
-  async createDiveLog(userId: number, createDiveLogBody: CreateDiveLogReqDto) {
+  async createDiveLog(
+    userId: number,
+    createDiveLogBody: CreateDiveLogReqDto,
+  ): Promise<MsgResDto> {
     //이거 좀 줄일 수 있지않을까?
-    const {
-      weatherVal,
-      waveVal,
-      currentVal,
-      visibilityVal,
-      equipmentValStr,
-      typeValStr,
-    } = await this.convertKeyToValueForLog(createDiveLogBody);
+    const valueObj = await this.convertKeyToValueForDiveLog(createDiveLogBody);
 
     const { identifiers } = await this.diveLogRepository.insert({
       userId,
@@ -113,12 +109,13 @@ export class DiveLogService {
     await this.diveLogDetailRepository.insert({
       logId: identifiers[0].id,
       ...createDiveLogBody,
-      weather: weatherVal,
-      wave: waveVal,
-      current: currentVal,
-      visibility: visibilityVal,
-      equipment: equipmentValStr,
-      type: typeValStr,
+      ...valueObj, // 이거 안되면 body랑 value 순서 바꿔보자
+      // weather: weatherVal,
+      // wave: waveVal,
+      // current: currentVal,
+      // visibility: visibilityVal,
+      // equipment: equipmentValStr,
+      // type: typeValStr,
     });
 
     return MsgResDto.success();
@@ -131,14 +128,7 @@ export class DiveLogService {
     userId: number,
     modifyDiveLogBody: ModifyDiveLogReqDto,
   ): Promise<MsgResDto> {
-    const {
-      weatherVal,
-      waveVal,
-      currentVal,
-      visibilityVal,
-      equipmentValStr,
-      typeValStr,
-    } = await this.convertKeyToValueForLog(modifyDiveLogBody);
+    const valueObj = await this.convertKeyToValueForDiveLog(modifyDiveLogBody);
 
     await this.diveLogRepository.updateAndCatchFail(
       { id: logId, userId },
@@ -151,12 +141,13 @@ export class DiveLogService {
       { logId },
       {
         ...modifyDiveLogBody,
-        weather: weatherVal,
-        wave: waveVal,
-        current: currentVal,
-        visibility: visibilityVal,
-        equipment: equipmentValStr,
-        type: typeValStr,
+        ...valueObj,
+        // weather: weatherVal,
+        // wave: waveVal,
+        // current: currentVal,
+        // visibility: visibilityVal,
+        // equipment: equipmentValStr,
+        // type: typeValStr,
       },
     );
 
@@ -164,8 +155,8 @@ export class DiveLogService {
   }
 
   async removeDiveLog(logId: number, userId: number): Promise<MsgResDto> {
-    //디테일 자동으로 soft remove 가능할까?
-    await this.diveLogRepository.softRemove({ id: logId, userId }).catch(() => {
+    //디테일 자동으로 soft delete 가능할까?
+    await this.diveLogRepository.softDelete({ id: logId, userId }).catch(() => {
       throw new DiversException('NO_DIVELOG');
     });
 

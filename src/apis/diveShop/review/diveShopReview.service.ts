@@ -1,15 +1,18 @@
+import { FindOptionsWhere } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 
 import { DiveShopService } from '@/apis/diveShop/diveShop.service';
 import { DiveShopReviewRepository } from '@/apis/diveShop/review/diveShopReview.repository';
 import { CreateDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/createDiveShopReviewReq.dto';
 import { DiveShopReviewResDto } from '@/apis/diveShop/review/dtos/diveShopReviewRes.dto';
+import { ModifyDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/modifyDiveShopReviewReq.dto';
 import { RecommendationService } from '@/apis/recommendation/recommendation.service';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
-import { Transactional } from 'typeorm-transactional';
-import { FindOptionsWhere } from 'typeorm';
+import { DiversException } from '@/common/exceptions';
 import { DiveShopReview } from '@/entities';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class DiveShopReviewService {
@@ -41,31 +44,30 @@ export class DiveShopReviewService {
     pagingCount: number,
     isOwner: boolean,
     order?,
-  ) {
+  ): Promise<ListResDto<DiveShopReviewResDto>> {
     const where: FindOptionsWhere<DiveShopReview> = isOwner
       ? { user: { authHandle: userHandle } }
       : { user: { authHandle: userHandle }, isBlocked: false };
-      
+
     return this.diveShopReviewRepository.findListWithCount(
       page,
       pagingCount,
       where,
       order ?? { createdAt: 'DESC' },
     );
-    
   }
 
   async createDiveShopReview(
-    shopId: number,
     userId: number,
-    createReviewBody: CreateDiveShopReviewReqDto,
+    createDiveShopReviewBody: CreateDiveShopReviewReqDto,
   ): Promise<MsgResDto> {
+    const { shopId } = createDiveShopReviewBody;
+
     await this.diveShopService.getDiveShop(shopId);
 
     await this.diveShopReviewRepository.insert({
-      shopId,
       userId,
-      ...createReviewBody,
+      ...createDiveShopReviewBody,
     });
 
     return MsgResDto.success();
@@ -74,24 +76,34 @@ export class DiveShopReviewService {
   async modifyDiveShopReview(
     reviewId: number,
     userId: number,
-    modifyReviewBody,
+    modifyDiveShopReviewBody: ModifyDiveShopReviewReqDto,
   ): Promise<MsgResDto> {
     await this.diveShopReviewRepository.updateAndCatchFail(
       { id: reviewId, userId },
-      { ...modifyReviewBody },
+      { ...modifyDiveShopReviewBody },
     );
 
     return MsgResDto.success();
   }
 
-  async removeDiveShopReview(reviewId: number, userId: number) {
-    await this.diveShopReviewRepository.softDelete({ id: reviewId, userId });
+  async removeDiveShopReview(
+    reviewId: number,
+    userId: number,
+  ): Promise<MsgResDto> {
+    await this.diveShopReviewRepository
+      .softDelete({ id: reviewId, userId })
+      .catch(() => {
+        throw new DiversException('NO_DIVESHOP_REVIEW');
+      });
 
     return MsgResDto.success();
   }
 
   @Transactional()
-  async recommendDiveShopReview(reviewId: number, userId: number) {
+  async recommendDiveShopReview(
+    reviewId: number,
+    userId: number,
+  ): Promise<MsgResDto> {
     const { recommendation } =
       await this.diveShopReviewRepository.findOneByReviewId(reviewId);
 

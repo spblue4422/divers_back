@@ -35,7 +35,7 @@ import { Role } from '@/common/enums';
 export class DiveShopReviewController {
   constructor(private readonly diveShopReviewServcie: DiveShopReviewService) {}
 
-  @Get('/list')
+  @Get('/list/shop/:shopId')
   @ApiOperation({ description: '다이빙 샵 리뷰 목록 조회 API' })
   @ApiOkResponse({
     type: ListResDto<DiveShopReviewResDto>,
@@ -76,7 +76,7 @@ export class DiveShopReviewController {
     );
   }
 
-  @Post('/:shopId')
+  @Post('')
   @Roles([Role.USER, Role.ADMIN])
   @ApiOperation({ description: '다이빙 샵 리뷰 작성 API' })
   @ApiOkResponse({
@@ -84,14 +84,12 @@ export class DiveShopReviewController {
     description: '작성 성공',
   })
   async createDiveShopReview(
-    @Param('shopId') shopId: number,
     @Body() createReviewBody: CreateDiveShopReviewReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
     const { keyId: userId } = cur;
 
     return this.diveShopReviewServcie.createDiveShopReview(
-      shopId,
       userId,
       createReviewBody,
     );
@@ -126,7 +124,6 @@ export class DiveShopReviewController {
     description: '삭제 성공',
   })
   async removeDiveShopReview(
-    // @Param('shopId') shopId: number,
     @Param('reviewId') reviewId: number,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
@@ -145,7 +142,7 @@ export class DiveShopReviewController {
   async recommendDiveShopReview(
     @Param('reviewId') reviewId: number,
     @Current() cur: JwtAccessPayloadDto,
-  ) {
+  ): Promise<MsgResDto> {
     const { keyId: userId } = cur;
 
     return this.diveShopReviewServcie.recommendDiveShopReview(reviewId, userId);

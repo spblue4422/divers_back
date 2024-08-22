@@ -21,7 +21,6 @@ import { DivePointReviewResDto } from './dtos/divePointReviewRes.dto';
 import { AuthRoleGuard } from '@/apis/auth/guards/authAndRole.guard';
 import { DivePointReviewService } from '@/apis/divePoint/review/divePointReview.service';
 import { ModifyDivePointReviewReqDto } from '@/apis/divePoint/review/dtos/modifyDivePointReviewReq.dto';
-import { CreateDiveShopReviewReqDto } from '@/apis/diveShop/review/dtos/createDiveShopReviewReq.dto';
 import { Current } from '@/common/decorators/current';
 import { Roles } from '@/common/decorators/roles';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
@@ -74,7 +73,6 @@ export class DivePointReviewController {
   ): Promise<ListResDto<DivePointReviewResDto>> {
     const { handle } = cur;
     const { page, pagingCount } = paginationForm;
-    // console.log(userHandle, handle);
 
     return this.divePointReviewService.getDivePointReviewListByUser(
       userHandle,
@@ -94,12 +92,12 @@ export class DivePointReviewController {
   async createDivePointReview(
     @Body() createDivePointReviewBody: CreateDivePointReviewReqDto,
     @Current() cur: JwtAccessPayloadDto,
-  ) {
+  ): Promise<MsgResDto> {
     const { keyId: userId } = cur;
 
     return this.divePointReviewService.createDivePointReview(
-      createDivePointReviewBody,
       userId,
+      createDivePointReviewBody,
     );
   }
 
@@ -119,8 +117,8 @@ export class DivePointReviewController {
 
     return this.divePointReviewService.modifyDivePointReview(
       reviewId,
-      modifyDivePointReviewBody,
       userId,
+      modifyDivePointReviewBody,
     );
   }
 
@@ -134,7 +132,7 @@ export class DivePointReviewController {
   async removeDivePointReview(
     @Param('reviewId') reviewId: number,
     @Current() cur: JwtAccessPayloadDto,
-  ) {
+  ): Promise<MsgResDto> {
     const { keyId: userId } = cur;
 
     return this.divePointReviewService.removeDivePointReview(reviewId, userId);

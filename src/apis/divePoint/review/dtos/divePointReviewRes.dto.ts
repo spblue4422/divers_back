@@ -3,40 +3,40 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DivePointReview } from '@/entities';
 
 export class DivePointReviewResDto {
-  @ApiProperty({ description: 'dive_point_review_id' })
+  @ApiProperty({ description: 'dive_point_review_id', default: 1 })
   id: number;
 
-  @ApiProperty({ description: 'user_handle' })
+  @ApiProperty({ description: 'user_handle', default: 'abcdefgaadfasdf' })
   userHandle: string;
 
-  @ApiProperty({ description: '닉네임' })
+  @ApiProperty({ description: '닉네임', default: '닉뭐로하지' })
   nickname: string;
 
-  @ApiProperty({ description: 'point_id' })
+  @ApiProperty({ description: 'point_id', default: 1 })
   pointId: number;
 
-  @ApiProperty({ description: '포인트 이름' })
+  @ApiProperty({ description: '포인트 이름', default: '엄바위' })
   pointName: string;
 
   @ApiProperty({ description: 'shop_id' })
   shopId: number;
 
-  @ApiProperty({ description: '다이빙 샵 이름' })
+  @ApiProperty({ description: '다이빙 샵 이름', default: '샵 이름' })
   shopName: string;
 
-  @ApiProperty({ description: '리뷰 내용' })
+  @ApiProperty({ description: '리뷰 내용', default: '리뷰 내용' })
   text: string;
 
-  @ApiProperty({ description: '별점' })
+  @ApiProperty({ description: '별점', default: 5.0 })
   star: number;
 
-  @ApiProperty({ description: '추천' })
+  @ApiProperty({ description: '추천', default: 0 })
   recommendation: number;
 
-  @ApiProperty({ description: '블락 여부' })
+  @ApiProperty({ description: '블락 여부', default: false })
   isBlocked: boolean;
 
-  @ApiProperty({ description: '생성일자' })
+  @ApiProperty({ description: '생성일자', default: new Date() })
   createdAt: Date;
 
   static makeRes(data: DivePointReview) {

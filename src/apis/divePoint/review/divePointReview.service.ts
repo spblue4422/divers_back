@@ -10,6 +10,7 @@ import { ModifyDivePointReviewReqDto } from '@/apis/divePoint/review/dtos/modify
 import { RecommendationService } from '@/apis/recommendation/recommendation.service';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { DiversException } from '@/common/exceptions';
 import { DivePointReview } from '@/entities';
 import { Transactional } from 'typeorm-transactional';
 
@@ -61,8 +62,8 @@ export class DivePointReviewService {
   }
 
   async createDivePointReview(
-    createDivePointReviewBody: CreateDivePointReviewReqDto,
     userId: number,
+    createDivePointReviewBody: CreateDivePointReviewReqDto,
   ): Promise<MsgResDto> {
     const { shopId, shopName, pointId } = createDivePointReviewBody;
 
@@ -80,8 +81,8 @@ export class DivePointReviewService {
 
   async modifyDivePointReview(
     reviewId: number,
-    modifyDivePointReviewBody: ModifyDivePointReviewReqDto,
     userId: number,
+    modifyDivePointReviewBody: ModifyDivePointReviewReqDto,
   ): Promise<MsgResDto> {
     const { shopId, shopName } = modifyDivePointReviewBody;
 
@@ -101,7 +102,11 @@ export class DivePointReviewService {
     reviewId: number,
     userId: number,
   ): Promise<MsgResDto> {
-    await this.divePointReviewRepository.softDelete({ id: reviewId, userId });
+    await this.divePointReviewRepository
+      .softDelete({ id: reviewId, userId })
+      .catch(() => {
+        throw new DiversException('NO_DIVEPOINT_REVIEW');
+      });
 
     return MsgResDto.success();
   }

@@ -56,7 +56,7 @@ export class DiveLogDetailRepository extends Repository<DiveLogDetail> {
   }
 
   // 로그 조건별 리스트 뽑기에 사용할 수 있는 method
-  async findListWithConditionWithCount(
+  async findListWithWithCount(
     page: number,
     pagingCount: number,
     where?: FindOptionsWhere<DiveLogDetail>,

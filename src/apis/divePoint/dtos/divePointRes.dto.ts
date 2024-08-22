@@ -4,13 +4,13 @@ import { DivePointInListResDto } from '@/apis/divePoint/dtos/divePointInListRes.
 import { DivePoint } from '@/entities/index';
 
 export class DivePointResDto extends DivePointInListResDto {
-  @ApiProperty({ description: '설명' })
+  @ApiProperty({ description: '설명', default: '이 포인트는 어쩌구' })
   description: string;
 
-  @ApiProperty({ description: '지역' })
+  @ApiProperty({ description: '지역', default: '강릉' })
   location: string;
 
-  @ApiProperty({ description: '추천 수' })
+  @ApiProperty({ description: '추천 수', default: 100 })
   recommendation: number;
 
   static makeRes(data: DivePoint) {
