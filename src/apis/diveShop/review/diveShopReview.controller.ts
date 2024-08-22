@@ -31,7 +31,7 @@ import { Role } from '@/common/enums';
 @ApiTags('DiveShopReview')
 @ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
-@Controller('')
+@Controller('shop_review')
 export class DiveShopReviewController {
   constructor(private readonly diveShopReviewServcie: DiveShopReviewService) {}
 

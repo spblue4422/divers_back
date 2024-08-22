@@ -32,7 +32,7 @@ export class DivePointReviewRepository extends Repository<DivePointReview> {
       order,
       skip: page - 1,
       take: pagingCount,
-      relations: { user: true },
+      relations: { user: true, divePoint: true, diveShop: true },
     }).then(([data, count]) => ({
       dataList: data.map((d) => DivePointReviewResDto.makeRes(d)),
       totalCount: count,

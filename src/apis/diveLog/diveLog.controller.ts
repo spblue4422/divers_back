@@ -51,7 +51,7 @@ export class DiveLogController {
     const { handle } = cur;
     const { page, pagingCount } = paginationForm;
 
-    return this.diveLogService.getDiveLogListByUserHandle(
+    return this.diveLogService.getDiveLogListByUser(
       userHandle,
       page,
       pagingCount,

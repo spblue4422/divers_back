@@ -2,8 +2,6 @@
 .vscode
 /dist
 /node_modules
-/queries
-/requestBodyExamples
 
 # Logs
 logs
@@ -37,4 +35,8 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# setting files
 *.env
+*.pem
+/queries
+/requestBodyExamples

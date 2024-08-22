@@ -33,13 +33,13 @@ import { Role } from '@/common/enums';
 @ApiTags('DivePointReview')
 @ApiBearerAuth('accessToken')
 @UseGuards(AuthRoleGuard)
-@Controller()
+@Controller('point_review')
 export class DivePointReviewController {
   constructor(
     private readonly divePointReviewService: DivePointReviewService,
   ) {}
 
-  @Get('/list')
+  @Get('/list/point/:pointId')
   @Roles([Role.USER, Role.SHOP, Role.ADMIN])
   @ApiOperation({ description: '다이빙 포인트 리뷰 목록 조회 API' })
   @ApiOkResponse({
@@ -58,7 +58,7 @@ export class DivePointReviewController {
     );
   }
 
-  @Get('list/user')
+  @Get('/list/user')
   @Roles([Role.USER, Role.ADMIN])
   @ApiOperation({
     description: '유저가 작성한 다이빙 포인트 리뷰 목록 조회 API',
@@ -74,6 +74,7 @@ export class DivePointReviewController {
   ): Promise<ListResDto<DivePointReviewResDto>> {
     const { handle } = cur;
     const { page, pagingCount } = paginationForm;
+    // console.log(userHandle, handle);
 
     return this.divePointReviewService.getDivePointReviewListByUser(
       userHandle,
@@ -83,7 +84,7 @@ export class DivePointReviewController {
     );
   }
 
-  @Post()
+  @Post('')
   @Roles([Role.USER, Role.ADMIN])
   @ApiOperation({ description: '다이빙 포인트 리뷰 작성 API' })
   @ApiOkResponse({
@@ -102,7 +103,7 @@ export class DivePointReviewController {
     );
   }
 
-  @Patch()
+  @Patch('/:reviewId')
   @Roles([Role.USER, Role.ADMIN])
   @ApiOperation({ description: '다이빙 포인트 리뷰 수정 API' })
   @ApiOkResponse({
@@ -123,7 +124,7 @@ export class DivePointReviewController {
     );
   }
 
-  @Delete()
+  @Delete('/:reviewId')
   @Roles([Role.USER, Role.ADMIN])
   @ApiOperation({ description: '다이빙 포인트 리뷰 삭제 API' })
   @ApiOkResponse({
@@ -135,9 +136,11 @@ export class DivePointReviewController {
     @Current() cur: JwtAccessPayloadDto,
   ) {
     const { keyId: userId } = cur;
+
+    return this.divePointReviewService.removeDivePointReview(reviewId, userId);
   }
 
-  @Patch()
+  @Patch('/:reviewId/recommend')
   @Roles([Role.USER])
   @ApiOperation({ description: '다이빙 포인트 리뷰 추천 API' })
   @ApiOkResponse({ type: MsgResDto, description: '추천/추천 취소 성공' })

@@ -8,6 +8,8 @@ import { RecommendationService } from '@/apis/recommendation/recommendation.serv
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
 import { Transactional } from 'typeorm-transactional';
+import { FindOptionsWhere } from 'typeorm';
+import { DiveShopReview } from '@/entities';
 
 @Injectable()
 export class DiveShopReviewService {
@@ -40,17 +42,17 @@ export class DiveShopReviewService {
     isOwner: boolean,
     order?,
   ) {
+    const where: FindOptionsWhere<DiveShopReview> = isOwner
+      ? { user: { authHandle: userHandle } }
+      : { user: { authHandle: userHandle }, isBlocked: false };
+      
     return this.diveShopReviewRepository.findListWithCount(
       page,
       pagingCount,
-      {
-        user: {
-          authHandle: userHandle,
-        },
-        isBlocked: isOwner,
-      },
+      where,
       order ?? { createdAt: 'DESC' },
     );
+    
   }
 
   async createDiveShopReview(

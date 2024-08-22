@@ -18,6 +18,12 @@ export class DivePointReviewResDto {
   @ApiProperty({ description: '포인트 이름' })
   pointName: string;
 
+  @ApiProperty({ description: 'shop_id' })
+  shopId: number;
+
+  @ApiProperty({ description: '다이빙 샵 이름' })
+  shopName: string;
+
   @ApiProperty({ description: '리뷰 내용' })
   text: string;
 
@@ -36,11 +42,18 @@ export class DivePointReviewResDto {
   static makeRes(data: DivePointReview) {
     const resDto = new DivePointReviewResDto();
 
+    const { diveShop } = data;
+
     resDto.id = data.id;
     resDto.userHandle = data.user.authHandle;
     resDto.nickname = data.user.nickname;
     resDto.pointId = data.pointId;
     resDto.pointName = data.divePoint.name;
+    resDto.shopId = data.shopId;
+    diveShop // shopId가 null일 경우에는 그냥 리뷰에 등록된 shopName으로(이것도 null일수 있음.)
+      ? (resDto.shopName = diveShop.name)
+      : (resDto.shopName = data.shopName);
+
     resDto.text = data.text;
     resDto.star = data.star;
     resDto.recommendation = data.recommendation;

@@ -1,3 +1,5 @@
+import { FindOptionsWhere } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 
 import { DivePointService } from '../divePoint.service';
@@ -8,6 +10,7 @@ import { ModifyDivePointReviewReqDto } from '@/apis/divePoint/review/dtos/modify
 import { RecommendationService } from '@/apis/recommendation/recommendation.service';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
+import { DivePointReview } from '@/entities';
 import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
@@ -45,15 +48,14 @@ export class DivePointReviewService {
     isOwner: boolean,
     order?,
   ): Promise<ListResDto<DivePointReviewResDto>> {
+    const where: FindOptionsWhere<DivePointReview> = isOwner
+      ? { user: { authHandle: userHandle } }
+      : { user: { authHandle: userHandle }, isBlocked: false };
+
     return this.divePointReviewRepository.findListWithCount(
       page,
       pagingCount,
-      {
-        user: {
-          authHandle: userHandle,
-        },
-        isBlocked: isOwner,
-      },
+      where,
       order ?? { createdAt: 'DESC' },
     );
   }
@@ -62,12 +64,14 @@ export class DivePointReviewService {
     createDivePointReviewBody: CreateDivePointReviewReqDto,
     userId: number,
   ): Promise<MsgResDto> {
-    const { pointId } = createDivePointReviewBody;
+    const { shopId, shopName, pointId } = createDivePointReviewBody;
 
     await this.divePointService.getDivePoint(pointId);
 
     await this.divePointReviewRepository.insert({
       userId,
+      shopId: shopId ?? null,
+      shopName: shopName ?? null,
       ...createDivePointReviewBody,
     });
 
@@ -79,9 +83,15 @@ export class DivePointReviewService {
     modifyDivePointReviewBody: ModifyDivePointReviewReqDto,
     userId: number,
   ): Promise<MsgResDto> {
+    const { shopId, shopName } = modifyDivePointReviewBody;
+
     await this.divePointReviewRepository.updateAndCatchFail(
       { id: reviewId, userId },
-      { ...modifyDivePointReviewBody },
+      {
+        shopId: shopId ?? null,
+        shopName: shopName ?? null,
+        ...modifyDivePointReviewBody,
+      },
     );
 
     return MsgResDto.success();

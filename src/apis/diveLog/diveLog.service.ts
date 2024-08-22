@@ -30,16 +30,16 @@ export class DiveLogService {
     private readonly diveLogDetailRepository: DiveLogDetailRepository,
   ) {}
 
-  async getDiveLogListByUserHandle(
-    handle: string,
+  async getDiveLogListByUser(
+    userHandle: string,
     page: number,
     pagingCount: number,
     isOwner: boolean,
     order?,
   ): Promise<ListResDto<DiveLogInListResDto>> {
     const where: FindOptionsWhere<DiveLog> = isOwner
-      ? { user: { authHandle: handle } }
-      : { user: { authHandle: handle }, isPublic: true, isBlocked: false };
+      ? { user: { authHandle: userHandle } }
+      : { user: { authHandle: userHandle }, isPublic: true, isBlocked: false };
 
     return this.diveLogRepository.findListWithCount(
       page,

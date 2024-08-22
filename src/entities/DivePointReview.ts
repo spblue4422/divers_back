@@ -27,7 +27,7 @@ class DivePointReview extends BasicDate {
   @Column()
   userId: number;
 
-  // 내가 shop을 넣은 이유가 뭐지?
+  // 내가 shop을 넣은 이유가 뭐지 -> 특정 point에 대해 특정 샵에서 간 리뷰만 안 좋을 경우를 보고 싶어서?
   @ManyToOne(() => DiveShop)
   @JoinColumn({ name: 'shopId' })
   diveShop: DiveShop;
@@ -41,7 +41,7 @@ class DivePointReview extends BasicDate {
   /**
    다이브 샵 이름
   */
-  @Column({ default: '' })
+  @Column({ nullable: true, default: null })
   shopName: string;
 
   @ManyToOne(() => DivePoint, { onDelete: 'CASCADE' })
