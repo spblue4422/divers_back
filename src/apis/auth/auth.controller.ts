@@ -83,7 +83,12 @@ export class AuthController {
     type: MsgResDto,
     description: '회원 탈퇴 성공',
   })
-  async withdraw(@Body() withdrawalbody) {}
+  async withdraw(@Body() withdrawalbody, @Current() cur: JwtAccessPayloadDto) {
+    const { handle } = cur;
+
+    // 일단 user로 어떻게 되나 확인해보고 자세한 로직을 결정하자
+    return this.authService.userWithdraw(handle);
+  }
 
   @Get('/checkDuplicate/id')
   @ApiOperation({ description: '아이디 중복 체크 API' })

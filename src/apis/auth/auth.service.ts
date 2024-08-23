@@ -188,6 +188,15 @@ export class AuthService {
     return MsgResDto.success();
   }
 
+  // @Transactional()
+  async userWithdraw(userHandle: string): Promise<MsgResDto> {
+    // soft delete 결과를 한번 확인해 봅시다.
+    // 결과를 보고 차후 로직을 생각
+    await this.authRepository.softDelete({ handle: userHandle });
+
+    return MsgResDto.success();
+  }
+
   async checkLoginIdDuplicate(loginId: string): Promise<MsgResDto> {
     if (await this.authRepository.exists({ where: { loginId } }))
       throw new DiversException('DUPLICATE_LOGIN_ID');
