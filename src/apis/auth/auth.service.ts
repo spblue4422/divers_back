@@ -54,7 +54,7 @@ export class AuthService {
       let keyId: number;
 
       if (role == Role.USER)
-        keyId = (await this.userService.getUserByHandle(handle)).id;
+        keyId = (await this.userService.getUser(handle)).id;
       else keyId = 1; // 나중에 diveShopService와 adminService에서 하나씩 구현해오자.
 
       // accessToken
@@ -91,7 +91,7 @@ export class AuthService {
     const encrypted = await bcrypt.hash(password, salt);
 
     if (bcrypt.compare(password, encrypted)) {
-      const { id: keyId } = await this.userService.getUserByHandle(handle);
+      const { id: keyId } = await this.userService.getUser(handle);
 
       // accessToken
       const accessToken = await this.signToken({ handle, keyId, role });
@@ -209,8 +209,7 @@ export class AuthService {
 
     let keyId: number;
 
-    if (role == Role.USER)
-      keyId = (await this.userService.getUserByHandle(handle)).id;
+    if (role == Role.USER) keyId = (await this.userService.getUser(handle)).id;
     else if (role == Role.SHOP) keyId = 1;
     else keyId = 1;
 
