@@ -21,6 +21,7 @@ import { DiveLogService } from '@/apis/diveLog/diveLog.service';
 import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
 import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
+import { ModifyDiveLogReqDto } from '@/apis/diveLog/dtos/modifyDiveLogReq.dto';
 import { Current } from '@/common/decorators/current';
 import { Roles } from '@/common/decorators/roles';
 import { JwtAccessPayloadDto } from '@/common/dtos/jwtPayload.dto';
@@ -94,7 +95,7 @@ export class DiveLogController {
   @ApiOkResponse({ type: MsgResDto, description: '수정 성공' })
   async modfiyDiveLog(
     @Param('logId') logId: number,
-    @Body() modifyDiveLogBody,
+    @Body() modifyDiveLogBody: ModifyDiveLogReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
     const { keyId: userId } = cur;

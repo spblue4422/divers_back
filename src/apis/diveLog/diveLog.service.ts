@@ -110,12 +110,6 @@ export class DiveLogService {
       logId: identifiers[0].id,
       ...createDiveLogBody,
       ...valueObj, // 이거 안되면 body랑 value 순서 바꿔보자
-      // weather: weatherVal,
-      // wave: waveVal,
-      // current: currentVal,
-      // visibility: visibilityVal,
-      // equipment: equipmentValStr,
-      // type: typeValStr,
     });
 
     return MsgResDto.success();
@@ -142,12 +136,6 @@ export class DiveLogService {
       {
         ...modifyDiveLogBody,
         ...valueObj,
-        // weather: weatherVal,
-        // wave: waveVal,
-        // current: currentVal,
-        // visibility: visibilityVal,
-        // equipment: equipmentValStr,
-        // type: typeValStr,
       },
     );
 
@@ -155,7 +143,6 @@ export class DiveLogService {
   }
 
   async removeDiveLog(logId: number, userId: number): Promise<MsgResDto> {
-    //디테일 자동으로 soft delete 가능할까?
     await this.diveLogRepository.softDelete({ id: logId, userId }).catch(() => {
       throw new DiversException('NO_DIVELOG');
     });
