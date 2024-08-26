@@ -1,12 +1,22 @@
-FROM ubuntu:24.04
+FROM node:18
 
 LABEL version="0.0"
 LABEL description="divers_back"
 
-RUN apt-get update
-RUN apt-get-upgrade -y
+# docker image work directory 설정 - host와는 별개
+WORKDIR /divers_back
 
-RUN apt-get install git -y
+COPY package.json .
+COPY yarn.lock .
 
-RUN mkdir /opt/server
-RUN git clone https://github.com/spblue4422/divers_back.git /opt/server
+RUN yarn install
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 4000
+
+ENV NODE_ENV=dev
+
+CMD [ "node", "./dist/main.js" ]

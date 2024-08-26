@@ -1,0 +1,11 @@
+node_moduels/*
+# .github
+# .git
+.gitignore
+# .eslintignore
+.eslintrc.js
+.gitignore
+# .node-version
+.prettierrc.js
+README.md
+# docker-compose.yml
