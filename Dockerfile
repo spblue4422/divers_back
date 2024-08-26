@@ -1,6 +1,6 @@
 FROM node:18
 
-LABEL version="0.0"
+LABEL version="0.0.0"
 LABEL description="divers_back"
 
 # docker image work directory 설정 - host와는 별개
@@ -13,7 +13,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn build
+RUN yarn run build
 
 EXPOSE 4000
 
