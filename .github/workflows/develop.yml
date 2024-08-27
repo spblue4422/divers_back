@@ -30,7 +30,7 @@ jobs:
 
   CD-Build:
     needs: CI
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout branch
