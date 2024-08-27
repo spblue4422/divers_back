@@ -30,6 +30,7 @@ jobs:
 
   CD-Build:
     needs: CI
+    environment: dev
     runs-on: ubuntu-latest
 
     steps:
@@ -50,12 +51,13 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DEV_DOCKER_IMAGE }}
+          tags: ${{ vars.DOCKER_IMAGE }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   CD-Deploy:
     needs: CD-Build
+    environment: dev
     runs-on: ubuntu-latest
 
     steps:
@@ -79,7 +81,7 @@ jobs:
       - name: Add Github Actions IP to VPC
         run: |
           aws ec2 authorize-security-group-ingress \
-              --group-id ${{ secrets.DEV_SECURITY_GROUP_ID }} \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
               --protocol tcp \
               --port 22 \
               --cidr ${{ steps.IP.outputs.ipv4 }}/32
@@ -88,7 +90,7 @@ jobs:
       # - name: Deploy to EC2
       #   uses: appleboy/ssh-action@master
       #   with:
-      #     host: ${{ secrets.DEV_EC2_HOST }}
+      #     host: ${{ secrets.EC2_HOST }}
       #     key: ${{ secrets.EC2_SSH_KEY }}
       #     script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
       #       CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
@@ -98,14 +100,14 @@ jobs:
       #         sudo docker rm $CONTAINER_ID
       #       fi
 
-      #       sudo docker pull ${{ secrets.DEV_DOCKER_IMAGE }}
-      #       sudo docker run --name ${{ secrets.DEV_DOCKER_CONTAINER }} -d -p 80:4000 -e TZ=Asia/Seoul ${{ secrets.DEV_DOCKER_IMAGE }}
+      #       sudo docker pull ${{ vars.DOCKER_IMAGE }}
+      #       sudo docker run --name ${{ vars.DOCKER_CONTAINER }} -d -p 80:4000 -e TZ=Asia/Seoul ${{ vars.DOCKER_IMAGE }}
 
       # VPC에서 Github Actions IP 제거
       - name: Remove Github Actions IP from VPC
         run: |
           aws ec2 revoke-security-group-ingress \
-            --group-id ${{ secrets.DEV_SECURITY_GROUP_ID }} \
+            --group-id ${{ secrets.SECURITY_GROUP_ID }} \
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.IP.outputs.ipv4 }}/32
