@@ -42,7 +42,7 @@ jobs:
 
       - name: Login to DockerHub
         run: |
-          docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
+          winpty docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
 
       - name: Docker Image Build
         run: |
