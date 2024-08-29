@@ -76,7 +76,7 @@ jobs:
       # Github Actions ip 받기
       - name: Get Github Actions IP
         id: IP
-        uses: haythem/public-ip@v1
+        uses: haythem/public-ip@v1.3
 
       # AWS Credentials Configure에 추가
       # 여기서 들었던 의문 - 이거 한번 등록하면 계속 되는거 아닌가?
