@@ -1,0 +1,125 @@
+name: Divers Development
+on:
+  push:
+    branches:
+      - feat/CD
+
+  pull_request:
+    branches:
+      - feat/CD
+
+jobs:
+  # test를 모두 통과하면 굳이 여기서 build를 하지 않아도 배포에 문제가 없음.
+  # CI에서 test를 하고 CD로 넘어가서 배포를 하면 되는 구조
+  # 근데 아직 test 코드가 없는 상황이니 먼저 build 해보고 넘기면 될듯.
+  # CI:
+  # test1
+  # test2
+  # test3
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Install depndencies
+        run: yarn install
+
+      - name: Build
+        run: yarn run build
+
+  CD-Build:
+    needs: CI
+    environment: dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Docker buildx # 나중에 action 확인해보자
+        uses: docker/setup-buildx-action@v3
+
+      # - name: Login to DockerHub
+      # run: |
+      # winpty docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
+
+      - name: Login to DockerHub # 나중에 action 확인해보자
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Docker Image Build
+        run: |
+          docker build -t ${{ vars.DOCKER_IMAGE }}
+
+      - name: Push to Docker Hub
+        run: |
+          docker push ${{ vars.DOCKER_IMAGE }}
+
+      # - name: Build Docker image and push # 나중에 action 확인해보자
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ vars.DOCKER_IMAGE }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+
+  CD-Deploy:
+    needs: CD-Build
+    environment: dev
+    runs-on: ubuntu-latest
+
+    steps:
+      # Github Actions ip 받기
+      - name: Get Github Actions IP
+        id: IP
+        uses: haythem/public-ip@v1
+
+      # AWS Credentials Configure에 추가
+      # 여기서 들었던 의문 - 이거 한번 등록하면 계속 되는거 아닌가?
+      # aws action에서 default 값이 한 시간이라 그렇지는 않다.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.IAM_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.IAM_SECRET_ACCESS_KEY }}
+          aws-region: 'ap-northeast-2'
+
+      # VPC에 Github Actions IP추가
+      # script 안에 넣어놓은 secret env 값이 제대로 나가는지도 나중에 확인해 봐야한다.
+      - name: Add Github Actions IP to VPC
+        run: |
+          aws ec2 authorize-security-group-ingress \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --protocol tcp \
+              --port 22 \
+              --cidr ${{ steps.IP.outputs.ipv4 }}/32
+
+      # EC2에 배포
+      # - name: Deploy to EC2
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
+      #       CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
+
+      #       if [ ! -z "$CONTAINER_ID" ]; then
+      #         sudo docker stop $CONTAINER_ID
+      #         sudo docker rm $CONTAINER_ID
+      #       fi
+
+      #       sudo docker pull ${{ vars.DOCKER_IMAGE }}
+      #       sudo docker run --name ${{ vars.DOCKER_CONTAINER }} -d -p 80:4000 -e TZ=Asia/Seoul ${{ vars.DOCKER_IMAGE }}
+
+      # VPC에서 Github Actions IP 제거
+      - name: Remove Github Actions IP from VPC
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.IP.outputs.ipv4 }}/32
