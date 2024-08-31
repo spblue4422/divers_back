@@ -99,21 +99,21 @@ jobs:
               --cidr ${{ steps.IP.outputs.ipv4 }}/32
 
       # EC2에 배포
-      # - name: Deploy to EC2
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.EC2_HOST }}
-      #     key: ${{ secrets.EC2_SSH_KEY }}
-      #     script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
-      #       CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
+            CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
 
-      #       if [ ! -z "$CONTAINER_ID" ]; then
-      #         sudo docker stop $CONTAINER_ID
-      #         sudo docker rm $CONTAINER_ID
-      #       fi
+            if [ ! -z "$CONTAINER_ID" ]; then
+              sudo docker stop $CONTAINER_ID
+              sudo docker rm $CONTAINER_ID
+            fi
 
-      #       sudo docker pull ${{ vars.DOCKER_IMAGE }}
-      #       sudo docker run --name ${{ vars.DOCKER_CONTAINER }} -d -p 80:4000 -e TZ=Asia/Seoul ${{ vars.DOCKER_IMAGE }}
+            sudo docker pull ${{ vars.DOCKER_IMAGE }}
+            sudo docker run --name ${{ vars.DOCKER_CONTAINER }} -d -p 80:4000 -e TZ=Asia/Seoul ${{ vars.DOCKER_IMAGE }}
 
       # VPC에서 Github Actions IP 제거
       - name: Remove Github Actions IP from VPC
