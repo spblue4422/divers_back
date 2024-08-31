@@ -112,7 +112,7 @@ jobs:
           script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
             CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
 
-            if [ ! -z "$CONTAINER_ID" ]; then
+            if [ ! -z $CONTAINER_ID ]; then
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
             fi
