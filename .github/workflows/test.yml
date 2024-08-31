@@ -91,12 +91,16 @@ jobs:
       # VPC에 Github Actions IP추가
       # script 안에 넣어놓은 secret env 값이 제대로 나가는지도 나중에 확인해 봐야한다.
       - name: Add Github Actions IP to VPC
+        id: AddIP
         run: |
           aws ec2 authorize-security-group-ingress \
               --group-id ${{ secrets.SECURITY_GROUP_ID }} \
               --protocol tcp \
               --port 22 \
               --cidr ${{ steps.IP.outputs.ipv4 }}/32
+          if [ $? -eq 0 ]; then
+            echo "suc=true" >> $GITHUB_OUTPUT
+          fi
 
       # EC2에 배포
       - name: Deploy to EC2
@@ -117,9 +121,12 @@ jobs:
 
       # VPC에서 Github Actions IP 제거
       - name: Remove Github Actions IP from VPC
+        if: failure()
         run: |
-          aws ec2 revoke-security-group-ingress \
-            --group-id ${{ secrets.SECURITY_GROUP_ID }} \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${{ steps.IP.outputs.ipv4 }}/32
+          if [ ${{steps.AddIP.outputs.suc}} ]; then
+            aws ec2 revoke-security-group-ingress \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --protocol tcp \
+              --port 22 \
+              --cidr ${{ steps.IP.outputs.ipv4 }}/32
+          fi
