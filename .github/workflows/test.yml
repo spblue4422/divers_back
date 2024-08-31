@@ -107,6 +107,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
             CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
