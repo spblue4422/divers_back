@@ -37,26 +37,28 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          echo PORT=${{ secrets.PORT }} >> .dev.env
+          echo DATABASE_HOST=${{ secrets.EC2_HOST }} >> .dev.env
+          echo DATABASE_PORT=${{ secrets.DB_PORT }} >> .dev.env
+          echo DATABASE_NAME=${{ secrets.DB_NAME }} >> .dev.env
+          echo DATABASE_USER=${{ secrets.DB_USER }} >> .dev.env
+          echo DATABASE_PASSWORD=${{ secrets.DB_PASSWORD }} >> .dev.env
+          echo SECRETKEY=${{ secrets.SECRET_KEY }} >> .dev.env
+          echo ACCESS_EXPIRED=${{ vars.ACCESS_EXPIRED }} >> .dev.env
+          echo REFRESH_EXPIRED=${{ vars.REFRESH_EXPIRED }} >> .dev.env
+          echo SWAGGER_ID=${{ secrets.SWAGGER_ID }} >> .dev.env
+          echo SWAGGER_PASSWORD=${{ secrets.SWAGGER_PASSWORD }} >> .dev.env
+
       - name: Set up Docker buildx # 나중에 action 확인해보자
         uses: docker/setup-buildx-action@v3
-
-      # - name: Login to DockerHub
-      # run: |
-      # winpty docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
 
       - name: Login to DockerHub # 나중에 action 확인해보자
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      # - name: Docker Image Build
-      #   run: |
-      #     docker build -t ${{ vars.DOCKER_IMAGE }} .
-
-      # - name: Push to Docker Hub
-      #   run: |
-      #     docker push ${{ vars.DOCKER_IMAGE }}
 
       - name: Build Docker image and push # 나중에 action 확인해보자
         uses: docker/build-push-action@v6
@@ -110,7 +112,7 @@ jobs:
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: | # 밑에 bash 스크립트 내용 한 번 알아봅시다.
-            CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-4000")
+            CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-${{ secrets.PORT }}")
 
             if [ ! -z $CONTAINER_ID ]; then
               sudo docker stop $CONTAINER_ID
