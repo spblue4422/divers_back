@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-alpine
 
 LABEL version="0.0.0"
 LABEL description="divers_back"
