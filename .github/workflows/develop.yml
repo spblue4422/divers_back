@@ -107,7 +107,7 @@ jobs:
             fi
 
             sudo docker pull ${{ vars.DOCKER_IMAGE }}
-            sudo docker run --name ${{ vars.DOCKER_CONTAINER }} -d -p 80:4000 -e TZ=Asia/Seoul ${{ vars.DOCKER_IMAGE }}
+            sudo docker run --name ${{ vars.DOCKER_CONTAINER }} -d -p 80:4000 ${{ vars.DOCKER_IMAGE }}
 
       - name: Remove Github Actions IP from VPC
         if: failure()

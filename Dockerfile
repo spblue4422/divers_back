@@ -13,6 +13,13 @@ RUN yarn install
 
 COPY . .
 
+ENV TZ=Asia/Seoul
+
+RUN apk --no-cache add tzdata && \
+    cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone \
+    apk del tzdata
+
 RUN yarn run build
 
 EXPOSE 4000
