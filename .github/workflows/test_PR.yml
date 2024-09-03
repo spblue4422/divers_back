@@ -1,9 +1,7 @@
-name: Divers Prouction
+name: Test when PR
 on:
   pull_request:
-    branches:
-      - main
-      - branch
+    branches: [develop, main]
 
 jobs:
   CI:
