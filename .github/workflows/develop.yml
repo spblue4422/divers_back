@@ -103,6 +103,7 @@ jobs:
             if [ ! -z $CONTAINER_ID ]; then
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
+              sudo docker rmi ${{ vars.DOCKER_IMAGE }}
             fi
 
             sudo docker pull ${{ vars.DOCKER_IMAGE }}
