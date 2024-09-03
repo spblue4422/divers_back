@@ -62,6 +62,11 @@ export const Errors = {
     errorCode: 1006,
     msg: '존재하지 않는 인증 신청입니다.',
   },
+  NO_COUNTRY: {
+    statusCode: 404,
+    errorCode: 1007,
+    msg: '존재하지 않는 국가입니다.',
+  },
   DUPLICATE_LOGIN_ID: {
     statusCode: 400,
     errorCode: 1100,

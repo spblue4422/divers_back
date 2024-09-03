@@ -19,6 +19,20 @@ class Country {
   */
   @Column()
   eName: string;
+
+  /**
+   간단한 설명
+  */
+  @Column({ default: '' })
+  description: string;
+
+  /**
+   국기 사진?
+  */
+
+  /**
+   다른 사진?
+  */
 }
 
 export default Country;
