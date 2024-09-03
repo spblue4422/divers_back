@@ -4,10 +4,6 @@ on:
     branches:
       - develop
 
-  pull_request:
-    branches:
-      - develop
-
 jobs:
   CI:
     runs-on: ubuntu-latest

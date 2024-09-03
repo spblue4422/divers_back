@@ -1,0 +1,23 @@
+name: Divers Prouction
+on:
+  pull_request:
+    branches:
+      - main
+      - branch
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      # - name: test1
+      # - name: test2
+      # - name: test3
+
+      - name: Install depndencies
+        run: yarn install
+
+      - name: Build
+        run: yarn run build
