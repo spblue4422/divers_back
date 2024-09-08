@@ -9,6 +9,7 @@ import {
 import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
 import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
+import { ModifyDiveLogDetailReqDto } from '@/apis/diveLog/dtos/modifyDiveLogDetailReq.dto';
 import { ModifyDiveLogReqDto } from '@/apis/diveLog/dtos/modifyDiveLogReq.dto';
 import { ListResDto } from '@/common/dtos/listRes.dto';
 import { MsgResDto } from '@/common/dtos/msgRes.dto';
@@ -63,7 +64,9 @@ export class DiveLogService {
     } else throw new DiversException('NO_ACCESS_PRIVATE_DIVELOG');
   }
 
-  async convertKeyToValueForDiveLog(keyObj: CreateDiveLogReqDto) {
+  async convertKeyToValueForDiveLog(
+    keyObj: CreateDiveLogReqDto | ModifyDiveLogDetailReqDto,
+  ) {
     const { weather, wave, current, visibility, equipment, type } = keyObj;
 
     const weatherVal = await convertKeyToValue(Weather, weather.toString());
@@ -115,15 +118,11 @@ export class DiveLogService {
     return MsgResDto.success();
   }
 
-  // 부분 수정(log와 logDetail 따로)이 있어도 괜찮을듯?
-  @Transactional()
   async modifyDiveLog(
     logId: number,
     userId: number,
     modifyDiveLogBody: ModifyDiveLogReqDto,
   ): Promise<MsgResDto> {
-    const valueObj = await this.convertKeyToValueForDiveLog(modifyDiveLogBody);
-
     await this.diveLogRepository.updateAndCatchFail(
       { id: logId, userId },
       {
@@ -131,10 +130,28 @@ export class DiveLogService {
       },
     );
 
+    return MsgResDto.success();
+  }
+
+  async modifyDiveLogDetail(
+    logId: number,
+    userId: number,
+    modifyDiveLogDetailBody: ModifyDiveLogDetailReqDto,
+  ): Promise<MsgResDto> {
+    const valueObj = await this.convertKeyToValueForDiveLog(
+      modifyDiveLogDetailBody,
+    );
+
+    await this.diveLogRepository
+      .exists({ where: { id: logId, userId } })
+      .catch(() => {
+        throw new DiversException('NO_DIVELOG');
+      });
+
     await this.diveLogDetailRepository.updateAndCatchFail(
       { logId },
       {
-        ...modifyDiveLogBody,
+        ...modifyDiveLogDetailBody,
         ...valueObj,
       },
     );

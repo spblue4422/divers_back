@@ -12,11 +12,7 @@ export class RecommendationService {
 
   async recommendTarget(
     keyId: number,
-    targetKey:
-      | 'DIVESHOP'
-      | 'DIVEPOINT'
-      | 'DIVESHOP_REVIEW'
-      | 'DIVEPOINT_REVIEW', // 나중에 깔끔하게 바꿔보자
+    targetKey: keyof typeof RecommendationTarget,
     targetId: number,
   ): Promise<boolean> {
     const targetVal = convertKeyToValue(RecommendationTarget, targetKey);

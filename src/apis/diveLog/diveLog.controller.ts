@@ -21,6 +21,7 @@ import { DiveLogService } from '@/apis/diveLog/diveLog.service';
 import { CreateDiveLogReqDto } from '@/apis/diveLog/dtos/createDiveLogReq.dto';
 import { DiveLogInListResDto } from '@/apis/diveLog/dtos/diveLogInListRes.dto';
 import { DiveLogResDto } from '@/apis/diveLog/dtos/diveLogRes.dto';
+import { ModifyDiveLogDetailReqDto } from '@/apis/diveLog/dtos/modifyDiveLogDetailReq.dto';
 import { ModifyDiveLogReqDto } from '@/apis/diveLog/dtos/modifyDiveLogReq.dto';
 import { Current } from '@/common/decorators/current';
 import { Roles } from '@/common/decorators/roles';
@@ -101,6 +102,24 @@ export class DiveLogController {
     const { keyId: userId } = cur;
 
     return this.diveLogService.modifyDiveLog(logId, userId, modifyDiveLogBody);
+  }
+
+  @Patch('/:logId/detail')
+  @Roles([Role.USER])
+  @ApiOperation({ description: '다이브 로그 상세 수정 API' })
+  @ApiOkResponse({ type: MsgResDto, description: '수정 성공' })
+  async modifyDiveLogDetail(
+    @Param('logId') logId: number,
+    @Body() modifyDiveLogDetailBody: ModifyDiveLogDetailReqDto,
+    @Current() cur: JwtAccessPayloadDto,
+  ): Promise<MsgResDto> {
+    const { keyId: userId } = cur;
+
+    return this.diveLogService.modifyDiveLogDetail(
+      logId,
+      userId,
+      modifyDiveLogDetailBody,
+    );
   }
 
   @Delete('/:logId')
