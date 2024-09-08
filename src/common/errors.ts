@@ -22,6 +22,11 @@ export const Errors = {
     errorCode: -100,
     msg: '존재하지 않는 enum입니다',
   },
+  AWS_S3_ERROR: {
+    statusCode: 500,
+    errorCode: 100,
+    msg: 'AWS S3 요청 에러',
+  },
   NO_AUTH: {
     statusCode: 404,
     errorCode: 999,

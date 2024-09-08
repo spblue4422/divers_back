@@ -16,8 +16,8 @@ export class UserProfileResDto {
   @ApiProperty({ description: '국가 코드', default: 'KOR' })
   countryCode: string;
 
-  @ApiProperty({ description: '프로필 이미지 url', default: 'url' })
-  profileImageUrl: string;
+  @ApiProperty({ description: '프로필 이미지 파일 이름', default: 'imageName' })
+  profileImageName: string;
 
   @ApiProperty({ description: '다이빙 자격증 단계' })
   diveRank: DivingRank;
@@ -28,7 +28,7 @@ export class UserProfileResDto {
     resDto.handle = data.authHandle;
     resDto.nickname = data.nickname;
     resDto.countryCode = data.countryCode;
-    resDto.profileImageUrl = data.profileImageUrl;
+    resDto.profileImageName = data.profileImageName;
     resDto.diveRank = DivingRank[data.diveRank] as unknown as DivingRank;
 
     return resDto;

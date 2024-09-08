@@ -5,8 +5,11 @@ import {
   Param,
   Patch,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiOkResponse,
@@ -67,14 +70,15 @@ export class UserController {
     @Body() modfiyUserProfileBody: ModifyUserProfileReqDto,
     @Current() cur: JwtAccessPayloadDto,
   ): Promise<MsgResDto> {
-    const { handle } = cur;
+    const { keyId: userId } = cur;
 
-    return this.userService.modifyUser(handle, modfiyUserProfileBody);
+    return this.userService.modifyUser(userId, modfiyUserProfileBody);
   }
 
   @Patch('/profileImage')
   @UseGuards(AuthRoleGuard)
   @Roles([Role.USER])
+  @UseInterceptors(FileInterceptor('file'))
   @ApiBearerAuth('accessToken')
   @ApiOperation({ description: '유저 프로필 이미지 변경 API' })
   @ApiOkResponse({
@@ -82,9 +86,13 @@ export class UserController {
     description: '변경 성공',
   })
   async changeMyProfileImage(
-    @Body() changeProfImgBody,
+    @UploadedFile('profImg') image: Express.Multer.File,
     @Current() cur: JwtAccessPayloadDto,
-  ) {}
+  ) {
+    const { keyId: userId } = cur;
+
+    return this.userService.modifyProfileImage(userId, image);
+  }
 
   @Get('/checkDuplicate/nickname')
   @ApiOperation({ description: '닉네임 중복 체크 API' })

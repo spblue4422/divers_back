@@ -63,10 +63,10 @@ class User extends BasicDate {
   gender: string;
 
   /**
-   프로필 이미지 url
+   프로필 이미지 파일 이름
   */
   @Column({ nullable: true })
-  profileImageUrl: string;
+  profileImageName: string;
 
   /**
    다이빙 자격증 단계

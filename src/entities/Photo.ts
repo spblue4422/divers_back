@@ -2,11 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import BasicDate from '@/entities/BasicDate';
 
-@Entity('photo')
-class Photo extends BasicDate {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+abstract class Photo extends BasicDate {
   @Column()
   savedPath: string;
 
