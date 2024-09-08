@@ -26,7 +26,7 @@ export class MyProfileResDto extends UserProfileResDto {
     resDto.handle = data.authHandle;
     resDto.nickname = data.nickname;
     resDto.countryCode = data.countryCode;
-    resDto.profileImageUrl = data.profileImageUrl;
+    resDto.profileImageName = data.profileImageName;
     resDto.diveRank = DivingRank[data.diveRank] as unknown as DivingRank;
     resDto.firstname = data.firstname;
     resDto.lastname = data.lastname;

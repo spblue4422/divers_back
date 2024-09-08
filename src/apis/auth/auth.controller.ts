@@ -52,7 +52,7 @@ export class AuthController {
     description: '로그아웃 성공',
   })
   async signOut(@Current() cur: JwtAccessPayloadDto): Promise<MsgResDto> {
-    const { handle } = cur;
+    const { handle } = cur; // handle 말고 userId로 해도 상관없는지 생각해보자
 
     return this.authService.signOut(handle);
   }
@@ -84,7 +84,7 @@ export class AuthController {
     description: '회원 탈퇴 성공',
   })
   async withdraw(@Body() withdrawalbody, @Current() cur: JwtAccessPayloadDto) {
-    const { handle } = cur;
+    const { handle } = cur; // handle 말고 userId로 해도 상관없는지 생각해보자
 
     // 일단 user로 어떻게 되나 확인해보고 자세한 로직을 결정하자
     return this.authService.userWithdraw(handle);
