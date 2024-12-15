@@ -7,6 +7,8 @@ import { AppModule } from '@/app.module';
 import { AllExceptionFilter } from '@/common/utils/errorHandler';
 import { DiversSwaggerConfig } from '@/config/swagger';
 import expressBasicAuth from 'express-basic-auth';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
 async function bootstrap() {
@@ -29,6 +31,15 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, DiversSwaggerConfig);
   if (process.env.NODE_ENV != 'prod')
     SwaggerModule.setup('docs', app, document);
+
+  //openapi.json으로 추가
+  const openApiJson = JSON.stringify(document, null, 2);
+  writeFileSync(join(process.cwd(), 'openapi.json'), openApiJson);
+
+  // Serve OpenAPI JSON file
+  app.use('/openapi.json', (req, res) => {
+    res.send(openApiJson);
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

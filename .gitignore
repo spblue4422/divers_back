@@ -40,3 +40,6 @@ lerna-debug.log*
 *.pem
 /queries
 /requestBodyExamples
+
+#openapi json
+/openapi.json
