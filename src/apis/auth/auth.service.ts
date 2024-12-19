@@ -268,4 +268,26 @@ export class AuthService {
         expiresIn: this.refresh_expired,
       });
   }
+
+  async findLoginId(phoneNum: string, email: string): Promise<string> {
+    // Step 1: user 테이블에서 phoneNum과 email이 일치하는 사용자 찾기
+    const user = await this.userService.findUserByPhoneAndEmail(
+      phoneNum,
+      email,
+    );
+
+    if (!user) {
+      throw new DiversException('NO_USER');
+    }
+
+    // Step 2: auth 테이블에서 user의 authHandle과 일치하는 레코드 찾기
+    const auth = await this.authRepository.findOneByHandle(user.authHandle);
+
+    if (!auth) {
+      throw new DiversException('NO_AUTH');
+    }
+
+    // authHandle이 일치하는 레코드가 있다면 loginId 반환
+    return auth.loginId;
+  }
 }

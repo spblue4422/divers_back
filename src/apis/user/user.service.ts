@@ -53,4 +53,15 @@ export class UserService {
 
     return MsgResDto.success();
   }
+
+  async findUserByPhoneAndEmail(
+    phoneNum: string,
+    email: string,
+  ): Promise<User> {
+    const users = await this.userRepository.find({
+      where: { phone: phoneNum, email },
+    });
+    if (users.length === 0) throw new DiversException('NO_USER');
+    return users[0];
+  }
 }

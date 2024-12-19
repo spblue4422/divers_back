@@ -118,7 +118,10 @@ export class AuthController {
   @ApiOkResponse({
     description: '아이디 찾기',
   })
-  async findLoginId(@Body() findLoginIdBody: FindLoginIdReqDto) {}
+  async findLoginId(@Body() findLoginIdBody: FindLoginIdReqDto) {
+    const { phoneNum, email } = findLoginIdBody;
+    const user = await this.authService.findLoginId(phoneNum, email);
+  }
 
   @Patch('/reset/pw')
   @ApiOperation({ description: '비밀번호 초기화 API' })
